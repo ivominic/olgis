@@ -5,16 +5,17 @@ var tiledRaster = new ol.layer.Tile({
   source: new ol.source.OSM(),
   name: "Podloga"
 });
-var overlay = new ol.Overlay({
+/*var overlay = new ol.Overlay({
   position: "bottom-center",
   element: document.querySelector("#overlay")
-});
+});*/
 
 var idObjekta;
 
 function popuniKontrole(odgovor) {
   var atributi = odgovor.features[0]["properties"];
   idObjekta = odgovor.features[0]["id"];
+  console.log(odgovor);
   document.querySelector("#latinskiNaziv").value = atributi["latinski_naziv"];
   document.querySelector("#narodniNaziv").value = atributi["narodni_naziv"];
   for (var i = 0; i < document.querySelector("#tip").length; i++) {
@@ -22,13 +23,12 @@ function popuniKontrole(odgovor) {
   }
   document.querySelector("#zdravstvenoStanje").value = atributi["zdravstveno_stanje"];
   document.querySelector("#napomena").value = atributi["napomena"];
-  document.querySelector("#validiran").value = atributi["validiran"];
-  (atributi["validiran"] === true || atributi["validiran"] === "da") && (document.querySelector("#validiran").checked = true);
+
 
   //slika
   var slika = atributi["url_fotografije"];
   slika.length && (slika = slika.substring(slika.lastIndexOf("/") + 1, slika.length));
-  overlay.getElement().innerHTML = '<a target="_blank" href="' + imageUrl + slika + '"><img src="' + imageUrl + slika + '"></a>';
+  //overlay.getElement().innerHTML = '<a target="_blank" href="' + imageUrl + slika + '"><img src="' + imageUrl + slika + '"></a>';
 
 }
 
@@ -52,8 +52,7 @@ function sacuvaj() {
       narodniNaziv: document.querySelector("#narodniNaziv").value,
       tip: document.querySelector("#tip").value,
       zdravstvenoStanje: document.querySelector("#zdravstvenoStanje").value,
-      napomena: document.querySelector("#napomena").value,
-      validiran: document.querySelector("#validiran").checked
+      napomena: document.querySelector("#napomena").value
     },
     type: "GET",
     timeout: 10000,
@@ -75,9 +74,8 @@ function restartovanje() {
   document.querySelector("#tip").value = "";
   document.querySelector("#zdravstvenoStanje").value = "";
   document.querySelector("#napomena").value = "";
-  document.querySelector("#validiran").checked = false;
 
-  overlay.getElement().innerHTML = "";
+  //overlay.getElement().innerHTML = "";
 }
 
 var rasterLayer = new ol.layer.Image({
@@ -107,14 +105,28 @@ var map = new ol.Map({
 
 map.on("pointermove", onMouseMove);
 
-function onMouseMove(browserEvent) {
-  var coordinate = browserEvent.coordinate;
+function onMouseMove(evt) {
+  /*var coordinate = browserEvent.coordinate;
   var pixel = map.getPixelFromCoordinate(coordinate);
   var el = document.getElementById("name");
   el.innerHTML = "";
   map.forEachFeatureAtPixel(pixel, function (feature) {
     el.innerHTML += feature.get("broj") + "<br>";
+  });*/
+  if (evt.dragging) {
+    return;
+  }
+  map.getTargetElement().style.cursor = "";
+  var pixel = map.getEventPixel(evt.originalEvent);
+  var hit = map.forEachLayerAtPixel(pixel, function (layer) {
+    if (layer.B.name === 'zbunje') {
+      console.log(layer.B);
+      console.log("ima");
+      map.getTargetElement().style.cursor = "pointer";
+      return false;
+    }
   });
+  //map.getTargetElement().style.cursor = hit ? "pointer" : "";
 }
 
 var dragAndDrop = new ol.interaction.DragAndDrop({
@@ -160,6 +172,6 @@ function onMouseClick(browserEvent) {
       });
   }
 
-  overlay.setPosition(coordinate);
-  map.addOverlay(overlay);
+  //overlay.setPosition(coordinate);
+  //map.addOverlay(overlay);
 }

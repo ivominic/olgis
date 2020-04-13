@@ -18,16 +18,20 @@
   <body>
     <div class="pocetni-div">
       <div class="topnav" id="myTopnav">
-        <a href="#" class="active" id="pan"><i class="fa fa-hand-paper-o" aria-hidden="true"></i></a>
-        <a href="#" id="odaberi"><i class="fa fa-mouse-pointer" aria-hidden="true"></i></a>
-        <a href="#" id="dodaj"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
-        <a href="#" id="izbrisi"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
-        <a href="#" id="izmijeni"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
-        <a href="#" id="atributi"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+        <a href="#" class="active" id="pan"><i class="far fa-hand-paper"></i></a>
+        <a href="#" id="odaberi"><i class="fas fa-mouse-pointer"></i></a>
+        <a href="#" id="dodaj"><i class="far fa-plus-square"></i></a>
+        <a href="#" id="izbrisi"><i class="far fa-minus-square"></i></a>
+        <a href="#" id="izmijeni"><i class="fas fa-edit"></i></a>
+        <a href="#" id="atributi"><i class="fas fa-info-circle"></i></a>
+        <a href="#" id="slika"><i class="fas fa-camera-retro"></i></a>
         <a href="#" id="marker"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <a href="#" id="linija"><i class="fas fa-route"></i></a>
+        <a href="#" id="poligon"><i class="fas fa-draw-polygon"></i></a>
+        <a href="#" id="pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
         <div class="dropdown">
           <button class="dropbtn">
-            <i class="fa fa-th-large" aria-hidden="true"></i>Podloge
+            <i class="fab fa-buffer"></i>
             <i class="fa fa-caret-down"></i>
           </button>
           <div class="dropdown-content">
@@ -36,10 +40,9 @@
             <a href="#satelit" id="podloga_satelit">Satelit</a>
           </div>
         </div>
-        <a href="#" id="pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
         <div class="dropdown">
           <button class="dropbtn">
-            <i class="fa fa-download" aria-hidden="true"></i>
+            <i class="fas fa-download" aria-hidden="true"></i>
             <i class="fa fa-caret-down"></i>
           </button>
           <div class="dropdown-content">
@@ -52,13 +55,13 @@
       </div>
     </div>
     <div id="map" class="map"></div>
-    <select id="mode">
+    <!--<select id="mode">
       <option value="modify">Izmjena geometrije</option>
       <option value="draw">Crtanje nove</option>
-    </select>
+    </select>-->
     <input type="text" id="name" />
-    <div id="pretragaDiv" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#pretragaDiv')">&times;</a>
+    <div id="atributiDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#atributiDiv')">&times;</a>
       <div class="row">
         <div class="column">
           <label for="idObjekta">Id objekta:</label>
@@ -103,10 +106,9 @@
         </div>
       </div>
       <div class="row">
-        <button type="button" class="btn btn-primary" id="btnSacuvaj">Sačuvaj</button>
-        <button type="button" class="btn btn-warning" id="btnPonisti">Poništi</button>
-        <button type="button" class="btn btn-info" id="btnFilter">Filter</button>
-        <button type="button" class="btn btn-danger" id="btnIzbrisi">Izbriši</button>
+        <button type="button" class="btn" id="btnSacuvaj"><i class="fas fa-check-circle"></i> Sačuvaj</button>
+        <button type="button" class="btn" id="btnPonisti"><i class="fas fa-undo-alt"></i> Poništi</button>
+        <button type="button" class="btn" id="btnIzbrisi"><i class="fas fa-trash"></i> Izbriši</button>
       </div>
     </div>
     <script>

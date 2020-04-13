@@ -10,21 +10,26 @@ var tiledRaster = new ol.layer.Tile({
   element: document.querySelector("#overlay")
 });*/
 
-var idObjekta;
+var idObjekta, akcija = 'pan',
+  oblik = 'linija';
+
 document.querySelector("#pan").addEventListener("click", pan);
 document.querySelector("#odaberi").addEventListener("click", odaberi);
 document.querySelector("#dodaj").addEventListener("click", dodaj);
 document.querySelector("#izbrisi").addEventListener("click", izbrisi);
 document.querySelector("#izmijeni").addEventListener("click", izmijeni);
 document.querySelector("#atributi").addEventListener("click", atributi);
+document.querySelector("#slika").addEventListener("click", slika);
 document.querySelector("#marker").addEventListener("click", marker);
+document.querySelector("#linija").addEventListener("click", linija);
+document.querySelector("#poligon").addEventListener("click", poligon);
 document.querySelector("#pretraga").addEventListener("click", pretraga);
 document.querySelector("#podloga_osm").addEventListener("click", pan);
 document.querySelector("#podloga_topo").addEventListener("click", pan);
 
 document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
 document.querySelector("#btnPonisti").addEventListener("click", ponisti);
-document.querySelector("#btnFilter").addEventListener("click", filtriranje);
+//document.querySelector("#btnFilter").addEventListener("click", filtriranje);
 document.querySelector("#btnIzbrisi").addEventListener("click", brisanje);
 
 
@@ -49,6 +54,7 @@ function popuniKontrole(odgovor) {
 }
 
 function sacuvaj() {
+  return false
   if (!idObjekta) {
     alert("Potrebno je odabrati objekat za koji se unose podaci.");
     return false;
@@ -78,6 +84,7 @@ function sacuvaj() {
 
 function restartovanje() {
   idObjekta = "";
+  document.querySelector("#idObjekta").value = "";
   document.querySelector("#latinskiNaziv").value = "";
   document.querySelector("#narodniNaziv").value = "";
   document.querySelector("#tip").value = "";
@@ -187,39 +194,65 @@ function onMouseClick(browserEvent) {
 
 
 function pan() {
-  console.log("PAN");
+  setujAktivnu("#pan");
+  akcija = 'pan';
 }
 
 function odaberi() {
-  console.log("ODABERI");
+  setujAktivnu("#odaberi");
+  akcija = 'odaberi';
 }
 
 function dodaj() {
-  console.log("DODAJ");
+  setujAktivnu("#dodaj");
+  akcija = 'dodaj';
+  oblik = 'LineString';
 }
 
 function izbrisi() {
-  console.log("IZBRISI");
+  setujAktivnu("#izbrisi");
+  akcija = 'izbrisi';
 }
 
 function izmijeni() {
-  console.log("IZMIJENI");
+  setujAktivnu("#izmijeni");
+  akcija = 'izmijeni';
+  oblik = 'LineString';
 }
 
 function atributi() {
-  console.log("atributi");
+  setujAktivnu("#atributi");
+  showDiv("#atributiDiv");
+  akcija = 'atributi';
 }
 
 function marker() {
-  console.log("marker");
-  showDiv("#pretragaDiv");
-  //document.getElementById("pretragaDiv").style.width = sirinaDiva;
+  setujAktivnu("#marker");
+  akcija = 'marker';
+  oblik = 'Point';
 }
 
 function pretraga() {
-  console.log("pretraga");
-  //document.getElementById("pretragaDiv").style.width = "0";
-  closeDiv("#pretragaDiv");
+  setujAktivnu("#pretraga");
+  closeDiv("#atributiDiv");
+  akcija = 'pretraga';
+}
+
+function slika() {
+  setujAktivnu("#slika");
+  akcija = 'slika';
+}
+
+function linija() {
+  setujAktivnu("#linija");
+  akcija = 'linija';
+  oblik = 'LineString';
+}
+
+function poligon() {
+  setujAktivnu("#poligon");
+  akcija = 'poligon';
+  oblik = 'Polygon';
 }
 
 function sacuvaj() {
@@ -228,6 +261,7 @@ function sacuvaj() {
 
 function ponisti() {
   console.log("ponisti");
+  restartovanje();
 }
 
 function filtriranje() {
@@ -236,4 +270,13 @@ function filtriranje() {
 
 function brisanje() {
   console.log("brisanje");
+}
+
+
+function setujAktivnu(element) {
+  var els = document.querySelectorAll('.active');
+  for (var i = 0; i < els.length; i++) {
+    els[i].classList.remove('active')
+  }
+  document.querySelector(element).classList.add("active");
 }

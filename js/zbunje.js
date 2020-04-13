@@ -1,4 +1,4 @@
-var domainUrl = 'http://localhost' //location.origin;
+var domainUrl = 'http://167.172.171.249' //location.origin;
 var wmsUrl = domainUrl + "/geoserver/winsoft/wms";
 var imageUrl = domainUrl + "/slike/";
 var tiledRaster = new ol.layer.Tile({

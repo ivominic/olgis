@@ -11,6 +11,22 @@ var tiledRaster = new ol.layer.Tile({
 });*/
 
 var idObjekta;
+document.querySelector("#pan").addEventListener("click", pan);
+document.querySelector("#odaberi").addEventListener("click", odaberi);
+document.querySelector("#dodaj").addEventListener("click", dodaj);
+document.querySelector("#izbrisi").addEventListener("click", izbrisi);
+document.querySelector("#izmijeni").addEventListener("click", izmijeni);
+document.querySelector("#atributi").addEventListener("click", atributi);
+document.querySelector("#marker").addEventListener("click", marker);
+document.querySelector("#pretraga").addEventListener("click", pretraga);
+document.querySelector("#podloga_osm").addEventListener("click", pan);
+document.querySelector("#podloga_topo").addEventListener("click", pan);
+
+document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
+document.querySelector("#btnPonisti").addEventListener("click", ponisti);
+document.querySelector("#btnFilter").addEventListener("click", filtriranje);
+document.querySelector("#btnIzbrisi").addEventListener("click", brisanje);
+
 
 function popuniKontrole(odgovor) {
   var atributi = odgovor.features[0]["properties"];
@@ -103,7 +119,7 @@ var map = new ol.Map({
   view: view
 });
 
-map.on("pointermove", onMouseMove);
+//map.on("pointermove", onMouseMove);
 
 function onMouseMove(evt) {
   /*var coordinate = browserEvent.coordinate;
@@ -174,4 +190,57 @@ function onMouseClick(browserEvent) {
 
   //overlay.setPosition(coordinate);
   //map.addOverlay(overlay);
+}
+
+
+function pan() {
+  console.log("PAN");
+}
+
+function odaberi() {
+  console.log("ODABERI");
+}
+
+function dodaj() {
+  console.log("DODAJ");
+}
+
+function izbrisi() {
+  console.log("IZBRISI");
+}
+
+function izmijeni() {
+  console.log("IZMIJENI");
+}
+
+function atributi() {
+  console.log("atributi");
+}
+
+function marker() {
+  console.log("marker");
+  showDiv("#pretragaDiv");
+  //document.getElementById("pretragaDiv").style.width = sirinaDiva;
+}
+
+function pretraga() {
+  console.log("pretraga");
+  //document.getElementById("pretragaDiv").style.width = "0";
+  closeDiv("#pretragaDiv");
+}
+
+function sacuvaj() {
+  console.log("sacuvaj");
+}
+
+function ponisti() {
+  console.log("ponisti");
+}
+
+function filtriranje() {
+  console.log("filtriranje");
+}
+
+function brisanje() {
+  console.log("brisanje");
 }

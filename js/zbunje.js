@@ -10,6 +10,7 @@ var tiledRaster = new ol.layer.Tile({
   element: document.querySelector("#overlay")
 });*/
 
+var draw, modify;
 var idObjekta, akcija = 'pan',
   oblik = 'linija';
 
@@ -119,6 +120,153 @@ var map = new ol.Map({
   view: view
 });
 
+var featuresLine = new ol.Collection();
+var featureLineOverlay = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    features: featuresLine
+  }),
+  style: new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(255, 255, 255, 0.2)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#ff0000',
+      width: 2
+    }),
+    image: new ol.style.Circle({
+      radius: 7,
+      fill: new ol.style.Fill({
+        color: '#ff0000'
+      })
+    })
+  })
+});
+featureLineOverlay.setMap(map);
+
+var featuresPoint = new ol.Collection();
+var featurePointOverlay = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    features: featuresPoint
+  }),
+  style: new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(255, 255, 255, 0.2)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#ff0000',
+      width: 2
+    }),
+    image: new ol.style.Circle({
+      radius: 7,
+      fill: new ol.style.Fill({
+        color: '#ff0000'
+      })
+    })
+  })
+});
+featurePointOverlay.setMap(map);
+
+var featuresPolygon = new ol.Collection();
+var featurePolygonOverlay = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    features: featuresPolygon
+  }),
+  style: new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(255, 0, 0, 0.4)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#ff0000',
+      width: 2
+    }),
+    image: new ol.style.Circle({
+      radius: 7,
+      fill: new ol.style.Fill({
+        color: '#ff0000'
+      })
+    })
+  })
+});
+featurePolygonOverlay.setMap(map);
+
+
+/*var modify = new ol.interaction.Modify({
+  features: featuresLine,
+  // the SHIFT key must be pressed to delete vertices, so
+  // that new vertices can be drawn at the same position
+  // of existing vertices
+  deleteCondition: function (event) {
+    return ol.events.condition.shiftKeyOnly(event) &&
+      ol.events.condition.singleClick(event);
+  }
+});
+map.addInteraction(modify);*/
+
+
+function podesiInterakciju() {
+  //uklanja draw i modify
+  map.removeInteraction(draw);
+  map.removeInteraction(modify);
+
+  if (akcija === 'marker') {
+    draw = new ol.interaction.Draw({
+      features: featuresPoint,
+      type: 'Point'
+    });
+    map.addInteraction(draw);
+  }
+  if (akcija === 'linija') {
+    draw = new ol.interaction.Draw({
+      features: featuresLine,
+      type: 'LineString'
+    });
+    map.addInteraction(draw);
+  }
+  if (akcija === 'poligon') {
+    draw = new ol.interaction.Draw({
+      features: featuresPolygon,
+      type: 'Polygon'
+    });
+    map.addInteraction(draw);
+  }
+  if (akcija === 'izmijeni') {
+    if (oblik === 'Point') {
+      modify = new ol.interaction.Modify({
+        features: featuresPoint,
+        deleteCondition: function (event) {
+          return ol.events.condition.shiftKeyOnly(event) &&
+            ol.events.condition.singleClick(event);
+        }
+      });
+    }
+    if (oblik === 'LineString') {
+      modify = new ol.interaction.Modify({
+        features: featuresLine,
+        deleteCondition: function (event) {
+          return ol.events.condition.shiftKeyOnly(event) &&
+            ol.events.condition.singleClick(event);
+        }
+      });
+    }
+    if (oblik === 'Polygon') {
+      modify = new ol.interaction.Modify({
+        features: featuresPolygon,
+        deleteCondition: function (event) {
+          return ol.events.condition.shiftKeyOnly(event) &&
+            ol.events.condition.singleClick(event);
+        }
+      });
+    }
+    map.addInteraction(modify);
+  }
+
+}
+
+//addInteraction();
+
+
+
+
 //map.on("pointermove", onMouseMove);
 
 function onMouseMove(evt) {
@@ -168,24 +316,27 @@ map.addInteraction(dragAndDrop);
 map.on("click", onMouseClick);
 
 function onMouseClick(browserEvent) {
-  var coordinate = browserEvent.coordinate;
-  var pixel = map.getPixelFromCoordinate(coordinate);
+  if (akcija === 'atributi' || akcija === 'odaberi') {
+    var coordinate = browserEvent.coordinate;
+    var pixel = map.getPixelFromCoordinate(coordinate);
 
-  var url = rasterLayer.getSource().getGetFeatureInfoUrl(browserEvent.coordinate, map.getView().getResolution(), "EPSG:3857", {
-    INFO_FORMAT: "application/json"
-  });
-  if (url) {
-    fetch(url)
-      .then(function (response) {
-        restartovanje();
-        return response.text();
-      })
-      .then(function (json) {
-        var odgovor = JSON.parse(json);
-        if (odgovor.features.length > 0) {
-          popuniKontrole(odgovor);
-        }
-      });
+    var url = rasterLayer.getSource().getGetFeatureInfoUrl(browserEvent.coordinate, map.getView().getResolution(), "EPSG:3857", {
+      INFO_FORMAT: "application/json"
+    });
+    if (url) {
+      fetch(url)
+        .then(function (response) {
+          restartovanje();
+          return response.text();
+        })
+        .then(function (json) {
+          var odgovor = JSON.parse(json);
+          if (odgovor.features.length > 0) {
+            popuniKontrole(odgovor);
+            showDiv("#atributiDiv");
+          }
+        });
+    }
   }
 
   //overlay.setPosition(coordinate);
@@ -217,7 +368,8 @@ function izbrisi() {
 function izmijeni() {
   setujAktivnu("#izmijeni");
   akcija = 'izmijeni';
-  oblik = 'LineString';
+  //oblik = 'LineString';
+  podesiInterakciju();
 }
 
 function atributi() {
@@ -230,6 +382,7 @@ function marker() {
   setujAktivnu("#marker");
   akcija = 'marker';
   oblik = 'Point';
+  podesiInterakciju();
 }
 
 function pretraga() {
@@ -247,12 +400,14 @@ function linija() {
   setujAktivnu("#linija");
   akcija = 'linija';
   oblik = 'LineString';
+  podesiInterakciju();
 }
 
 function poligon() {
   setujAktivnu("#poligon");
   akcija = 'poligon';
   oblik = 'Polygon';
+  podesiInterakciju();
 }
 
 function sacuvaj() {
@@ -274,6 +429,7 @@ function brisanje() {
 
 
 function setujAktivnu(element) {
+
   var els = document.querySelectorAll('.active');
   for (var i = 0; i < els.length; i++) {
     els[i].classList.remove('active')

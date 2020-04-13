@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Zelenilo modifikacija geometrije</title>
+    <!-- Add icon library -->
+    <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <link rel="stylesheet" href="css/stil.css" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/ol.css" />
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.6.0/ol.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.8.2/ol.js"></script>
+  </head>
+  <body>
+    <div class="pocetni-div">
+      <div class="topnav" id="myTopnav">
+        <a href="#" class="active" id="pan"><i class="fa fa-hand-paper-o" aria-hidden="true"></i></a>
+        <a href="#" id="odaberi"><i class="fa fa-mouse-pointer" aria-hidden="true"></i></a>
+        <a href="#" id="dodaj"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+        <a href="#" id="izbrisi"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+        <a href="#" id="izmijeni"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
+        <a href="#" id="atributi"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+        <a href="#" id="marker"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <i class="fa fa-th-large" aria-hidden="true"></i>Podloge
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#osm" id="podloga_osm">OSM</a>
+            <a href="#topo" id="podloga_topo">Topo</a>
+            <a href="#satelit" id="podloga_satelit">Satelit</a>
+          </div>
+        </div>
+        <a href="#" id="pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#shp">SHP</a>
+            <a href="#kml">KML</a>
+            <a href="#csv">CSV</a>
+          </div>
+        </div>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+      </div>
+    </div>
+    <div id="map" class="map"></div>
+    <select id="mode">
+      <option value="modify">Izmjena geometrije</option>
+      <option value="draw">Crtanje nove</option>
+    </select>
+    <input type="text" id="name" />
+    <div id="pretragaDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#pretragaDiv')">&times;</a>
+      <div class="col-md-6">
+        <label for="idObjekta">Latinski naziv:</label>
+        <input type="text" class="form-control" id="idObjekta" />
+      </div>
+      <div class="col-md-6">
+        <label for="tip">Tip:</label>
+        <select class="form-control" id="tip">
+          <option value=""></option>
+          <option value="Četinar">Četinar</option>
+          <option value="Listopadni lišćar">Listopadni lišćar</option>
+          <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="latinskiNaziv">Latinski naziv:</label>
+        <input type="text" class="form-control" id="latinskiNaziv" />
+      </div>
+      <div class="col-md-6">
+        <label for="narodniNaziv">Narodni naziv:</label>
+        <input type="text" class="form-control" id="narodniNaziv" />
+      </div>
+      <div class="col-md-6">
+        <label for="zdravstvenoStanje">Zdravstveno stanje:</label>
+        <input type="text" class="form-control" id="zdravstvenoStanje" />
+      </div>
+      <div class="col-md-6">
+        <label for="napomena">Napomena:</label>
+        <input type="text" class="form-control" id="napomena" />
+      </div>
+      <div class="col-md-6 row">
+        <input type="hidden" class="form-control" id="akcija" />
+      </div>
+      <div class="col-md-6 row">
+        <input type="hidden" class="form-control" id="slikaUrl" />
+      </div>
+      <div class="col-md-12 odvojeno">
+        <button type="button" class="btn btn-primary" id="btnSacuvaj">Sačuvaj</button>
+        <button type="button" class="btn btn-warning" id="btnPonisti">Poništi</button>
+        <button type="button" class="btn btn-info" id="btnFilter">Filter</button>
+        <button type="button" class="btn btn-danger" id="btnIzbrisi">Izbriši</button>
+      </div>
+    </div>
+    <script>
+      function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "topnav";
+        }
+      }
+      function closeDiv(nazivDiva) {
+        document.querySelector(nazivDiva).style.width = "0";
+      }
+      function showDiv(nazivDiva) {
+        document.querySelector(nazivDiva).style.width = "500px";
+      }
+    </script>
+    <script src="js/zbunje.js"></script>
+  </body>
+</html>

@@ -7,14 +7,9 @@
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <link rel="stylesheet" href="css/stil.css" />
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="css/ol.css" />
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.6.0/ol.js"></script>-->
@@ -64,42 +59,50 @@
     <input type="text" id="name" />
     <div id="pretragaDiv" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#pretragaDiv')">&times;</a>
-      <div class="col-md-6">
-        <label for="idObjekta">Latinski naziv:</label>
-        <input type="text" class="form-control" id="idObjekta" />
+      <div class="row">
+        <div class="column">
+          <label for="idObjekta">Id objekta:</label>
+          <input type="text" id="idObjekta" />
+        </div>
+        <div class="column">
+          <label for="tip">Tip objekta:</label>
+          <select id="tip" class="select-css">
+            <option value=""></option>
+            <option value="Četinar">Četinar</option>
+            <option value="Listopadni lišćar">Listopadni lišćar</option>
+            <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+          </select>
+        </div>
       </div>
-      <div class="col-md-6">
-        <label for="tip">Tip:</label>
-        <select class="form-control" id="tip">
-          <option value=""></option>
-          <option value="Četinar">Četinar</option>
-          <option value="Listopadni lišćar">Listopadni lišćar</option>
-          <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
-        </select>
+      <div class="row">
+        <div class="column">
+          <label for="latinskiNaziv">Latinski naziv:</label>
+          <input type="text" id="latinskiNaziv" />
+        </div>
+        <div class="column">
+          <label for="narodniNaziv">Narodni naziv:</label>
+          <input type="text" id="narodniNaziv" />
+        </div>
       </div>
-      <div class="col-md-6">
-        <label for="latinskiNaziv">Latinski naziv:</label>
-        <input type="text" class="form-control" id="latinskiNaziv" />
+      <div class="row">
+        <div class="column">
+          <label for="zdravstvenoStanje">Zdravstveno stanje:</label>
+          <input type="text" class="form-control" id="zdravstvenoStanje" />
+        </div>
+        <div class="column">
+          <label for="napomena">Napomena:</label>
+          <input type="text" class="form-control" id="napomena" />
+        </div>
       </div>
-      <div class="col-md-6">
-        <label for="narodniNaziv">Narodni naziv:</label>
-        <input type="text" class="form-control" id="narodniNaziv" />
+      <div class="row">
+        <div class="column">
+          <input type="hidden" class="form-control" id="akcija" />
+        </div>
+        <div class="column">
+          <input type="hidden" class="form-control" id="slikaUrl" />
+        </div>
       </div>
-      <div class="col-md-6">
-        <label for="zdravstvenoStanje">Zdravstveno stanje:</label>
-        <input type="text" class="form-control" id="zdravstvenoStanje" />
-      </div>
-      <div class="col-md-6">
-        <label for="napomena">Napomena:</label>
-        <input type="text" class="form-control" id="napomena" />
-      </div>
-      <div class="col-md-6 row">
-        <input type="hidden" class="form-control" id="akcija" />
-      </div>
-      <div class="col-md-6 row">
-        <input type="hidden" class="form-control" id="slikaUrl" />
-      </div>
-      <div class="col-md-12 odvojeno">
+      <div class="row">
         <button type="button" class="btn btn-primary" id="btnSacuvaj">Sačuvaj</button>
         <button type="button" class="btn btn-warning" id="btnPonisti">Poništi</button>
         <button type="button" class="btn btn-info" id="btnFilter">Filter</button>

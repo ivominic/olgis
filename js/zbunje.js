@@ -48,13 +48,6 @@ function popuniKontrole(odgovor) {
 
 }
 
-//Da na ENTER ima istu funkcionalnost kao na save
-$(document).keypress(function (event) {
-  if (event.which === 13) {
-    sacuvaj();
-  }
-});
-
 function sacuvaj() {
   if (!idObjekta) {
     alert("Potrebno je odabrati objekat za koji se unose podaci.");

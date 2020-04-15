@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zelenilo modifikacija geometrije</title>
     <!-- Add icon library -->
     <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
@@ -55,11 +57,7 @@
       </div>
     </div>
     <div id="map" class="map"></div>
-    <!--<select id="mode">
-      <option value="modify">Izmjena geometrije</option>
-      <option value="draw">Crtanje nove</option>
-    </select>-->
-    <input type="text" id="name" />
+
     <div id="atributiDiv" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#atributiDiv')">&times;</a>
       <div class="row">
@@ -111,6 +109,50 @@
         <button type="button" class="btn" id="btnIzbrisi"><i class="fas fa-trash"></i> Izbriši</button>
       </div>
     </div>
+
+    <div id="pretragaDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#pretragaDiv')">&times;</a>
+      <div class="row">
+        <div class="column">
+          <label for="pretragaIdObjekta">Id objekta:</label>
+          <input type="text" id="pretragaIdObjekta" />
+        </div>
+        <div class="column">
+          <label for="pretragaTip">Tip objekta:</label>
+          <select id="pretragaTip" class="select-css">
+            <option value=""></option>
+            <option value="Četinar">Četinar</option>
+            <option value="Listopadni lišćar">Listopadni lišćar</option>
+            <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="pretragaLatinskiNaziv">Latinski naziv:</label>
+          <input type="text" id="pretragaLatinskiNaziv" />
+        </div>
+        <div class="column">
+          <label for="pretragaNarodniNaziv">Narodni naziv:</label>
+          <input type="text" id="pretragaNarodniNaziv" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="pretragaZdravstvenoStanje">Zdravstveno stanje:</label>
+          <input type="text" class="form-control" id="pretragaZdravstvenoStanje" />
+        </div>
+        <div class="column">
+          <label for="pretragaNapomena">Napomena:</label>
+          <input type="text" class="form-control" id="pretragaNapomena" />
+        </div>
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <button type="button" class="btn" id="btnFilter"><i class="fas fa-search"></i> Pretraga</button>
+      </div>
+    </div>
+
     <script>
       function myFunction() {
         var x = document.getElementById("myTopnav");

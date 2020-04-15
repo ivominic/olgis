@@ -1,4 +1,4 @@
-var domainUrl = location.origin; //"http://167.172.171.249"; //location.origin;
+var domainUrl = "http://localhost"; //"http://167.172.171.249"; //location.origin;
 var wmsUrl = domainUrl + "/geoserver/winsoft/wms";
 var imageUrl = domainUrl + "/slike/";
 var tiledRaster = new ol.layer.Tile({
@@ -52,8 +52,9 @@ document.querySelector("#podloga_topo").addEventListener("click", pan);
 
 document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
 document.querySelector("#btnPonisti").addEventListener("click", ponisti);
-//document.querySelector("#btnFilter").addEventListener("click", filtriranje);
 document.querySelector("#btnIzbrisi").addEventListener("click", brisanje);
+
+document.querySelector("#btnFilter").addEventListener("click", filtriranje);
 
 function popuniKontrole(odgovor) {
   var atributi = odgovor.features[0]["properties"];
@@ -160,6 +161,11 @@ var featurePointOverlay = new ol.layer.Vector({
   style: vectorStyle,
 });
 featurePointOverlay.setMap(map);
+featurePointOverlay.getSource().on("addfeature", function (evt) {
+  var feature = evt.feature;
+  var coords = feature.getGeometry().getCoordinates();
+  console.log("aaaaa", ol.proj.transform(coords, "EPSG:3857", "EPSG:4326"));
+});
 
 var featuresPolygon = new ol.Collection();
 var featurePolygonOverlay = new ol.layer.Vector({
@@ -169,6 +175,23 @@ var featurePolygonOverlay = new ol.layer.Vector({
   style: vectorStyle,
 });
 featurePolygonOverlay.setMap(map);
+featurePolygonOverlay.getSource().on("addfeature", function (evt) {
+  var feature = evt.feature;
+  //var geom11 = feature.getGeometry().transform("EPSG:3857", "EPSG:4326");
+  //var coords = feature.getGeometry().getCoordinates();
+  var format = new ol.format.WKT();
+
+  /*var feature = format.readFeature(wkt, {
+    dataProjection: "EPSG:4326",
+    featureProjection: "EPSG:3857",
+  });*/
+
+  var wktRepresenation = format.writeGeometry(feature.getGeometry(), {
+    dataProjection: "EPSG:4326",
+    featureProjection: "EPSG:3857",
+  });
+  console.log("bbbb", wktRepresenation);
+});
 
 /**Za crtanje i izmjenu geometrije */
 var featuresTekuci = new ol.Collection();
@@ -396,7 +419,16 @@ function ponisti() {
 }
 
 function filtriranje() {
-  console.log("filtriranje");
+  var params = rasterLayer.getSource().getParams();
+  params.CQL_FILTER =
+    "INTERSECTS(geom, POLYGON((19.256479740142822 42.44482842458774,19.252864122390747 42.44164566810562,19.260900020599365 42.441748595596266,19.259709119796753 42.44445631961446,19.256479740142822 42.44482842458774)))";
+  // Uncomment line below and comment line above if you prefer using sld
+  // params.sld_body = "yourxmlfiltercontent";
+  rasterLayer.getSource().updateParams(params);
+  /*featuresPoint.forEach(function (entry) {
+    console.log(entry.B);
+  });*/
+  //console.log(featuresPoint);
 }
 
 function brisanje() {

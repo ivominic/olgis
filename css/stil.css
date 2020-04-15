@@ -7,7 +7,7 @@
   font-weight: bold;
   line-height: 1.42857143;
   color: #f2f2f2;
-  background-color: #555;
+  background-color: #777777;
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -29,7 +29,7 @@ input[type] {
   font-weight: bold;
   line-height: 1.42857143;
   color: #f2f2f2;
-  background-color: #555;
+  background-color: #777777;
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -65,7 +65,7 @@ input[type] {
   float: left;
   display: block;
   color: #f2f2f2;
-  background-color: #333;
+  background-color: #414b56;
   text-align: center;
   padding: 10px 15px;
   text-decoration: none;
@@ -78,7 +78,7 @@ body {
   padding: 0;
   font-family: sans-serif;
   color: #f2f2f2;
-  background: #333;
+  background: #414b56;
   /*display: flex;
   flex-direction: column;*/
 }
@@ -100,7 +100,7 @@ body {
 
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: #333;
+  background-color: #414b56;
   overflow: hidden;
 }
 
@@ -119,7 +119,7 @@ body {
   float: left;
   display: block;
   color: #f2f2f2;
-  background-color: #333;
+  background-color: #414b56;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -256,7 +256,7 @@ body {
   top: 0;
   /* Stay at the top */
   left: 0;
-  background-color: #333;
+  background-color: #414b56;
   color: #f2f2f2;
   /* Black*/
   overflow-x: hidden;

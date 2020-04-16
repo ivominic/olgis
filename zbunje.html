@@ -9,6 +9,7 @@
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <link rel="stylesheet" href="css/stil.css" />
+    <link rel="stylesheet" href="css/slika.css" />
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -179,6 +180,14 @@
       </div>
     </div>
 
+    <!-- Modalna fotografija -->
+    <div id="modalFotografija" class="modal">
+      <!-- The Close Button -->
+      <span id="zatvoriModalFotografija">&times;</span>
+      <img class="modal-content" id="imgModal" />
+      <div id="naslovFotografija"></div>
+    </div>
+
     <script>
       function myFunction() {
         var x = document.getElementById("myTopnav");
@@ -195,6 +204,7 @@
         document.querySelector(nazivDiva).style.width = "500px";
       }
     </script>
+    <script src="js/util.js"></script>
     <script src="js/zbunje.js"></script>
   </body>
 </html>

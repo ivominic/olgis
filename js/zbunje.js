@@ -1,4 +1,4 @@
-var domainUrl = location.origin; //"http://localhost"; //"http://167.172.171.249"; //location.origin;
+var domainUrl = "http://localhost"; //"http://167.172.171.249"; //location.origin;
 var wmsUrl = domainUrl + "/geoserver/winsoft/wms";
 var imageUrl = domainUrl + "/slike/";
 var tiledRaster = new ol.layer.Tile({
@@ -14,7 +14,8 @@ var draw, modify;
 var idObjekta,
   akcija = "pan",
   oblik = "linija",
-  slikaUrl = "";
+  slikaUrl = "",
+  opisSlike = "";
 var poligoni = [],
   linije = [],
   tacke = [];
@@ -76,6 +77,7 @@ function popuniKontrole(odgovor) {
   var slika = atributi["url_fotografije"];
   slika.length && (slika = slika.substring(slika.lastIndexOf("/") + 1, slika.length));
   slika.length && (slikaUrl = imageUrl + slika);
+  opisSlike = atributi["latinski_naziv"] + " - " + atributi["narodni_naziv"];
 
   //document.querySelector("#slika").innerHTML = '<a target="_blank" href="' + imageUrl + slika + '"><i class="fas fa-camera-retro"></i></a>';
   //overlay.getElement().innerHTML = '<a target="_blank" href="' + imageUrl + slika + '"><img src="' + imageUrl + slika + '"></a>';
@@ -119,6 +121,7 @@ function restartovanje() {
   document.querySelector("#zdravstvenoStanje").value = "";
   document.querySelector("#napomena").value = "";
   slikaUrl = "";
+  opisSlike = "";
 
   //overlay.getElement().innerHTML = "";
 }
@@ -356,42 +359,11 @@ function atributi() {
   akcija = "atributi";
 }
 
-function crtajTacku() {
-  setujAktivnu("#marker");
-  akcija = "marker";
-  oblik = "Point";
-  podesiInterakciju();
-}
-
 function pretraga() {
   setujAktivnu("#pretraga");
   closeDiv("#atributiDiv");
   showDiv("#pretragaDiv");
   akcija = "pretraga";
-}
-
-function slika() {
-  if (slikaUrl === "") {
-    poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
-  } else {
-    setujAktivnu("#slika");
-    akcija = "slika";
-    window.open(slikaUrl, "_blank");
-  }
-}
-
-function crtajLiniju() {
-  setujAktivnu("#linija");
-  akcija = "linija";
-  oblik = "LineString";
-  podesiInterakciju();
-}
-
-function crtajPoligon() {
-  setujAktivnu("#poligon");
-  akcija = "poligon";
-  oblik = "Polygon";
-  podesiInterakciju();
 }
 
 function sacuvaj() {
@@ -404,7 +376,8 @@ function ponisti() {
 }
 
 function filtriranje() {
-  cqlFilter = kreiranjeCqlFiltera();
+  cqlFilter = kreiranjeCqlFilteraProstorno();
+  //TODO: Dodati u drugoj funkciji atributske filtere
   var params = rasterLayer.getSource().getParams();
   console.log("cql filter", cqlFilter);
   params.CQL_FILTER = cqlFilter;
@@ -418,105 +391,6 @@ function filtriranje() {
   //console.log(featuresPoint);
 }
 
-/**Funkcija koja prolazi kroz nizove tačaka, linija i polgiona i kreira CQL uslov u zavisnosti od odabranih opcija */
-function kreiranjeCqlFiltera() {
-  /*console.log("tacke", tacke.length);
-  console.log("linije", linije.length);
-  console.log("poligoni", poligoni.length);*/
-  let retVal = "";
-  let pretragaTacka = document.querySelector("#pretragaTacke").checked;
-  let pretragaTackaUdaljenost = document.querySelector("#pretragaTackeUdaljenost").value;
-  let pretragaLinije = document.querySelector("#pretragaLinije").checked;
-  let pretragaPoligonObuhvata = document.querySelector("#pretragaPoligonObuhvata").checked;
-  let pretragaPoligonPresijeca = document.querySelector("#pretragaPoligonPresijeca").checked;
-  console.log(pretragaTacka, pretragaTackaUdaljenost);
-  console.log(pretragaLinije);
-  console.log(pretragaPoligonObuhvata, pretragaPoligonPresijeca);
-  if (pretragaTacka && pretragaTackaUdaljenost === "") {
-    poruka("Upozorenje", "Potrebno je unijeti udaljenost od iscrtanih tačaka na kojoj će se prikazivati objekti iz sloja koji se pretražuje.");
-    return false;
-  }
-  if (pretragaTacka && tacke.length === 0) {
-    poruka("Upozorenje", "Potrebno je nacrtati bar jednu tačku za pretragu objekata po udaljenosti.");
-    return false;
-  }
-  if (pretragaLinije && linije.length === 0) {
-    poruka("Upozorenje", "Potrebno je nacrtati bar jednu liiju za pretragu objekata koje linija presijeca.");
-    return false;
-  }
-  if ((pretragaPoligonPresijeca || pretragaPoligonObuhvata) && poligoni.length === 0) {
-    poruka("Upozorenje", "Potrebno je nacrtati bar jedan poligon za pretragu objekata koje poligon presijeca ili obuhvata.");
-    return false;
-  }
-
-  pretragaTacka &&
-    tacke.forEach((item) => {
-      if (retVal === "") {
-        retVal = "DWITHIN(geom," + item + "," + pretragaTackaUdaljenost + ",meters) ";
-      } else {
-        retVal += " OR DWITHIN(geom," + item + "," + pretragaTackaUdaljenost + ",meters) ";
-      }
-    });
-
-  pretragaLinije &&
-    linije.forEach((item) => {
-      if (retVal === "") {
-        retVal = "INTERSECTS(geom," + item + ") ";
-      } else {
-        retVal += " OR INTERSECTS(geom," + item + ") ";
-      }
-    });
-
-  (pretragaPoligonObuhvata || pretragaPoligonPresijeca) &&
-    poligoni.forEach((item) => {
-      if (retVal === "") {
-        if (pretragaPoligonPresijeca) {
-          retVal = "INTERSECTS(geom," + item + ") ";
-        } else {
-          retVal = "WITHIN(geom," + item + ") ";
-        }
-      } else {
-        if (pretragaPoligonPresijeca) {
-          retVal += " OR INTERSECTS(geom," + item + ") ";
-        } else {
-          retVal += " OR WITHIN(geom," + item + ") ";
-        }
-      }
-    });
-
-  return retVal;
-}
-
 function brisanje() {
   console.log("brisanje");
-}
-
-function wktGeometrije(feature) {
-  //var geom11 = feature.getGeometry().transform("EPSG:3857", "EPSG:4326");
-  //var coords = feature.getGeometry().getCoordinates();
-  var format = new ol.format.WKT();
-
-  /*var feature = format.readFeature(wkt, {
-    dataProjection: "EPSG:4326",
-    featureProjection: "EPSG:3857",
-  });*/
-
-  var wktRepresenation = format.writeGeometry(feature.getGeometry(), {
-    dataProjection: "EPSG:4326",
-    featureProjection: "EPSG:3857",
-  });
-  //console.log("bbbb", wktRepresenation);
-  return wktRepresenation;
-}
-
-function setujAktivnu(element) {
-  var els = document.querySelectorAll(".active");
-  for (var i = 0; i < els.length; i++) {
-    els[i].classList.remove("active");
-  }
-  document.querySelector(element).classList.add("active");
-}
-
-function poruka(naslov, tekst) {
-  alert(tekst);
 }

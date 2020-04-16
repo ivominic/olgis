@@ -1,3 +1,7 @@
+document.querySelector("#imgModal").onclick = function () {
+  window.open(slikaUrl, "_blank");
+}
+
 function slika() {
   if (slikaUrl === "") {
     poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
@@ -12,7 +16,6 @@ function slika() {
     document.querySelector("#zatvoriModalFotografija").onclick = function () {
       document.querySelector("#modalFotografija").style.display = "none";
     }
-    //window.open(slikaUrl, "_blank");
   }
 }
 

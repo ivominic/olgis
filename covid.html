@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8" />
+    <title>Directions Service</title>
+    <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <link rel="stylesheet" href="css/stil.css" />
+    <link rel="stylesheet" href="css/slika.css" />
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: "Roboto", "sans-serif";
+        line-height: 30px;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pocetni-div">
+      <div class="topnav" id="myTopnav">
+        <a href="#" class="active tooltip" id="pan" data-tool="Pan"><i class="far fa-hand-paper"></i></a>
+        <a href="#" id="odaberi" class="tooltip" data-tool="Odabir"><i class="fas fa-mouse-pointer"></i></a>
+        <a href="#" id="dodaj" class="tooltip" data-tool="Novi_objekat"><i class="far fa-plus-square"></i></a>
+        <a href="#" id="izbrisi" class="tooltip" data-tool="Brisanje_objekta"><i class="far fa-minus-square"></i></a>
+        <a href="#" id="izmijeni" class="tooltip" data-tool="Izmjena_geometrije"><i class="fas fa-edit"></i></a>
+        <a href="#" id="atributi" class="tooltip" data-tool="Atributi"><i class="fas fa-info-circle"></i></a>
+        <a href="#" id="slika" class="tooltip" data-tool="Fotografija"><i class="fas fa-camera-retro"></i></a>
+        <a href="#" id="marker" class="tooltip" data-tool="Crtanje_tačke"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <a href="#" id="linija" class="tooltip" data-tool="Crtanje_linije"><i class="fas fa-route"></i></a>
+        <a href="#" id="poligon" class="tooltip" data-tool="Crtanje_poligona"><i class="fas fa-draw-polygon"></i></a>
+        <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <i class="fab fa-buffer"></i>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#osm" id="podloga_osm">OSM</a>
+            <a href="#topo" id="podloga_topo">Topo</a>
+            <a href="#satelit" id="podloga_satelit">Satelit</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <i class="fas fa-download" aria-hidden="true"></i>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#shp">SHP</a>
+            <a href="#kml">KML</a>
+            <a href="#csv">CSV</a>
+          </div>
+        </div>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+      </div>
+    </div>
+    <div id="map"></div>
+    <script>
+      var map;
+      var nizMarkera = [];
+      function initMap() {
+        var directionsService = new google.maps.DirectionsService();
+        var directionsRenderer = new google.maps.DirectionsRenderer();
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 9,
+          center: { lat: 42.7, lng: 19 },
+        });
+        directionsRenderer.setMap(map);
+
+        google.maps.event.addDomListener(map, "click", markerNaMapi);
+
+        var onChangeHandler = function () {
+          rutiranje(directionsService, directionsRenderer);
+        };
+        document.querySelector("#pan").addEventListener("click", () => rutiranje(directionsService, directionsRenderer));
+      }
+
+      function markerNaMapi(event) {
+        //provjerava da li je unesena tačka na crnogorskoj obali
+        if (event.latLng.lng() > 23 || event.latLng.lng() < 18 || event.latLng.lat() > 44 || event.latLng.lat() < 41) {
+          alert("Koordinate van dozvoljenog opsega");
+          return;
+        }
+
+        nizMarkera.push(event.latLng);
+
+        //kreira novi marker i prikazuje ga na mapi
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng()),
+          map: map,
+        });
+      }
+
+      function rutiranje(directionsService, directionsRenderer) {
+        var pocetna = nizMarkera[0];
+        var krajnja = nizMarkera[nizMarkera.length - 1];
+        var nizWaypoint = [];
+        for (var i = 1; i < nizMarkera.length - 1; i++) {
+          nizWaypoint.push({
+            location: { lat: nizMarkera[i].lat(), lng: nizMarkera[i].lng() },
+          });
+        }
+        directionsService.route(
+          {
+            origin: pocetna,
+            destination: krajnja,
+            waypoints: nizWaypoint,
+            travelMode: "DRIVING",
+          },
+          function (response, status) {
+            if (status === "OK") {
+              directionsRenderer.setDirections(response);
+            } else {
+              alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv5bEXohPrJHDl2wnjwwYAlRrMvIcyH3o&callback=initMap"></script>
+  </body>
+</html>

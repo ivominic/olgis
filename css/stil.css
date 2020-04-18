@@ -321,22 +321,24 @@ a.tooltip {
 }
 
 a.tooltip:after {
+  top: 30%;
+  position: absolute;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 15px;
+  white-space: nowrap;
   display: block;
   visibility: hidden;
-  position: absolute;
-  bottom: 0;
-  left: 20%;
   opacity: 0;
   content: attr(data-tool);
   /* might also use attr(title) */
-  height: auto;
+  height: 25px;
   min-width: 100px;
-  padding: 5px 8px;
   z-index: 999;
   color: #fff;
   text-decoration: none;
   text-align: center;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;

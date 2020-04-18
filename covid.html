@@ -14,6 +14,7 @@
        * element that contains the map. */
       #map {
         height: 100%;
+        position: fixed;
       }
       /* Optional: Makes the sample page fill the window. */
       html,
@@ -40,49 +41,144 @@
   <body>
     <div class="pocetni-div">
       <div class="topnav" id="myTopnav">
-        <a href="#" class="active tooltip" id="pan" data-tool="Pan"><i class="far fa-hand-paper"></i></a>
-        <a href="#" id="odaberi" class="tooltip" data-tool="Odabir"><i class="fas fa-mouse-pointer"></i></a>
-        <a href="#" id="dodaj" class="tooltip" data-tool="Novi_objekat"><i class="far fa-plus-square"></i></a>
-        <a href="#" id="izbrisi" class="tooltip" data-tool="Brisanje_objekta"><i class="far fa-minus-square"></i></a>
-        <a href="#" id="izmijeni" class="tooltip" data-tool="Izmjena_geometrije"><i class="fas fa-edit"></i></a>
-        <a href="#" id="atributi" class="tooltip" data-tool="Atributi"><i class="fas fa-info-circle"></i></a>
-        <a href="#" id="slika" class="tooltip" data-tool="Fotografija"><i class="fas fa-camera-retro"></i></a>
-        <a href="#" id="marker" class="tooltip" data-tool="Crtanje_tačke"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
-        <a href="#" id="linija" class="tooltip" data-tool="Crtanje_linije"><i class="fas fa-route"></i></a>
-        <a href="#" id="poligon" class="tooltip" data-tool="Crtanje_poligona"><i class="fas fa-draw-polygon"></i></a>
-        <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
-        <div class="dropdown">
-          <button class="dropbtn">
-            <i class="fab fa-buffer"></i>
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a href="#osm" id="podloga_osm">OSM</a>
-            <a href="#topo" id="podloga_topo">Topo</a>
-            <a href="#satelit" id="podloga_satelit">Satelit</a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn">
-            <i class="fas fa-download" aria-hidden="true"></i>
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a href="#shp">SHP</a>
-            <a href="#kml">KML</a>
-            <a href="#csv">CSV</a>
-          </div>
-        </div>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+        <a href="#" id="zahtjev" class="tooltip" data-tool="Zahtjev"><i class="fas fa-route"></i></a>
+        <a href="#" id="nalog" class="tooltip" data-tool="Nalog"><i class="fas fa-user-alt"></i></a>
+        <a href="javascript:void(0);" class="icon" onclick="zatvaranjeDiva()">&#9776;</a>
       </div>
     </div>
     <div id="map"></div>
+
+    <div id="zahtjevDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#zahtjevDiv')">&times;</a>
+      <div class="row">
+        <h1>Podnošenje zahtjeva</h1>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="pocetniDatum">Od datuma</label>
+          <input type="date" id="pocetniDatum" />
+        </div>
+        <div class="column">
+          <label for="krajnjiDatum">Do datuma</label>
+          <input type="date" id="krajnjiDatum" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="pocetniSat">Interval od</label>
+          <input type="time" id="pocetniSat" step="900" value="07:00:00" />
+        </div>
+        <div class="column">
+          <label for="krajnjiSat">Interval do</label>
+          <input type="time" id="krajnjiSat" step="900" value="19:00:00" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="tipTransporta">Tip transporta</label>
+          <select id="tipTransporta" class="select-css">
+            <option value="WALKING">Šetnja</option>
+            <option value="DRIVING">Vožnja</option>
+          </select>
+        </div>
+        <div class="column">
+          <label for="razlog">Razlog</label>
+          <select id="razlog" class="select-css">
+            <option value="Ljekar">Ljekar</option>
+            <option value="Prodavnica">Prodavnica</option>
+            <option value="Ljubimac">Ljubimac</option>
+            <option value="Ostalo">Ostalo</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <label for="obrazlozenje">Obrazloženje</label>
+        <input type="text" class="form-control" id="obrazlozenje" />
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <button type="button" class="btn" id="btnPodnesi"><i class="fas fa-check-circle"></i> Podnesi</button>
+        <button type="button" class="btn" id="btnPonisti"><i class="fas fa-undo-alt"></i> Odustani</button>
+      </div>
+    </div>
+
+    <div id="registracijaDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#registracijaDiv')">&times;</a>
+      <div class="row">
+        <h1>Kreiranje naloga</h1>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="ime">Ime</label>
+          <input type="text" id="ime" />
+        </div>
+        <div class="column">
+          <label for="prezime">Prezime</label>
+          <input type="text" id="prezime" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="email">E-mail</label>
+          <input type="text" id="email" />
+        </div>
+        <div class="column">
+          <label for="adresa">Adresa</label>
+          <input type="text" id="adresa" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="grad">Grad</label>
+          <select id="grad" class="select-css">
+            <option value="Andrijevica">Andrijevica</option>
+            <option value="Cetinje">Cetinje</option>
+            <option value="Podgorica">Podgorica</option>
+            <option value="Žabljak">Žabljak</option>
+          </select>
+        </div>
+        <div class="column">
+          <label for="telefon">Broj telefona</label>
+          <input type="text" id="telefon" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="brLk">Broj lične karte</label>
+          <input type="text" id="brLk" />
+        </div>
+        <div class="column">
+          <label for="jmbg">Matični broj</label>
+          <input type="text" id="jmbg" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label class="container">
+            Pravno lice
+            <input type="checkbox" id="pravnoLice" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="column">
+          <label for="pib">PIB</label>
+          <input type="text" id="pib" />
+        </div>
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <button type="button" class="btn" id="btnKreiraj"><i class="fas fa-check-circle"></i> Kreiraj</button>
+        <button type="button" class="btn" id="btnOdustani"><i class="fas fa-undo-alt"></i> Odustani</button>
+      </div>
+    </div>
     <script>
-      var map;
-      var nizMarkera = [];
+      let map;
+      let nizMarkera = [];
+
+      /**Inicijalizacija mape i povezivanje konmponenti sa metodama */
       function initMap() {
-        var directionsService = new google.maps.DirectionsService();
-        var directionsRenderer = new google.maps.DirectionsRenderer();
+        let directionsService = new google.maps.DirectionsService();
+        let directionsRenderer = new google.maps.DirectionsRenderer();
         map = new google.maps.Map(document.getElementById("map"), {
           zoom: 9,
           center: { lat: 42.7, lng: 19 },
@@ -90,15 +186,21 @@
         directionsRenderer.setMap(map);
 
         google.maps.event.addDomListener(map, "click", markerNaMapi);
-
-        var onChangeHandler = function () {
-          rutiranje(directionsService, directionsRenderer);
-        };
-        document.querySelector("#pan").addEventListener("click", () => rutiranje(directionsService, directionsRenderer));
+        document.querySelector("#zahtjev").addEventListener("click", () => {
+          showDiv("#zahtjevDiv");
+          setujAktivnu("#zahtjev");
+        });
+        document.querySelector("#btnPodnesi").addEventListener("click", () => rutiranje(directionsService, directionsRenderer));
+        document.querySelector("#nalog").addEventListener("click", () => {
+          showDiv("#registracijaDiv");
+          setujAktivnu("#nalog");
+        });
+        document.querySelector("#btnKreiraj").addEventListener("click", () => kreirajNalog());
       }
 
+      /** Crtanje tačaka rute na mapi i njihvovo dodavanje u niz*/
       function markerNaMapi(event) {
-        //provjerava da li je unesena tačka na crnogorskoj obali
+        //provjerava da li je unesena tačka na crnogorskoj teritoriji - bar približno
         if (event.latLng.lng() > 23 || event.latLng.lng() < 18 || event.latLng.lat() > 44 || event.latLng.lat() < 41) {
           alert("Koordinate van dozvoljenog opsega");
           return;
@@ -113,11 +215,97 @@
         });
       }
 
+      /** Kreiranje korisničkog naloga za podnosioce zahtjeva*/
+      function krerirajNalog() {
+        $.ajax({
+          url: "", //TODO: Dodati url za kreiranje naloga
+          data: {
+            firstName: document.querySelector("#ime").value,
+            lastName: document.querySelector("#prezime").value,
+            email: document.querySelector("#email").value,
+            address: document.querySelector("#adresa").value,
+            city: document.querySelector("#grad").value,
+            phone: document.querySelector("#telefon").value,
+            brLk: document.querySelector("#brLk").value,
+            jmbg: document.querySelector("#jmbg").value,
+            pravnoLice: document.querySelector("#pravnoLice").checked,
+            pib: document.querySelector("#pib").value,
+          },
+          type: "GET",
+          timeout: 10000,
+          dataType: "json",
+          async: false,
+          error: function (response) {
+            alert("Greška prilikom unosa podataka: \n" + response.message);
+          },
+          success: function (response) {
+            alert("Uspješno ste kreirali nalog. Parametri za pristup će biti dostavljeni na navedeni email.");
+          },
+        });
+      }
+
+      /** Za predate koordinate vraća adresu - ulica i broj, grad, država*/
+      function adresaGrad(koordinate) {
+        let geocoder = new google.maps.Geocoder();
+        geocoder.geocode(
+          {
+            location: { lat: koordinate.lat(), lng: koordinate.lng() },
+          },
+          function (results, status) {
+            if (status === "OK") {
+              if (results[0]) {
+                //console.log(results[0].formatted_address.split(",")[1]);
+                return results[0].formatted_address;
+              } else {
+                console.log("Nema rezultata");
+              }
+            } else {
+              console.log("Greška: " + status);
+            }
+          }
+        );
+        return "";
+      }
+
+      /** Unos zahtjeva. Poziva se iz krerianja rute*/
+      function sacuvajZahtjev(pocetna, krajnja, nizStanica) {
+        let pocetnaAdresa = adresaGrad(pocetna);
+        let krajnjaAdresa = adresaGrad(krajnja);
+        $.ajax({
+          url: "", //TODO: Dodati url za prijavu zahtjeva
+          data: {
+            pocetnaTacka: pocetna,
+            pocetnaAdresa: pocetnaAdresa,
+            krajnjaTacka: krajnja,
+            krajnjaAdresa: krajnjaAdresa,
+            trasa: nizStanica,
+            pocetniDatum: document.querySelector("#pocetniDatum").value,
+            krajnjiDatum: document.querySelector("#krajnjiDatum").value,
+            pocetniSat: document.querySelector("#pocetniSat").value,
+            krajnjiSat: document.querySelector("#krajnjiSat").value,
+            tipTransporta: document.querySelector("#tipTransporta").value,
+            razlog: document.querySelector("#razlog").value,
+            obrazlozenje: document.querySelector("#obrazlozenje").value,
+          },
+          type: "GET",
+          timeout: 10000,
+          dataType: "json",
+          async: false,
+          error: function (response) {
+            alert("Greška prilikom unosa podataka: \n" + response.message);
+          },
+          success: function (response) {
+            alert("Uspješno ste prijavili zahtjev.");
+          },
+        });
+      }
+
+      /** Iscrtavanje rute na osnovu zadatih markera*/
       function rutiranje(directionsService, directionsRenderer) {
-        var pocetna = nizMarkera[0];
-        var krajnja = nizMarkera[nizMarkera.length - 1];
-        var nizWaypoint = [];
-        for (var i = 1; i < nizMarkera.length - 1; i++) {
+        let pocetna = nizMarkera[0];
+        let krajnja = nizMarkera[nizMarkera.length - 1];
+        let nizWaypoint = [];
+        for (let i = 1; i < nizMarkera.length - 1; i++) {
           nizWaypoint.push({
             location: { lat: nizMarkera[i].lat(), lng: nizMarkera[i].lng() },
           });
@@ -127,16 +315,33 @@
             origin: pocetna,
             destination: krajnja,
             waypoints: nizWaypoint,
-            travelMode: "DRIVING",
+            travelMode: document.querySelector("#tipTransporta").value,
           },
           function (response, status) {
             if (status === "OK") {
               directionsRenderer.setDirections(response);
             } else {
-              alert("Directions request failed due to " + status);
+              alert("Došlo je do problema u kreiranju rute zbog " + status);
             }
           }
         );
+      }
+
+      /** Setovanje aktivne ikonice - zelena boja*/
+      function setujAktivnu(element) {
+        let els = document.querySelectorAll(".active");
+        for (let i = 0; i < els.length; i++) {
+          els[i].classList.remove("active");
+        }
+        document.querySelector(element).classList.add("active");
+      }
+
+      /** Prikaz i skrivanje diva sa formama za unos podataka*/
+      function closeDiv(nazivDiva) {
+        document.querySelector(nazivDiva).style.width = "0";
+      }
+      function showDiv(nazivDiva) {
+        document.querySelector(nazivDiva).style.width = "500px";
       }
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv5bEXohPrJHDl2wnjwwYAlRrMvIcyH3o&callback=initMap"></script>

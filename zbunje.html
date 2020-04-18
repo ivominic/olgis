@@ -21,7 +21,7 @@
   </head>
   <body>
     <div class="pocetni-div">
-      <div class="topnav" id="myTopnav">
+      <div class="topnav" id="topNav">
         <a href="#" class="active tooltip" id="pan" data-tool="Pan"><i class="far fa-hand-paper"></i></a>
         <a href="#" id="odaberi" class="tooltip" data-tool="Odabir"><i class="fas fa-mouse-pointer"></i></a>
         <a href="#" id="dodaj" class="tooltip" data-tool="Novi objekat"><i class="far fa-plus-square"></i></a>
@@ -55,7 +55,7 @@
             <a href="#csv">CSV</a>
           </div>
         </div>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+        <a href="javascript:void(0);" class="icon" onclick="zatvoriHamburger()">&#9776;</a>
       </div>
     </div>
     <div id="map" class="map"></div>
@@ -198,28 +198,11 @@
 
     <!-- Modalna fotografija -->
     <div id="modalFotografija" class="modal">
-      <!-- The Close Button -->
       <span id="zatvoriModalFotografija">&times;</span>
       <img class="modal-content" id="imgModal" />
       <div id="naslovFotografija"></div>
     </div>
 
-    <script>
-      function myFunction() {
-        var x = document.getElementById("myTopnav");
-        if (x.className === "topnav") {
-          x.className += " responsive";
-        } else {
-          x.className = "topnav";
-        }
-      }
-      function closeDiv(nazivDiva) {
-        document.querySelector(nazivDiva).style.width = "0";
-      }
-      function showDiv(nazivDiva) {
-        document.querySelector(nazivDiva).style.width = "500px";
-      }
-    </script>
     <script src="js/util.js"></script>
     <script src="js/zbunje.js"></script>
   </body>

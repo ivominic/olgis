@@ -128,6 +128,24 @@ function setujAktivnu(element) {
     els[i].classList.remove("active");
   }
   document.querySelector(element).classList.add("active");
+  zatvoriHamburger();
+}
+
+function zatvoriHamburger() {
+  var x = document.querySelector("#topNav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+function closeDiv(nazivDiva) {
+  document.querySelector(nazivDiva).style.width = "0";
+}
+
+function showDiv(nazivDiva) {
+  document.querySelector(nazivDiva).style.width = "500px";
 }
 
 function poruka(naslov, tekst) {

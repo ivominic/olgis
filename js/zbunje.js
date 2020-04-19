@@ -1,4 +1,4 @@
-var domainUrl = location.origin; //"http://localhost"; //"http://167.172.171.249"; //location.origin;
+var domainUrl = "http://localhost"; //"http://167.172.171.249"; //location.origin;
 var wmsUrl = domainUrl + "/geoserver/winsoft/wms";
 var imageUrl = domainUrl + "/slike/";
 var tiledRaster = new ol.layer.Tile({
@@ -129,7 +129,7 @@ var rasterLayer = new ol.layer.Image({
   source: new ol.source.ImageWMS({
     url: wmsUrl,
     params: {
-      LAYERS: "winsoft:zbunje",
+      LAYERS: "winsoft:zbunje_v",
     },
     ratio: 1,
     serverType: "geoserver",
@@ -245,7 +245,7 @@ function podesiInterakciju() {
 
 //addInteraction();
 
-//map.on("pointermove", onMouseMove);
+map.on("pointermove", onMouseMove);
 
 function onMouseMove(evt) {
   /*var coordinate = browserEvent.coordinate;
@@ -322,19 +322,19 @@ function onMouseClick(browserEvent) {
 }
 
 function pan() {
-  setujAktivnu("#pan");
   akcija = "pan";
+  setujAktivnu("#pan");
 }
 
 function odaberi() {
-  setujAktivnu("#odaberi");
   akcija = "odaberi";
+  setujAktivnu("#odaberi");
 }
 
 function dodaj() {
-  setujAktivnu("#dodaj");
   akcija = "dodaj";
   oblik = "LineString";
+  setujAktivnu("#dodaj");
 }
 
 function izbrisi() {
@@ -342,24 +342,23 @@ function izbrisi() {
 }
 
 function izmijeni() {
-  setujAktivnu("#izmijeni");
   akcija = "izmijeni";
   //oblik = 'LineString';
-  podesiInterakciju();
+  setujAktivnu("#izmijeni");
 }
 
 function atributi() {
-  setujAktivnu("#atributi");
   showDiv("#atributiDiv");
   closeDiv("#pretragaDiv");
   akcija = "atributi";
+  setujAktivnu("#atributi");
 }
 
 function pretraga() {
-  setujAktivnu("#pretraga");
   closeDiv("#atributiDiv");
   showDiv("#pretragaDiv");
   akcija = "pretraga";
+  setujAktivnu("#pretraga");
 }
 
 function sacuvaj() {
@@ -371,11 +370,25 @@ function ponisti() {
   restartovanje();
 }
 
+function brisanje() {
+  console.log("brisanje");
+}
+
+/* Filter wms-a po prostornim i atributskim podacima*/
 function filtriranje() {
-  cqlFilter = kreiranjeCqlFilteraProstorno();
-  //TODO: Dodati u drugoj funkciji atributske filtere
-  var params = rasterLayer.getSource().getParams();
+  let prostorniFilter = kreiranjeCqlFilteraProstorno();
+  let atributniFilter = kreiranjeCqlFilteraAtributi();
+  if (prostorniFilter !== "" && atributniFilter !== "") {
+    cqlFilter = "(" + prostorniFilter + ") AND " + atributniFilter;
+  } else {
+    cqlFilter = prostorniFilter + atributniFilter
+
+  }
+  if (cqlFilter === "") {
+    return false;
+  }
   console.log("cql filter", cqlFilter);
+  let params = rasterLayer.getSource().getParams();
   params.CQL_FILTER = cqlFilter;
   //"INTERSECTS(geom, POLYGON((19.256479740142822 42.44482842458774,19.252864122390747 42.44164566810562,19.260900020599365 42.441748595596266,19.259709119796753 42.44445631961446,19.256479740142822 42.44482842458774)))";
   // Uncomment line below and comment line above if you prefer using sld
@@ -387,6 +400,15 @@ function filtriranje() {
   //console.log(featuresPoint);
 }
 
-function brisanje() {
-  console.log("brisanje");
+function kreiranjeCqlFilteraAtributi() {
+  let retVal = "";
+
+  document.querySelector("#pretragaIdObjekta").value !== "" && (retVal += "id = " + document.querySelector("#pretragaIdObjekta").value + " AND ");
+  document.querySelector("#pretragaLatinskiNaziv").value !== "" && (retVal += "latinski_naziv ILIKE '%" + document.querySelector("#pretragaLatinskiNaziv").value + "%' AND ");
+  document.querySelector("#pretragaNarodniNaziv").value !== "" && (retVal += "narodni_naziv ILIKE '%" + document.querySelector("#pretragaNarodniNaziv").value + "%' AND ");
+  document.querySelector("#pretragaTip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaTip").value + "' AND ");
+  document.querySelector("#pretragaZdravstvenoStanje").value !== "" && (retVal += "zdravstveno_stanje = '" + document.querySelector("#pretragaZdravstvenoStanje").value + "' AND ");
+  document.querySelector("#pretragaNapomena").value !== "" && (retVal += "napomena ILIKE '%" + document.querySelector("#pretragaNapomena").value + "%' AND ");
+  retVal.length > 5 && (retVal = retVal.substring(0, retVal.length - 5));
+  return retVal;
 }

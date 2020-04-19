@@ -6,7 +6,7 @@ function slika() {
   if (slikaUrl === "") {
     poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
   } else {
-    setujAktivnu("#slika");
+
     akcija = "slika";
 
     document.querySelector("#modalFotografija").style.display = "block";
@@ -16,28 +16,26 @@ function slika() {
     document.querySelector("#zatvoriModalFotografija").onclick = function () {
       document.querySelector("#modalFotografija").style.display = "none";
     };
+    setujAktivnu("#slika");
   }
 }
 
 function crtajTacku() {
-  setujAktivnu("#marker");
   akcija = "marker";
   oblik = "Point";
-  podesiInterakciju();
+  setujAktivnu("#marker");
 }
 
 function crtajLiniju() {
-  setujAktivnu("#linija");
   akcija = "linija";
   oblik = "LineString";
-  podesiInterakciju();
+  setujAktivnu("#linija");
 }
 
 function crtajPoligon() {
-  setujAktivnu("#poligon");
   akcija = "poligon";
   oblik = "Polygon";
-  podesiInterakciju();
+  setujAktivnu("#poligon");
 }
 
 function wktGeometrije(feature) {
@@ -134,6 +132,7 @@ function setujAktivnu(element) {
     els[i].classList.remove("active");
   }
   document.querySelector(element).classList.add("active");
+  podesiInterakciju();
   zatvoriHamburger();
 }
 

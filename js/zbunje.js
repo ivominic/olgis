@@ -1,4 +1,4 @@
-var domainUrl = "http://localhost"; //"http://167.172.171.249"; //location.origin;
+var domainUrl = location.origin; //"http://localhost"; //"http://167.172.171.249"; //location.origin;
 var wmsUrl = domainUrl + "/geoserver/winsoft/wms";
 var imageUrl = domainUrl + "/slike/";
 var tiledRaster = new ol.layer.Tile({
@@ -261,9 +261,9 @@ function onMouseMove(evt) {
   map.getTargetElement().style.cursor = "";
   var pixel = map.getEventPixel(evt.originalEvent);
   var hit = map.forEachLayerAtPixel(pixel, function (layer) {
+    //console.log('ln', layer.B.name);
     if (layer.B.name === "zbunje") {
-      console.log(layer.B);
-      console.log("ima");
+      //console.log(layer.B);      
       map.getTargetElement().style.cursor = "pointer";
       return false;
     }

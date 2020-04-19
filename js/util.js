@@ -1,6 +1,6 @@
 document.querySelector("#imgModal").onclick = function () {
   window.open(slikaUrl, "_blank");
-}
+};
 
 function slika() {
   if (slikaUrl === "") {
@@ -15,7 +15,7 @@ function slika() {
 
     document.querySelector("#zatvoriModalFotografija").onclick = function () {
       document.querySelector("#modalFotografija").style.display = "none";
-    }
+    };
   }
 }
 
@@ -39,7 +39,6 @@ function crtajPoligon() {
   oblik = "Polygon";
   podesiInterakciju();
 }
-
 
 function wktGeometrije(feature) {
   //var geom11 = feature.getGeometry().transform("EPSG:3857", "EPSG:4326");
@@ -103,23 +102,30 @@ function kreiranjeCqlFilteraProstorno() {
     });
 
   (pretragaPoligonObuhvata || pretragaPoligonPresijeca) &&
-  poligoni.forEach((item) => {
-    if (retVal === "") {
-      if (pretragaPoligonPresijeca) {
-        retVal = "INTERSECTS(geom," + item + ") ";
+    poligoni.forEach((item) => {
+      if (retVal === "") {
+        if (pretragaPoligonPresijeca) {
+          retVal = "INTERSECTS(geom," + item + ") ";
+        } else {
+          retVal = "WITHIN(geom," + item + ") ";
+        }
       } else {
-        retVal = "WITHIN(geom," + item + ") ";
+        if (pretragaPoligonPresijeca) {
+          retVal += " OR INTERSECTS(geom," + item + ") ";
+        } else {
+          retVal += " OR WITHIN(geom," + item + ") ";
+        }
       }
-    } else {
-      if (pretragaPoligonPresijeca) {
-        retVal += " OR INTERSECTS(geom," + item + ") ";
-      } else {
-        retVal += " OR WITHIN(geom," + item + ") ";
-      }
-    }
-  });
+    });
 
   return retVal;
+}
+
+function setujDdlVrijednost(ddl, vrijednost) {
+  let komponenta = document.querySelector(ddl).value;
+  for (var i = 0; i < komponenta.length; i++) {
+    komponenta.options[i].text === vrijednost && (komponenta.options[i].selected = true);
+  }
 }
 
 function setujAktivnu(element) {

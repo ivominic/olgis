@@ -67,10 +67,8 @@ function popuniKontrole(odgovor) {
   console.log(odgovor);
   document.querySelector("#latinskiNaziv").value = atributi["latinski_naziv"];
   document.querySelector("#narodniNaziv").value = atributi["narodni_naziv"];
-  for (var i = 0; i < document.querySelector("#tip").length; i++) {
-    document.querySelector("#tip").options[i].text === atributi["tip"] && (document.querySelector("#tip").options[i].selected = true);
-  }
-  document.querySelector("#zdravstvenoStanje").value = atributi["zdravstveno_stanje"];
+  setujDdlVrijednost("#tip", atributi["tip"]);
+  setujDdlVrijednost("#zdravstvenoStanje", atributi["zdravstveno_stanje"]);
   document.querySelector("#napomena").value = atributi["napomena"];
 
   //slika
@@ -78,9 +76,6 @@ function popuniKontrole(odgovor) {
   slika.length && (slika = slika.substring(slika.lastIndexOf("/") + 1, slika.length));
   slika.length && (slikaUrl = imageUrl + slika);
   opisSlike = atributi["latinski_naziv"] + " - " + atributi["narodni_naziv"];
-
-  //document.querySelector("#slika").innerHTML = '<a target="_blank" href="' + imageUrl + slika + '"><i class="fas fa-camera-retro"></i></a>';
-  //overlay.getElement().innerHTML = '<a target="_blank" href="' + imageUrl + slika + '"><img src="' + imageUrl + slika + '"></a>';
 }
 
 function sacuvaj() {

@@ -149,5 +149,15 @@ function showDiv(nazivDiva) {
 }
 
 function poruka(naslov, tekst) {
-  alert(tekst);
+  //Mogao bih kao klasu da predajem naslov, ali može da dođe do greške u kucanju, pa da se ne prikazuje ništa
+  let klasa = naslov.toLowerCase().trim();
+  klasa !== "uspjeh" && klasa !== "upozorenje" && klasa !== "greska" && (klasa = "obavjestenje");
+  let komponenta = document.querySelector("#toast");
+  komponenta.innerHTML = tekst;
+  komponenta.className = klasa;
+  //uklanja div posle 3 sekunde
+  setTimeout(function () {
+    komponenta.className = "";
+    komponenta.innerHTML = "";
+  }, 3000);
 }

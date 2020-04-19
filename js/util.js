@@ -2,6 +2,12 @@ document.querySelector("#imgModal").onclick = function () {
   window.open(slikaUrl, "_blank");
 };
 
+function setujDdlVrijednost(ddl, vrijednost) {
+  for (var i = 0; i < document.querySelector(ddl).length; i++) {
+    document.querySelector(ddl).options[i].text === vrijednost && (document.querySelector(ddl).options[i].selected = true);
+  }
+}
+
 function slika() {
   if (slikaUrl === "") {
     poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");

@@ -81,12 +81,6 @@ function popuniKontrole(odgovor) {
   opisSlike = atributi["latinski_naziv"] + " - " + atributi["narodni_naziv"];
 }
 
-function setujDdlVrijednost(ddl, vrijednost) {
-  for (var i = 0; i < document.querySelector(ddl).length; i++) {
-    document.querySelector(ddl).options[i].text === vrijednost && (document.querySelector(ddl).options[i].selected = true);
-  }
-}
-
 function sacuvaj() {
   return false;
   if (!idObjekta) {

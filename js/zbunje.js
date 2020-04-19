@@ -65,8 +65,9 @@ document.querySelector("#confirmOdustani").addEventListener("click", confirmOdus
 
 function popuniKontrole(odgovor) {
   var atributi = odgovor.features[0]["properties"];
-  idObjekta = odgovor.features[0]["id"];
+  idObjekta = atributi["id"];
   console.log(odgovor);
+  document.querySelector("#idObjekta").value = idObjekta;
   document.querySelector("#latinskiNaziv").value = atributi["latinski_naziv"];
   document.querySelector("#narodniNaziv").value = atributi["narodni_naziv"];
   setujDdlVrijednost("#tip", atributi["tip"]);
@@ -78,6 +79,12 @@ function popuniKontrole(odgovor) {
   slika.length && (slika = slika.substring(slika.lastIndexOf("/") + 1, slika.length));
   slika.length && (slikaUrl = imageUrl + slika);
   opisSlike = atributi["latinski_naziv"] + " - " + atributi["narodni_naziv"];
+}
+
+function setujDdlVrijednost(ddl, vrijednost) {
+  for (var i = 0; i < document.querySelector(ddl).length; i++) {
+    document.querySelector(ddl).options[i].text === vrijednost && (document.querySelector(ddl).options[i].selected = true);
+  }
 }
 
 function sacuvaj() {

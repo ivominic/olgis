@@ -119,13 +119,6 @@ function kreiranjeCqlFilteraProstorno() {
   return retVal;
 }
 
-function setujDdlVrijednost(ddl, vrijednost) {
-  let komponenta = document.querySelector(ddl).value;
-  for (var i = 0; i < komponenta.length; i++) {
-    komponenta.options[i].text === vrijednost && (komponenta.options[i].selected = true);
-  }
-}
-
 function setujAktivnu(element) {
   var els = document.querySelectorAll(".active");
   for (var i = 0; i < els.length; i++) {

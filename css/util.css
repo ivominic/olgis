@@ -94,3 +94,85 @@
     opacity: 0;
   }
 }
+
+/** CONFIRM MODAL */
+
+.confirmbtn {
+  font-size: 16;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.8;
+}
+
+.confirmbtn:hover {
+  opacity: 1;
+}
+
+.confirm-cancelbtn,
+.confirm-deletebtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add a color to the cancel button */
+.confirm-cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Add a color to the delete button */
+.confirm-deletebtn {
+  background-color: #f44336;
+}
+
+/* Add padding and center-align text to the container */
+.confirm-container {
+  padding: 16px;
+  text-align: center;
+}
+
+.confirm-modal-content {
+  background-color: #fefefe;
+  color: #111;
+  margin: 5% auto 15% auto;
+  /* 5% od vrha, 15% od dna i centrirano */
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* Confirm modal X za zatvaranje */
+.confirm-close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.confirm-close:hover,
+.confirm-close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Čisti floats-e */
+.confirm-clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Dugmad jedno ispod drugog na baš malim ekranima */
+@media screen and (max-width: 300px) {
+
+  .confirm-cancelbtn,
+  .confirm-deletebtn {
+    width: 100%;
+  }
+}

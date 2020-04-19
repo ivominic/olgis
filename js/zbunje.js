@@ -44,7 +44,6 @@ var vectorStyle = new ol.style.Style({
 document.querySelector("#pan").addEventListener("click", pan);
 document.querySelector("#odaberi").addEventListener("click", odaberi);
 document.querySelector("#dodaj").addEventListener("click", dodaj);
-document.querySelector("#izbrisi").addEventListener("click", izbrisi);
 document.querySelector("#izmijeni").addEventListener("click", izmijeni);
 document.querySelector("#atributi").addEventListener("click", atributi);
 document.querySelector("#slika").addEventListener("click", slika);
@@ -57,9 +56,12 @@ document.querySelector("#podloga_topo").addEventListener("click", pan);
 
 document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
 document.querySelector("#btnPonisti").addEventListener("click", ponisti);
-document.querySelector("#btnIzbrisi").addEventListener("click", brisanje);
+document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
 
 document.querySelector("#btnFilter").addEventListener("click", filtriranje);
+
+document.querySelector("#confirmPotvrdi").addEventListener("click", confirmPotvrdi);
+document.querySelector("#confirmOdustani").addEventListener("click", confirmOdustani);
 
 function popuniKontrole(odgovor) {
   var atributi = odgovor.features[0]["properties"];
@@ -336,8 +338,7 @@ function dodaj() {
 }
 
 function izbrisi() {
-  setujAktivnu("#izbrisi");
-  akcija = "izbrisi";
+  confirmModal("UKLANJANJE", "Da li ste sigurni da želite da uklonite odabrani objekat?");
 }
 
 function izmijeni() {

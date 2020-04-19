@@ -1,28 +1,18 @@
-/* The Modal (background) */
+/* Modal background */
 .modal {
   display: none;
-  /* Hidden by default */
   position: fixed;
-  /* Stay in place */
-  z-index: 1;
-  /* Sit on top */
+  z-index: 20;
   padding-top: 100px;
-  /* Location of the box */
   left: 0;
   top: 0;
   width: 100%;
-  /* Full width */
   height: 100%;
-  /* Full height */
   overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0);
-  /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.9);
-  /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* Modal Content (Image) */
+/* Modal sadržaj */
 .modal-content {
   margin: auto;
   display: block;
@@ -31,7 +21,7 @@
   image-orientation: from-image;
 }
 
-/* Caption of Modal Image (Image Text) - Same Width as the Image */
+/* Naslov slike */
 #naslovFotografija {
   margin: auto;
   display: block;
@@ -43,7 +33,7 @@
   height: 150px;
 }
 
-/* Add Animation - Zoom in the Modal */
+/* Animacija - zoom in modala */
 .modal-content,
 #naslovFotografija {
   animation-name: zoom;
@@ -60,8 +50,8 @@
   }
 }
 
-/* The Close Button */
-#zatvoriModalFotografija {
+/* X dugme za zatvranje modala */
+.close {
   position: absolute;
   top: 15px;
   right: 35px;
@@ -71,14 +61,14 @@
   transition: 0.3s;
 }
 
-#zatvoriModalFotografija:hover,
-#zatvoriModalFotografija:focus {
+.close:hover,
+.close:focus {
   color: #bbb;
   text-decoration: none;
   cursor: pointer;
 }
 
-/* 100% Image Width on Smaller Screens */
+/* 100% širina slike na malim ekranima */
 @media only screen and (max-width: 700px) {
   .modal-content {
     width: 100%;

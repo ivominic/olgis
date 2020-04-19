@@ -92,8 +92,7 @@
       <div class="row">
         <div class="column">
           <label for="zdravstvenoStanje">Zdravstveno stanje:</label>
-          <input type="text" class="form-control" id="" />
-          <select class="form-control" id="zdravstvenoStanje">
+          <select class="select-css" id="zdravstvenoStanje">
             <option value="1 Loše">1 Loše</option>
             <option value="2 Dovoljno">2 Dovoljno</option>
             <option value="3 Dobro">3 Dobro</option>
@@ -107,14 +106,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="column">
-          <input type="file" accept="image/*" capture="environment" id="dodavanjeSlike" />
-          <input type="hidden" class="form-control" id="akcija" />
-        </div>
-        <div class="column">
-          <input type="hidden" class="form-control" id="slikaUrl" />
-        </div>
+        <input type="file" class="sama" accept="image/*" capture="environment" id="dodavanjeSlike" />
       </div>
+      <div class="row"></div>
       <div class="row">
         <button type="button" class="btn" id="btnSacuvaj"><i class="fas fa-check-circle"></i> Sačuvaj</button>
         <button type="button" class="btn" id="btnPonisti"><i class="fas fa-undo-alt"></i> Poništi</button>
@@ -191,7 +185,7 @@
       <div class="row">
         <div class="column">
           <label for="pretragaZdravstvenoStanje">Zdravstveno stanje:</label>
-          <select class="form-control" id="pretragaZdravstvenoStanje">
+          <select class="select-css" id="pretragaZdravstvenoStanje">
             <option value=""></option>
             <option value="1 Loše">1 Loše</option>
             <option value="2 Dovoljno">2 Dovoljno</option>
@@ -213,12 +207,25 @@
 
     <!-- Modalna fotografija -->
     <div id="modalFotografija" class="modal">
-      <span id="zatvoriModalFotografija">&times;</span>
-      <img class="modal-content" id="imgModal" />
+      <span id="zatvoriModalFotografija" class="close">&times;</span>
+      <img class="modal-content" id="imgModal" alt="Nema fotografije" />
       <div id="naslovFotografija"></div>
     </div>
     <!-- Toast -->
     <div id="toast"></div>
+    <!-- Modal confirm-->
+    <div id="modalConfirm" class="modal">
+      <span onclick="confirmOdustani" class="close" title="Close Modal">&times;</span>
+      <div class="confirm-modal-content confirm-container">
+        <h2 id="modalConfirmHeader"></h2>
+        <h4 id="modalConfirmText"></h4>
+
+        <div class="confirm-clearfix">
+          <button type="button" class="confirmbtn confirm-cancelbtn" id="confirmOdustani">Odustani</button>
+          <button type="button" class="confirmbtn confirm-deletebtn" id="confirmPotvrdi">Potvrdi</button>
+        </div>
+      </div>
+    </div>
 
     <script src="js/util.js"></script>
     <script src="js/zbunje.js"></script>

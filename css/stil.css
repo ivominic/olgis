@@ -1,3 +1,4 @@
+/** Stil za select/ddl*/
 .select-css {
   height: 25px;
   width: 90%;
@@ -21,6 +22,7 @@
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
 }
 
+/** Stil za sva input polja*/
 input[type] {
   width: 90%;
   display: block;
@@ -43,10 +45,24 @@ input[type] {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
 }
 
-
+/** Podijeljena stranica na dvije kolone*/
 .column {
   float: left;
   width: 50%;
+}
+
+/** Za samo jednu kontrolu u dvije kolone*/
+.sama {
+  float: left;
+  width: 95% !important;
+  position: relative;
+  top: 20px;
+}
+
+/**Spajanje kontrola u dvije kolone*/
+.spojena {
+  float: left;
+  width: 100% !important;
 }
 
 .row {
@@ -54,7 +70,7 @@ input[type] {
   padding: 12px 12px;
 }
 
-/* Clear floats after the columns */
+/* Briše floats-e */
 .row:after {
   content: "";
   display: table;

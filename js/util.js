@@ -102,21 +102,21 @@ function kreiranjeCqlFilteraProstorno() {
     });
 
   (pretragaPoligonObuhvata || pretragaPoligonPresijeca) &&
-    poligoni.forEach((item) => {
-      if (retVal === "") {
-        if (pretragaPoligonPresijeca) {
-          retVal = "INTERSECTS(geom," + item + ") ";
-        } else {
-          retVal = "WITHIN(geom," + item + ") ";
-        }
+  poligoni.forEach((item) => {
+    if (retVal === "") {
+      if (pretragaPoligonPresijeca) {
+        retVal = "INTERSECTS(geom," + item + ") ";
       } else {
-        if (pretragaPoligonPresijeca) {
-          retVal += " OR INTERSECTS(geom," + item + ") ";
-        } else {
-          retVal += " OR WITHIN(geom," + item + ") ";
-        }
+        retVal = "WITHIN(geom," + item + ") ";
       }
-    });
+    } else {
+      if (pretragaPoligonPresijeca) {
+        retVal += " OR INTERSECTS(geom," + item + ") ";
+      } else {
+        retVal += " OR WITHIN(geom," + item + ") ";
+      }
+    }
+  });
 
   return retVal;
 }
@@ -166,4 +166,19 @@ function poruka(naslov, tekst) {
     komponenta.className = "";
     komponenta.innerHTML = "";
   }, 3000);
+}
+
+function confirmModal(naslov, text, funkcija) {
+  document.querySelector('#modalConfirmHeader').innerHTML = naslov;
+  document.querySelector('#modalConfirmText').innerHTML = text;
+  document.querySelector('#modalConfirm').style.display = 'block'
+}
+
+function confirmPotvrdi(funkcija) {
+  document.querySelector('#modalConfirm').style.display = 'none';
+  brisanje();
+}
+
+function confirmOdustani() {
+  document.querySelector('#modalConfirm').style.display = 'none';
 }

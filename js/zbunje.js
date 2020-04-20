@@ -10,6 +10,33 @@ var tiledRaster = new ol.layer.Tile({
   element: document.querySelector("#overlay")
 });*/
 
+var osmBaseMap = new ol.layer.Tile({
+  title: "Open Street Maps",
+  type: "base",
+  visible: true,
+  source: new ol.source.OSM(),
+});
+var satelitBaseMap = new ol.layer.Tile({
+  title: "Satelitski snimak",
+  type: "base",
+  source: new ol.source.XYZ({
+    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    maxZoom: 23,
+  }),
+});
+var katastarBaseMap = new ol.layer.Image({
+  title: "Katastar",
+  name: "uzn",
+  source: new ol.source.ImageWMS({
+    url: wmsUrl,
+    params: {
+      LAYERS: "winsoft:uzn",
+    },
+    ratio: 1,
+    serverType: "geoserver",
+  }),
+});
+
 var draw, modify;
 var idObjekta,
   akcija = "pan",
@@ -51,8 +78,13 @@ document.querySelector("#marker").addEventListener("click", crtajTacku);
 document.querySelector("#linija").addEventListener("click", crtajLiniju);
 document.querySelector("#poligon").addEventListener("click", crtajPoligon);
 document.querySelector("#pretraga").addEventListener("click", pretraga);
-document.querySelector("#podloga_osm").addEventListener("click", pan);
-document.querySelector("#podloga_topo").addEventListener("click", pan);
+document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
+document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);
+document.querySelector("#podloga_satelit").addEventListener("click", satelitPodloga);
+
+document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
+document.querySelector("#btnPonisti").addEventListener("click", ponisti);
+document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
 
 document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
 document.querySelector("#btnPonisti").addEventListener("click", ponisti);
@@ -264,7 +296,7 @@ function onMouseMove(evt) {
   var hit = map.forEachLayerAtPixel(pixel, function (layer) {
     //console.log('ln', layer.B.name);
     if (layer.B.name === "zbunje") {
-      //console.log(layer.B);      
+      //console.log(layer.B);
       map.getTargetElement().style.cursor = "pointer";
       return false;
     }
@@ -382,8 +414,7 @@ function filtriranje() {
   if (prostorniFilter !== "" && atributniFilter !== "") {
     cqlFilter = "(" + prostorniFilter + ") AND " + atributniFilter;
   } else {
-    cqlFilter = prostorniFilter + atributniFilter
-
+    cqlFilter = prostorniFilter + atributniFilter;
   }
   if (cqlFilter === "") {
     return false;
@@ -412,4 +443,16 @@ function kreiranjeCqlFilteraAtributi() {
   document.querySelector("#pretragaNapomena").value !== "" && (retVal += "napomena ILIKE '%" + document.querySelector("#pretragaNapomena").value + "%' AND ");
   retVal.length > 5 && (retVal = retVal.substring(0, retVal.length - 5));
   return retVal;
+}
+
+function osmPodloga() {
+  map.getLayers().setAt(0, osmBaseMap);
+}
+
+function topoPodloga() {
+  map.getLayers().setAt(0, katastarBaseMap);
+}
+
+function satelitPodloga() {
+  map.getLayers().setAt(0, satelitBaseMap);
 }

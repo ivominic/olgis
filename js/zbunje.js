@@ -24,10 +24,11 @@ var satelitBaseMap = new ol.layer.Tile({
     maxZoom: 23,
   }),
 });
-var katastarBaseMap = new ol.layer.Image({
+//Iskoristiti iz rastera "Image" ukoliko se tako bolje pokaže
+var katastarBaseMap = new ol.layer.Tile({
   title: "Katastar",
   name: "uzn",
-  source: new ol.source.ImageWMS({
+  source: new ol.source.TileWMS({
     url: wmsUrl,
     params: {
       LAYERS: "winsoft:uzn",

@@ -1,5 +1,7 @@
 var domainUrl = location.origin; //"http://localhost"; //"http://167.172.171.249"; //location.origin;
+//
 var wmsUrl = domainUrl + "/geoserver/winsoft/wms";
+var wfsUrl = domainUrl + "/geoserver/winsoft/wfs";
 var imageUrl = domainUrl + "/slike/";
 var tiledRaster = new ol.layer.Tile({
   source: new ol.source.OSM(),
@@ -222,6 +224,17 @@ var featureTekuciOverlay = new ol.layer.Vector({
 });
 featureTekuciOverlay.setMap(map);
 
+
+var vektorSource = new ol.source.Vector();
+
+/*var featuresTekuci = new ol.Collection();
+var featureTekuciOverlay = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    features: featuresTekuci,
+  }),
+  style: vectorStyle,
+});*/
+
 function podesiInterakciju() {
   //uklanja draw i modify
   map.removeInteraction(draw);
@@ -431,6 +444,8 @@ function filtriranje() {
     console.log(entry.B);
   });*/
   //console.log(featuresPoint);
+  //wfsFilter();
+
 }
 
 function kreiranjeCqlFilteraAtributi() {
@@ -445,6 +460,41 @@ function kreiranjeCqlFilteraAtributi() {
   retVal.length > 5 && (retVal = retVal.substring(0, retVal.length - 5));
   return retVal;
 }
+
+function wfsFilter() {
+
+  //window.open(wfsUrl + "?version=1.0.0&request=GetFeature&typeName=wisnoft:zbunje_v&outputformat=SHAPE-ZIP", "_blank");
+  //return false;
+  $.ajax({
+    method: 'POST',
+    url: wfsUrl,
+    data: {
+      "service": "WFS",
+      "request": "GetFeature",
+      "typename": "winsoft:zbunje_v",
+      //"outputFormat": "application/json",
+      "outputFormat": "SHAPE-ZIP",
+      "srsname": "EPSG:3857",
+      //"maxFeatures": 50,
+      "CQL_FILTER": cqlFilter
+    },
+    success: function (response) {
+      console.log(response);
+      var features = new ol.format.GeoJSON().readFeatures(response);
+      console.log(features);
+      vektorSource.addFeatures(features);
+      console.log(vektorSource.getExtent());
+      var boundingExtent = ol.extent.boundingExtent(vektorSource.getExtent());
+      boundingExtent = ol.proj.transformExtent(boundingExtent, ol.proj.get('EPSG:4326'), ol.proj.get('EPSG:3857'));
+      console.log(boundingExtent);
+      console.log('size', map.getSize());
+      //map.getView().fit(boundingExtent, map.getSize());
+    },
+    fail: function (jqXHR, textStatus) {
+      console.log("Request failed: " + textStatus);
+    }
+  });
+};
 
 function osmPodloga() {
   map.getLayers().setAt(0, osmBaseMap);

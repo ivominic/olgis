@@ -98,17 +98,6 @@ featureLineOverlay.getSource().on("addfeature", (evt) => linije.push(wktGeometri
 featurePointOverlay.getSource().on("addfeature", (evt) => tacke.push(wktGeometrije(evt.feature)));
 featurePolygonOverlay.getSource().on("addfeature", (evt) => poligoni.push(wktGeometrije(evt.feature)));
 
-
-
-
-
-
-
-
-
-
-
-
 /** Klikom na modalnu sliku, otvara novi tab sa istom slikom */
 document.querySelector("#imgModal").onclick = function () {
   window.open(slikaUrl, "_blank");
@@ -244,7 +233,7 @@ function setujAktivnu(element) {
   document.querySelector(element).classList.add("active");
   closeDiv("#pretragaDiv");
   closeDiv("#atributiDiv");
-  if (element === "#atributi" || element === "#dodaj" || element === "#izmijeni") {
+  if (element === "#atributi" || element === "#dodaj") {
     showDiv("#atributiDiv");
   }
   if (element === "#pretraga") {

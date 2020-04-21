@@ -171,6 +171,8 @@ function podesiInterakciju() {
     });
     draw.on('drawend', function (e) {
       nacrtan = true;
+      //TODO: ovo možda dodati u promjeni akcije i poništi
+      featureTekuciOverlay.getSource().clear(); //Samo jedan može da se crta      
       console.log("feature nova geometrija", wktGeometrije(e.feature));
     });
     modify.on('modifyend', function (e) {
@@ -183,9 +185,8 @@ function podesiInterakciju() {
   }
 }
 
+map.on("pointermove", onMouseMove);
 
-
-//map.on("pointermove", onMouseMove);
 function onMouseMove(evt) {
   if (evt.dragging) {
     return;
@@ -225,7 +226,7 @@ map.addInteraction(dragAndDrop);
 map.on("click", onMouseClick);
 
 function onMouseClick(browserEvent) {
-  if (akcija === "atributi") {
+  if (akcija === "atributi" || akcija === "izmijeni") {
     var coordinate = browserEvent.coordinate;
     var pixel = map.getPixelFromCoordinate(coordinate);
 

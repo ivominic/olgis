@@ -7,7 +7,7 @@ var tiledRaster = new ol.layer.Tile({
   source: new ol.source.OSM(),
   name: "Podloga",
 });
-var layername = "zbunje_v"
+var layername = "zbunje_v";
 /*var overlay = new ol.Overlay({
   position: "bottom-center",
   element: document.querySelector("#overlay")
@@ -232,6 +232,18 @@ var featureTekuciOverlay = new ol.layer.Vector({
 });
 featureTekuciOverlay.setMap(map);
 
+//podešena modifikacija
+modify = new ol.interaction.Modify({
+  features: featuresTekuci,
+  deleteCondition: function (event) {
+    return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
+  },
+});
+map.addInteraction(modify);
+modify.on('modifyend', function (e) {
+  console.log("feature geometrija", wktGeometrije(e.features.getArray()[0]));
+});
+
 var vektorSource = new ol.source.Vector();
 
 /*var featuresTekuci = new ol.Collection();
@@ -245,7 +257,7 @@ var featureTekuciOverlay = new ol.layer.Vector({
 function podesiInterakciju() {
   //uklanja draw i modify
   map.removeInteraction(draw);
-  map.removeInteraction(modify);
+  //map.removeInteraction(modify);
 
   if (akcija === "marker") {
     draw = new ol.interaction.Draw({
@@ -268,7 +280,7 @@ function podesiInterakciju() {
     });
     map.addInteraction(draw);
   }
-  if (akcija === "izmijeni") {
+  /*if (akcija === "izmijeni") {
     if (oblik === "Point") {
       modify = new ol.interaction.Modify({
         features: featuresPoint,
@@ -294,7 +306,7 @@ function podesiInterakciju() {
       });
     }
     map.addInteraction(modify);
-  }
+  }*/
 }
 
 //addInteraction();
@@ -399,6 +411,7 @@ function izmijeni() {
   akcija = "izmijeni";
   //oblik = 'LineString';
   setujAktivnu("#izmijeni");
+  wfsZaEdit(idObjekta);
 }
 
 function atributi() {
@@ -468,8 +481,6 @@ function kreiranjeCqlFilteraAtributi() {
 }
 
 function wfsFilter() {
-  window.open(wfsUrl + "?version=1.0.0&request=GetFeature&typeName=winsoft:zbunje_v&outputformat=SHAPE-ZIP&cql_filter=" + cqlFilter, "_blank");
-  return false;
   $.ajax({
     method: "POST",
     url: wfsUrl,
@@ -477,8 +488,7 @@ function wfsFilter() {
       service: "WFS",
       request: "GetFeature",
       typename: "winsoft:" + layername,
-      //"outputFormat": "application/json",
-      outputFormat: "SHAPE-ZIP",
+      outputFormat: "application/json",
       srsname: "EPSG:3857",
       //"maxFeatures": 50,
       CQL_FILTER: cqlFilter,
@@ -501,8 +511,37 @@ function wfsFilter() {
   });
 }
 
+function wfsZaEdit(id) {
+  if (id === "") {
+    poruka("Upozorenje", "Nije odabran objekat čija geometrija se želi mijenjati.");
+    return false;
+  }
+  $.ajax({
+    method: "POST",
+    url: wfsUrl,
+    data: {
+      service: "WFS",
+      request: "GetFeature",
+      typename: "winsoft:" + layername,
+      outputFormat: "application/json",
+      srsname: "EPSG:3857",
+      //"maxFeatures": 50,
+      CQL_FILTER: "id=" + id.toString(),
+    },
+    success: function (response) {
+      var features = new ol.format.GeoJSON().readFeatures(response);
+      featureTekuciOverlay.getSource().addFeatures(features);
+      console.log(features);
+      console.log("proslo", featureTekuciOverlay.getSource());
+    },
+    fail: function (jqXHR, textStatus) {
+      console.log("Request failed: " + textStatus);
+    },
+  });
+}
+
 function wfsDownload(format) {
-  let dodajCqlFilter = ""
+  let dodajCqlFilter = "";
   cqlFilter !== "" && (dodajCqlFilter = "&cql_filter=" + cqlFilter);
   window.open(wfsUrl + "?version=1.0.0&request=GetFeature&typeName=winsoft:" + layername + "&outputformat=" + format + dodajCqlFilter, "_blank");
   return false;

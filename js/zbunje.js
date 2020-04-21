@@ -7,6 +7,7 @@ var tiledRaster = new ol.layer.Tile({
   source: new ol.source.OSM(),
   name: "Podloga",
 });
+var layername = "zbunje_v"
 /*var overlay = new ol.Overlay({
   position: "bottom-center",
   element: document.querySelector("#overlay")
@@ -84,6 +85,13 @@ document.querySelector("#pretraga").addEventListener("click", pretraga);
 document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
 document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);
 document.querySelector("#podloga_satelit").addEventListener("click", satelitPodloga);
+document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
+document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);
+document.querySelector("#podloga_satelit").addEventListener("click", satelitPodloga);
+console.log(document.querySelector("#shp"));
+document.querySelector("#shp").addEventListener("click", shpDownload); //wfsDownload("SHAPE-ZIP")
+document.querySelector("#kml").addEventListener("click", kmlDownload);
+document.querySelector("#excel").addEventListener("click", excelDownload);
 
 document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
 document.querySelector("#btnPonisti").addEventListener("click", ponisti);
@@ -165,7 +173,7 @@ var rasterLayer = new ol.layer.Image({
   source: new ol.source.ImageWMS({
     url: wmsUrl,
     params: {
-      LAYERS: "winsoft:zbunje_v",
+      LAYERS: "winsoft:" + layername,
     },
     ratio: 1,
     serverType: "geoserver",
@@ -223,7 +231,6 @@ var featureTekuciOverlay = new ol.layer.Vector({
   style: vectorStyle,
 });
 featureTekuciOverlay.setMap(map);
-
 
 var vektorSource = new ol.source.Vector();
 
@@ -445,7 +452,6 @@ function filtriranje() {
   });*/
   //console.log(featuresPoint);
   //wfsFilter();
-
 }
 
 function kreiranjeCqlFilteraAtributi() {
@@ -462,21 +468,20 @@ function kreiranjeCqlFilteraAtributi() {
 }
 
 function wfsFilter() {
-
-  //window.open(wfsUrl + "?version=1.0.0&request=GetFeature&typeName=wisnoft:zbunje_v&outputformat=SHAPE-ZIP", "_blank");
-  //return false;
+  window.open(wfsUrl + "?version=1.0.0&request=GetFeature&typeName=winsoft:zbunje_v&outputformat=SHAPE-ZIP&cql_filter=" + cqlFilter, "_blank");
+  return false;
   $.ajax({
-    method: 'POST',
+    method: "POST",
     url: wfsUrl,
     data: {
-      "service": "WFS",
-      "request": "GetFeature",
-      "typename": "winsoft:zbunje_v",
+      service: "WFS",
+      request: "GetFeature",
+      typename: "winsoft:" + layername,
       //"outputFormat": "application/json",
-      "outputFormat": "SHAPE-ZIP",
-      "srsname": "EPSG:3857",
+      outputFormat: "SHAPE-ZIP",
+      srsname: "EPSG:3857",
       //"maxFeatures": 50,
-      "CQL_FILTER": cqlFilter
+      CQL_FILTER: cqlFilter,
     },
     success: function (response) {
       console.log(response);
@@ -485,16 +490,23 @@ function wfsFilter() {
       vektorSource.addFeatures(features);
       console.log(vektorSource.getExtent());
       var boundingExtent = ol.extent.boundingExtent(vektorSource.getExtent());
-      boundingExtent = ol.proj.transformExtent(boundingExtent, ol.proj.get('EPSG:4326'), ol.proj.get('EPSG:3857'));
+      boundingExtent = ol.proj.transformExtent(boundingExtent, ol.proj.get("EPSG:4326"), ol.proj.get("EPSG:3857"));
       console.log(boundingExtent);
-      console.log('size', map.getSize());
+      console.log("size", map.getSize());
       //map.getView().fit(boundingExtent, map.getSize());
     },
     fail: function (jqXHR, textStatus) {
       console.log("Request failed: " + textStatus);
-    }
+    },
   });
-};
+}
+
+function wfsDownload(format) {
+  let dodajCqlFilter = ""
+  cqlFilter !== "" && (dodajCqlFilter = "&cql_filter=" + cqlFilter);
+  window.open(wfsUrl + "?version=1.0.0&request=GetFeature&typeName=winsoft:" + layername + "&outputformat=" + format + dodajCqlFilter, "_blank");
+  return false;
+}
 
 function osmPodloga() {
   map.getLayers().setAt(0, osmBaseMap);
@@ -506,4 +518,16 @@ function topoPodloga() {
 
 function satelitPodloga() {
   map.getLayers().setAt(0, satelitBaseMap);
+}
+
+function shpDownload() {
+  wfsDownload("SHAPE-ZIP");
+}
+
+function kmlDownload() {
+  wfsDownload("KML");
+}
+
+function excelDownload() {
+  wfsDownload("excel2007");
 }

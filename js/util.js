@@ -1,13 +1,127 @@
+/**Inicijalna deklaracija vrijednosti koje se korite u stranici*/
+//const domainUrl = location.origin;
+const domainUrl = "http://167.172.171.249";
+const wmsUrl = domainUrl + "/geoserver/winsoft/wms";
+const wfsUrl = domainUrl + "/geoserver/winsoft/wfs";
+const imageUrl = domainUrl + "/slike/";
+const point = "Point",
+  lineString = "LineString",
+  polygon = "Polygon",
+  tacke = [],
+  linije = [],
+  poligoni = [];
+let draw, modify, cqlFilter, idObjekta, akcija = "pan",
+  slikaUrl = "";
+let nacrtan = false,
+  modifikovan = false;
+
+/**Definisanje podloga */
+let osmBaseMap = new ol.layer.Tile({
+  title: "Open Street Maps",
+  source: new ol.source.OSM(),
+});
+let satelitBaseMap = new ol.layer.Tile({
+  title: "Satelitski snimak",
+  source: new ol.source.XYZ({
+    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    maxZoom: 23,
+  }),
+});
+var katastarBaseMap = new ol.layer.Tile({
+  title: "Katastar",
+  name: "uzn",
+  source: new ol.source.TileWMS({
+    url: wmsUrl,
+    params: {
+      LAYERS: "winsoft:uzn",
+    },
+    ratio: 1,
+    serverType: "geoserver",
+  }),
+});
+
+/**Stilizacija vektora */
+var fill = new ol.style.Fill({
+  color: "rgba(255,0,0,0.3)",
+});
+var stroke = new ol.style.Stroke({
+  color: "#ff0000",
+  width: 2,
+});
+var circle = new ol.style.Circle({
+  radius: 7,
+  fill: fill,
+  stroke: stroke,
+});
+var vectorStyle = new ol.style.Style({
+  fill: fill,
+  stroke: stroke,
+  image: circle,
+});
+
+/**Setovanje centra mape */
+let center = ol.proj.transform([19.26, 42.443], "EPSG:4326", "EPSG:3857");
+let view = new ol.View({
+  center: center,
+  zoom: 17,
+});
+
+/** Vraća well known tekst reprezentaciju geometrije za predati feature */
+function wktGeometrije(feature) {
+  let format = new ol.format.WKT();
+  let wktRepresenation = format.writeGeometry(feature.getGeometry(), {
+    dataProjection: "EPSG:4326",
+    featureProjection: "EPSG:3857",
+  });
+  return wktRepresenation;
+}
+
+/**Kreiranje vektorskih lejera za crtanje i kreiranje nove geometrije ili edit postojeće (point, linestring, polygon, new i edit) */
+function kreirajVektorLejerZaCrtanje(olCollection) {
+  return new ol.layer.Vector({
+    source: new ol.source.Vector({
+      features: olCollection,
+    }),
+    style: vectorStyle,
+  });
+}
+/**Definisanje vektor lejera za crtanje figura i kreiranje i izmjenu tekuće geometrije */
+let featuresPoint = new ol.Collection(),
+  featuresLine = new ol.Collection(),
+  featuresPolygon = new ol.Collection(),
+  featuresTekuci = new ol.Collection();
+let featurePointOverlay = kreirajVektorLejerZaCrtanje(featuresPoint),
+  featureLineOverlay = kreirajVektorLejerZaCrtanje(featuresLine),
+  featurePolygonOverlay = kreirajVektorLejerZaCrtanje(featuresPolygon),
+  featureTekuciOverlay = kreirajVektorLejerZaCrtanje(featuresTekuci);
+featureLineOverlay.getSource().on("addfeature", (evt) => linije.push(wktGeometrije(evt.feature)));
+featurePointOverlay.getSource().on("addfeature", (evt) => tacke.push(wktGeometrije(evt.feature)));
+featurePolygonOverlay.getSource().on("addfeature", (evt) => poligoni.push(wktGeometrije(evt.feature)));
+
+
+
+
+
+
+
+
+
+
+
+
+/** Klikom na modalnu sliku, otvara novi tab sa istom slikom */
 document.querySelector("#imgModal").onclick = function () {
   window.open(slikaUrl, "_blank");
 };
 
+/** Podešava vrijednost ddl liste */
 function setujDdlVrijednost(ddl, vrijednost) {
-  for (var i = 0; i < document.querySelector(ddl).length; i++) {
+  for (let i = 0; i < document.querySelector(ddl).length; i++) {
     document.querySelector(ddl).options[i].text === vrijednost && (document.querySelector(ddl).options[i].selected = true);
   }
 }
 
+/** Prikazuje sliku za odabrani objekat u modalnom prozoru */
 function slika() {
   if (slikaUrl === "") {
     poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
@@ -27,40 +141,20 @@ function slika() {
 }
 
 function crtajTacku() {
-  akcija = "marker";
-  oblik = "Point";
+  akcija = point;
   setujAktivnu("#marker");
 }
 
 function crtajLiniju() {
-  akcija = "linija";
-  oblik = "LineString";
+  akcija = lineString;
   setujAktivnu("#linija");
 }
 
 function crtajPoligon() {
-  akcija = "poligon";
-  oblik = "Polygon";
+  akcija = polygon;
   setujAktivnu("#poligon");
 }
 
-function wktGeometrije(feature) {
-  //var geom11 = feature.getGeometry().transform("EPSG:3857", "EPSG:4326");
-  //var coords = feature.getGeometry().getCoordinates();
-  var format = new ol.format.WKT();
-
-  /*var feature = format.readFeature(wkt, {
-    dataProjection: "EPSG:4326",
-    featureProjection: "EPSG:3857",
-  });*/
-
-  var wktRepresenation = format.writeGeometry(feature.getGeometry(), {
-    dataProjection: "EPSG:4326",
-    featureProjection: "EPSG:3857",
-  });
-  //console.log("bbbb", wktRepresenation);
-  return wktRepresenation;
-}
 
 /**Funkcija koja prolazi kroz nizove tačaka, linija i polgiona i kreira CQL uslov u zavisnosti od odabranih opcija */
 function kreiranjeCqlFilteraProstorno() {
@@ -125,18 +219,44 @@ function kreiranjeCqlFilteraProstorno() {
   return retVal;
 }
 
+/**Prikaz toast poruke. Od naslova zavisi boja, tj klasa koja se dodjeljuje */
+function poruka(naslov, tekst) {
+  let klasa = naslov.toLowerCase().trim();
+  klasa !== "uspjeh" && klasa !== "upozorenje" && klasa !== "greska" && (klasa = "obavjestenje");
+  document.querySelector("#toast").innerHTML = tekst;
+  document.querySelector("#toast").className = klasa;
+  setTimeout(function () {
+    document.querySelector("#toast").className = "";
+    document.querySelector("#toast").innerHTML = "";
+  }, 3000);
+}
+
+/** Akcija promjene ikonice u navbaru */
 function setujAktivnu(element) {
-  var els = document.querySelectorAll(".active");
-  for (var i = 0; i < els.length; i++) {
+  if (nacrtan || modifikovan) {
+    poruka("Upozorenje", "Nije moguće promijeniti aktivnost dok ne poništite crtanje nove ili izmjenu postojeće geometrije.");
+    return false;
+  }
+  let els = document.querySelectorAll(".active");
+  for (let i = 0; i < els.length; i++) {
     els[i].classList.remove("active");
   }
   document.querySelector(element).classList.add("active");
+  closeDiv("#pretragaDiv");
+  closeDiv("#atributiDiv");
+  if (element === "#atributi" || element === "#dodaj" || element === "#izmijeni") {
+    showDiv("#atributiDiv");
+  }
+  if (element === "#pretraga") {
+    showDiv("#pretragaDiv");
+  }
   podesiInterakciju();
   zatvoriHamburger();
 }
 
+/** Zatvara meni nakon odabira akcije, na malim ekranima */
 function zatvoriHamburger() {
-  var x = document.querySelector("#topNav");
+  let x = document.querySelector("#topNav");
   if (x.className === "topnav") {
     x.className += " responsive";
   } else {
@@ -152,20 +272,7 @@ function showDiv(nazivDiva) {
   document.querySelector(nazivDiva).style.width = "500px";
 }
 
-function poruka(naslov, tekst) {
-  //Mogao bih kao klasu da predajem naslov, ali može da dođe do greške u kucanju, pa da se ne prikazuje ništa
-  let klasa = naslov.toLowerCase().trim();
-  klasa !== "uspjeh" && klasa !== "upozorenje" && klasa !== "greska" && (klasa = "obavjestenje");
-  let komponenta = document.querySelector("#toast");
-  komponenta.innerHTML = tekst;
-  komponenta.className = klasa;
-  //uklanja div posle 3 sekunde
-  setTimeout(function () {
-    komponenta.className = "";
-    komponenta.innerHTML = "";
-  }, 3000);
-}
-
+/**Tri funkcije koje rade sa konfirm modalom - za potvrdu akcija/brisanja */
 function confirmModal(naslov, text, funkcija) {
   document.querySelector('#modalConfirmHeader').innerHTML = naslov;
   document.querySelector('#modalConfirmText').innerHTML = text;
@@ -180,3 +287,80 @@ function confirmPotvrdi(funkcija) {
 function confirmOdustani() {
   document.querySelector('#modalConfirm').style.display = 'none';
 }
+
+/**Funkcije za setovanje podloga */
+function osmPodloga() {
+  map.getLayers().setAt(0, osmBaseMap);
+}
+
+function topoPodloga() {
+  map.getLayers().setAt(0, katastarBaseMap);
+}
+
+function satelitPodloga() {
+  map.getLayers().setAt(0, satelitBaseMap);
+}
+
+/**Funkcije za download WFS-a */
+function shpDownload() {
+  wfsDownload("SHAPE-ZIP");
+}
+
+function kmlDownload() {
+  wfsDownload("KML");
+}
+
+function excelDownload() {
+  wfsDownload("excel2007");
+}
+
+/** Funkcije za rad sa navigacionim barom*/
+function pan() {
+  akcija = "pan";
+  setujAktivnu("#pan");
+}
+
+function dodaj() {
+  akcija = "dodaj";
+  setujAktivnu("#dodaj");
+}
+
+function izmijeni() {
+  akcija = "izmijeni";
+  setujAktivnu("#izmijeni");
+}
+
+function atributi() {
+  akcija = "atributi";
+  setujAktivnu("#atributi");
+}
+
+function pretraga() {
+  akcija = "pretraga";
+  setujAktivnu("#pretraga");
+}
+
+function restart() {
+  location.reload(true);
+}
+
+/**Povezivanje kontrola sa akcijama */
+document.querySelector("#pan").addEventListener("click", pan);
+document.querySelector("#dodaj").addEventListener("click", dodaj);
+document.querySelector("#izmijeni").addEventListener("click", izmijeni);
+document.querySelector("#atributi").addEventListener("click", atributi);
+document.querySelector("#slika").addEventListener("click", slika);
+document.querySelector("#marker").addEventListener("click", crtajTacku);
+document.querySelector("#linija").addEventListener("click", crtajLiniju);
+document.querySelector("#poligon").addEventListener("click", crtajPoligon);
+document.querySelector("#pretraga").addEventListener("click", pretraga);
+document.querySelector("#restart").addEventListener("click", restart);
+document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
+document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);
+document.querySelector("#podloga_satelit").addEventListener("click", satelitPodloga);
+document.querySelector("#shp").addEventListener("click", shpDownload);
+document.querySelector("#kml").addEventListener("click", kmlDownload);
+document.querySelector("#excel").addEventListener("click", excelDownload);
+
+document.querySelector("#confirmPotvrdi").addEventListener("click", confirmPotvrdi);
+document.querySelector("#confirmOdustani").addEventListener("click", confirmOdustani);

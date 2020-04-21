@@ -1,115 +1,26 @@
-var domainUrl = location.origin; //"http://localhost"; //"http://167.172.171.249"; //location.origin;
-//
-var wmsUrl = domainUrl + "/geoserver/winsoft/wms";
-var wfsUrl = domainUrl + "/geoserver/winsoft/wfs";
-var imageUrl = domainUrl + "/slike/";
-var tiledRaster = new ol.layer.Tile({
-  source: new ol.source.OSM(),
-  name: "Podloga",
-});
-var layername = "zbunje_v";
-/*var overlay = new ol.Overlay({
-  position: "bottom-center",
-  element: document.querySelector("#overlay")
-});*/
+/**Inicijalna deklaracija promjenljivih koje su vezane za konretan lejer */
+const layername = "zbunje_v",
+  layertitle = "Žbunje";
+const tipGeometrije = lineString;
+let opisSlike = "";
 
-var osmBaseMap = new ol.layer.Tile({
-  title: "Open Street Maps",
-  type: "base",
-  visible: true,
-  source: new ol.source.OSM(),
-});
-var satelitBaseMap = new ol.layer.Tile({
-  title: "Satelitski snimak",
-  type: "base",
-  source: new ol.source.XYZ({
-    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    maxZoom: 23,
-  }),
-});
-//Iskoristiti iz rastera "Image" ukoliko se tako bolje pokaže
-var katastarBaseMap = new ol.layer.Tile({
-  title: "Katastar",
-  name: "uzn",
-  source: new ol.source.TileWMS({
+var rasterLayer = new ol.layer.Image({
+  title: layertitle,
+  name: layername,
+  source: new ol.source.ImageWMS({
     url: wmsUrl,
     params: {
-      LAYERS: "winsoft:uzn",
+      LAYERS: "winsoft:" + layername,
     },
     ratio: 1,
     serverType: "geoserver",
   }),
 });
 
-var draw, modify;
-var idObjekta,
-  akcija = "pan",
-  oblik = "linija",
-  slikaUrl = "",
-  opisSlike = "";
-var poligoni = [],
-  linije = [],
-  tacke = [];
-var cqlFilter = "";
-
-/**Stilizacija vektora */
-var fill = new ol.style.Fill({
-  color: "rgba(255,0,0,0.3)",
-});
-var stroke = new ol.style.Stroke({
-  color: "#ff0000",
-  width: 2,
-});
-var circle = new ol.style.Circle({
-  radius: 7,
-  fill: fill,
-  stroke: stroke,
-});
-var vectorStyle = new ol.style.Style({
-  fill: fill,
-  stroke: stroke,
-  image: circle,
-});
-
-/**Povezivanje kontrola sa akcijama */
-document.querySelector("#pan").addEventListener("click", pan);
-document.querySelector("#odaberi").addEventListener("click", odaberi);
-document.querySelector("#dodaj").addEventListener("click", dodaj);
-document.querySelector("#izmijeni").addEventListener("click", izmijeni);
-document.querySelector("#atributi").addEventListener("click", atributi);
-document.querySelector("#slika").addEventListener("click", slika);
-document.querySelector("#marker").addEventListener("click", crtajTacku);
-document.querySelector("#linija").addEventListener("click", crtajLiniju);
-document.querySelector("#poligon").addEventListener("click", crtajPoligon);
-document.querySelector("#pretraga").addEventListener("click", pretraga);
-document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
-document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);
-document.querySelector("#podloga_satelit").addEventListener("click", satelitPodloga);
-document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
-document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);
-document.querySelector("#podloga_satelit").addEventListener("click", satelitPodloga);
-console.log(document.querySelector("#shp"));
-document.querySelector("#shp").addEventListener("click", shpDownload); //wfsDownload("SHAPE-ZIP")
-document.querySelector("#kml").addEventListener("click", kmlDownload);
-document.querySelector("#excel").addEventListener("click", excelDownload);
-
-document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
-document.querySelector("#btnPonisti").addEventListener("click", ponisti);
-document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
-
-document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
-document.querySelector("#btnPonisti").addEventListener("click", ponisti);
-document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
-
-document.querySelector("#btnFilter").addEventListener("click", filtriranje);
-
-document.querySelector("#confirmPotvrdi").addEventListener("click", confirmPotvrdi);
-document.querySelector("#confirmOdustani").addEventListener("click", confirmOdustani);
-
+/**Popunjavanje komponenti u divu za prikaz atributa, nakon pročitanog odgovora za WMS objekat */
 function popuniKontrole(odgovor) {
-  var atributi = odgovor.features[0]["properties"];
+  let atributi = odgovor.features[0]["properties"];
   idObjekta = atributi["id"];
-  console.log(odgovor);
   document.querySelector("#idObjekta").value = idObjekta;
   document.querySelector("#latinskiNaziv").value = atributi["latinski_naziv"];
   document.querySelector("#narodniNaziv").value = atributi["narodni_naziv"];
@@ -118,12 +29,18 @@ function popuniKontrole(odgovor) {
   document.querySelector("#napomena").value = atributi["napomena"];
 
   //slika
-  var slika = atributi["url_fotografije"];
+  let slika = atributi["url_fotografije"];
   slika.length && (slika = slika.substring(slika.lastIndexOf("/") + 1, slika.length));
   slika.length && (slikaUrl = imageUrl + slika);
   opisSlike = atributi["latinski_naziv"] + " - " + atributi["narodni_naziv"];
+  if (akcija === "izmijeni") {
+    //Ako se radi o izmjeni geometrije, čita objekad za idObjekta i postavlja ga kao vektor na mapi
+    wfsZaEdit(idObjekta);
+  }
 }
 
+//TODO: Ovo napraviti
+/** Unos izmijenjenih vrijednosti atributa, nove fotografije ili unos svih podataka za novu geometriju */
 function sacuvaj() {
   return false;
   if (!idObjekta) {
@@ -167,180 +84,127 @@ function restartovanje() {
   //overlay.getElement().innerHTML = "";
 }
 
-var rasterLayer = new ol.layer.Image({
-  title: "Žbunje",
-  name: "zbunje",
-  source: new ol.source.ImageWMS({
-    url: wmsUrl,
-    params: {
-      LAYERS: "winsoft:" + layername,
-    },
-    ratio: 1,
-    serverType: "geoserver",
-  }),
-});
-
-var center = ol.proj.transform([19.26, 42.443], "EPSG:4326", "EPSG:3857");
-var view = new ol.View({
-  center: center,
-  zoom: 17,
-});
-
-var map = new ol.Map({
+/**Smještanje mape u div sa id-jem "map" */
+let map = new ol.Map({
   target: "map",
-  layers: [tiledRaster, rasterLayer], //
+  layers: [osmBaseMap, rasterLayer],
   view: view,
 });
 
-var featuresLine = new ol.Collection();
-var featureLineOverlay = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: featuresLine,
-  }),
-  style: vectorStyle,
-});
+/** Dodavanje vektorskih lejera za crtanje i edit geometrije na mapu */
 featureLineOverlay.setMap(map);
-featureLineOverlay.getSource().on("addfeature", (evt) => linije.push(wktGeometrije(evt.feature)));
-
-var featuresPoint = new ol.Collection();
-var featurePointOverlay = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: featuresPoint,
-  }),
-  style: vectorStyle,
-});
 featurePointOverlay.setMap(map);
-featurePointOverlay.getSource().on("addfeature", (evt) => tacke.push(wktGeometrije(evt.feature)));
-
-var featuresPolygon = new ol.Collection();
-var featurePolygonOverlay = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: featuresPolygon,
-  }),
-  style: vectorStyle,
-});
 featurePolygonOverlay.setMap(map);
-featurePolygonOverlay.getSource().on("addfeature", (evt) => poligoni.push(wktGeometrije(evt.feature)));
-
-/**Za crtanje i izmjenu geometrije */
-var featuresTekuci = new ol.Collection();
-var featureTekuciOverlay = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: featuresTekuci,
-  }),
-  style: vectorStyle,
-});
 featureTekuciOverlay.setMap(map);
 
-//podešena modifikacija
-modify = new ol.interaction.Modify({
-  features: featuresTekuci,
-  deleteCondition: function (event) {
-    return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
-  },
-});
-map.addInteraction(modify);
-modify.on('modifyend', function (e) {
-  console.log("feature geometrija", wktGeometrije(e.features.getArray()[0]));
-});
-
-var vektorSource = new ol.source.Vector();
-
-/*var featuresTekuci = new ol.Collection();
-var featureTekuciOverlay = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: featuresTekuci,
-  }),
-  style: vectorStyle,
-});*/
-
+/**Podešava kada da se omogući crtanje i izmjena i na kojim lejerima */
 function podesiInterakciju() {
   //uklanja draw i modify
   map.removeInteraction(draw);
-  //map.removeInteraction(modify);
+  map.removeInteraction(modify);
 
-  if (akcija === "marker") {
+  if (akcija === point) {
     draw = new ol.interaction.Draw({
       features: featuresPoint,
-      type: "Point",
+      type: akcija,
+    });
+    modify = new ol.interaction.Modify({
+      features: featuresPoint,
+      deleteCondition: function (event) {
+        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
+      },
     });
     map.addInteraction(draw);
+    map.addInteraction(modify);
   }
-  if (akcija === "linija") {
+  if (akcija === lineString) {
     draw = new ol.interaction.Draw({
       features: featuresLine,
-      type: "LineString",
+      type: lineString,
+    });
+    modify = new ol.interaction.Modify({
+      features: featuresLine,
+      deleteCondition: function (event) {
+        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
+      },
     });
     map.addInteraction(draw);
+    map.addInteraction(modify);
   }
-  if (akcija === "poligon") {
+  if (akcija === polygon) {
     draw = new ol.interaction.Draw({
       features: featuresPolygon,
-      type: "Polygon",
+      type: polygon,
+    });
+    modify = new ol.interaction.Modify({
+      features: featuresPolygon,
+      deleteCondition: function (event) {
+        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
+      },
     });
     map.addInteraction(draw);
-  }
-  /*if (akcija === "izmijeni") {
-    if (oblik === "Point") {
-      modify = new ol.interaction.Modify({
-        features: featuresPoint,
-        deleteCondition: function (event) {
-          return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
-        },
-      });
-    }
-    if (oblik === "LineString") {
-      modify = new ol.interaction.Modify({
-        features: featuresLine,
-        deleteCondition: function (event) {
-          return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
-        },
-      });
-    }
-    if (oblik === "Polygon") {
-      modify = new ol.interaction.Modify({
-        features: featuresPolygon,
-        deleteCondition: function (event) {
-          return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
-        },
-      });
-    }
     map.addInteraction(modify);
-  }*/
+  }
+  if (akcija === "izmijeni") {
+    modify = new ol.interaction.Modify({
+      features: featuresTekuci,
+      deleteCondition: function (event) {
+        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
+      },
+    });
+    map.addInteraction(modify);
+    modify.on('modifyend', function (e) {
+      modifikovan = true;
+      console.log("feature geometrija", wktGeometrije(e.features.getArray()[0]));
+    });
+  }
+  if (akcija === "dodaj") {
+    draw = new ol.interaction.Draw({
+      features: featuresTekuci,
+      type: tipGeometrije,
+    });
+    modify = new ol.interaction.Modify({
+      features: featuresTekuci,
+      deleteCondition: function (event) {
+        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
+      },
+    });
+    draw.on('drawend', function (e) {
+      nacrtan = true;
+      console.log("feature nova geometrija", wktGeometrije(e.feature));
+    });
+    modify.on('modifyend', function (e) {
+      //Iz nekog razloga na brisanje čvora ne očitava odmah izmjenu
+      console.log("broj geometrija", e.features.getArray().length);
+      console.log("feature nova mijenjana geometrija", wktGeometrije(e.features.getArray()[0]));
+    });
+    map.addInteraction(draw);
+    map.addInteraction(modify);
+  }
 }
 
-//addInteraction();
 
-map.on("pointermove", onMouseMove);
 
+//map.on("pointermove", onMouseMove);
 function onMouseMove(evt) {
-  /*var coordinate = browserEvent.coordinate;
-  var pixel = map.getPixelFromCoordinate(coordinate);
-  var el = document.getElementById("name");
-  el.innerHTML = "";
-  map.forEachFeatureAtPixel(pixel, function (feature) {
-    el.innerHTML += feature.get("broj") + "<br>";
-  });*/
   if (evt.dragging) {
     return;
   }
   map.getTargetElement().style.cursor = "";
   var pixel = map.getEventPixel(evt.originalEvent);
   var hit = map.forEachLayerAtPixel(pixel, function (layer) {
-    //console.log('ln', layer.B.name);
-    if (layer.B.name === "zbunje") {
-      //console.log(layer.B);
+    if (layer.B.name === layername) {
       map.getTargetElement().style.cursor = "pointer";
       return false;
     }
   });
-  //map.getTargetElement().style.cursor = hit ? "pointer" : "";
 }
 
+/**Omogućava dodavanje novog vektor lejera drag-drop metodom */
+var vektorSource = new ol.source.Vector();
 var dragAndDrop = new ol.interaction.DragAndDrop({
   formatConstructors: [ol.format.GPX, ol.format.GeoJSON, ol.format.IGC, ol.format.KML, ol.format.TopoJSON],
 });
-
 dragAndDrop.on("addfeatures", function (event) {
   var vectorSource = new ol.source.Vector({
     features: event.features,
@@ -352,7 +216,8 @@ dragAndDrop.on("addfeatures", function (event) {
       style: vectorStyle,
     })
   );
-  view.fitExtent(vectorSource.getExtent(), map.getSize());
+  //TODO: fitExtent ne radi kako bi trebalo. Pogledati da se ispravi.
+  //view.fitExtent(vectorSource.getExtent(), map.getSize());
 });
 map.addInteraction(dragAndDrop);
 
@@ -360,7 +225,7 @@ map.addInteraction(dragAndDrop);
 map.on("click", onMouseClick);
 
 function onMouseClick(browserEvent) {
-  if (akcija === "atributi" || akcija === "odaberi") {
+  if (akcija === "atributi") {
     var coordinate = browserEvent.coordinate;
     var pixel = map.getPixelFromCoordinate(coordinate);
 
@@ -382,58 +247,18 @@ function onMouseClick(browserEvent) {
         });
     }
   }
-
-  //overlay.setPosition(coordinate);
-  //map.addOverlay(overlay);
-}
-
-function pan() {
-  akcija = "pan";
-  setujAktivnu("#pan");
-}
-
-function odaberi() {
-  akcija = "odaberi";
-  setujAktivnu("#odaberi");
-}
-
-function dodaj() {
-  akcija = "dodaj";
-  oblik = "LineString";
-  setujAktivnu("#dodaj");
 }
 
 function izbrisi() {
   confirmModal("UKLANJANJE", "Da li ste sigurni da želite da uklonite odabrani objekat?");
 }
 
-function izmijeni() {
-  akcija = "izmijeni";
-  //oblik = 'LineString';
-  setujAktivnu("#izmijeni");
-  wfsZaEdit(idObjekta);
-}
-
-function atributi() {
-  showDiv("#atributiDiv");
-  closeDiv("#pretragaDiv");
-  akcija = "atributi";
-  setujAktivnu("#atributi");
-}
-
-function pretraga() {
-  closeDiv("#atributiDiv");
-  showDiv("#pretragaDiv");
-  akcija = "pretraga";
-  setujAktivnu("#pretraga");
-}
-
-function sacuvaj() {
-  console.log("sacuvaj");
-}
-
+/**Metoda koja će sve resetovati na početne vrijednosti */
 function ponisti() {
   console.log("ponisti");
+  //Isprazniti source za crtanje i edit geometrije
+  modifikovan = false;
+  nacrtan = false;
   restartovanje();
 }
 
@@ -453,20 +278,12 @@ function filtriranje() {
   if (cqlFilter === "") {
     return false;
   }
-  console.log("cql filter", cqlFilter);
   let params = rasterLayer.getSource().getParams();
   params.CQL_FILTER = cqlFilter;
-  //"INTERSECTS(geom, POLYGON((19.256479740142822 42.44482842458774,19.252864122390747 42.44164566810562,19.260900020599365 42.441748595596266,19.259709119796753 42.44445631961446,19.256479740142822 42.44482842458774)))";
-  // Uncomment line below and comment line above if you prefer using sld
-  // params.sld_body = "yourxmlfiltercontent";
   rasterLayer.getSource().updateParams(params);
-  /*featuresPoint.forEach(function (entry) {
-    console.log(entry.B);
-  });*/
-  //console.log(featuresPoint);
-  //wfsFilter();
 }
 
+/** Filtriranje po atributima */
 function kreiranjeCqlFilteraAtributi() {
   let retVal = "";
 
@@ -480,6 +297,7 @@ function kreiranjeCqlFilteraAtributi() {
   return retVal;
 }
 
+//TODO: Ovo bi trebalo da omogući zumiranje, ali nešto ne radi kako treba. Pogledati i ako proradi, koristiti kod filtriranja WMS-a
 function wfsFilter() {
   $.ajax({
     method: "POST",
@@ -511,6 +329,7 @@ function wfsFilter() {
   });
 }
 
+/**Vraća jedan objekat čiji se id predaje i čija geometrija će se mijenjati */
 function wfsZaEdit(id) {
   if (id === "") {
     poruka("Upozorenje", "Nije odabran objekat čija geometrija se želi mijenjati.");
@@ -530,9 +349,8 @@ function wfsZaEdit(id) {
     },
     success: function (response) {
       var features = new ol.format.GeoJSON().readFeatures(response);
+      featureTekuciOverlay.getSource().clear(); //Ispraznimo prethodne zapise da bi imali samo jedan koji ćemo editovati
       featureTekuciOverlay.getSource().addFeatures(features);
-      console.log(features);
-      console.log("proslo", featureTekuciOverlay.getSource());
     },
     fail: function (jqXHR, textStatus) {
       console.log("Request failed: " + textStatus);
@@ -540,6 +358,7 @@ function wfsZaEdit(id) {
   });
 }
 
+/** Download WFS-a u zavisnosti od predatog formata */
 function wfsDownload(format) {
   let dodajCqlFilter = "";
   cqlFilter !== "" && (dodajCqlFilter = "&cql_filter=" + cqlFilter);
@@ -547,26 +366,8 @@ function wfsDownload(format) {
   return false;
 }
 
-function osmPodloga() {
-  map.getLayers().setAt(0, osmBaseMap);
-}
-
-function topoPodloga() {
-  map.getLayers().setAt(0, katastarBaseMap);
-}
-
-function satelitPodloga() {
-  map.getLayers().setAt(0, satelitBaseMap);
-}
-
-function shpDownload() {
-  wfsDownload("SHAPE-ZIP");
-}
-
-function kmlDownload() {
-  wfsDownload("KML");
-}
-
-function excelDownload() {
-  wfsDownload("excel2007");
-}
+/**Povezivanje kontrola koje zavise od lejera sa akcijama */
+document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
+document.querySelector("#btnPonisti").addEventListener("click", ponisti);
+document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
+document.querySelector("#btnFilter").addEventListener("click", filtriranje);

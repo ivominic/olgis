@@ -96,12 +96,12 @@ let map = new ol.Map({
 });*/
 //
 let razmjera = new ol.control.ScaleLine({
+  bar: true,
   target: document.querySelector("#razmjera"),
   units: "metric",
-  bar: true,
   steps: 4,
   text: true,
-  minWidth: 140
+  minWidth: 100
 });
 map.addControl(razmjera);
 

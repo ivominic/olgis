@@ -94,14 +94,14 @@ let map = new ol.Map({
 /*let razmjera = new ol.control.ScaleLine({
   target: document.querySelector("#razmjera")
 });*/
-//
+//Sve ovo je nepotrebno u OL3, u šestici prikazuje i scale bar
 let razmjera = new ol.control.ScaleLine({
   target: document.querySelector("#razmjera"),
   units: "metric",
   bar: true,
   steps: 4,
   text: true,
-  minWidth: 140
+  minWidth: 100
 });
 map.addControl(razmjera);
 

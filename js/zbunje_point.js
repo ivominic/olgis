@@ -1,7 +1,7 @@
 /**Inicijalna deklaracija promjenljivih koje su vezane za konretan lejer */
-const layername = "zbunje_v",
+const layername = "zbunje_point_v",
   layertitle = "Žbunje";
-const tipGeometrije = lineString;
+const tipGeometrije = point;
 let opisSlike = "";
 
 var rasterLayer = new ol.layer.Image({

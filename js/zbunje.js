@@ -188,6 +188,8 @@ function podesiInterakciju() {
 map.on("pointermove", onMouseMove);
 
 function onMouseMove(evt) {
+  let position = ol.proj.transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
+  document.querySelector("#koordinate").innerHTML = "X:" + position[0] + " Y:" + position[1];
   if (evt.dragging) {
     return;
   }

@@ -1,6 +1,6 @@
 /**Inicijalna deklaracija vrijednosti koje se korite u stranici*/
-const domainUrl = location.origin;
-//const domainUrl = "http://167.172.171.249";
+//const domainUrl = location.origin;
+const domainUrl = "http://167.172.171.249";
 const wmsUrl = domainUrl + "/geoserver/winsoft/wms";
 const wfsUrl = domainUrl + "/geoserver/winsoft/wfs";
 const imageUrl = domainUrl + "/slike/";
@@ -191,21 +191,21 @@ function kreiranjeCqlFilteraProstorno() {
     });
 
   (pretragaPoligonObuhvata || pretragaPoligonPresijeca) &&
-    poligoni.forEach((item) => {
-      if (retVal === "") {
-        if (pretragaPoligonPresijeca) {
-          retVal = "INTERSECTS(geom," + item + ") ";
-        } else {
-          retVal = "WITHIN(geom," + item + ") ";
-        }
+  poligoni.forEach((item) => {
+    if (retVal === "") {
+      if (pretragaPoligonPresijeca) {
+        retVal = "INTERSECTS(geom," + item + ") ";
       } else {
-        if (pretragaPoligonPresijeca) {
-          retVal += " OR INTERSECTS(geom," + item + ") ";
-        } else {
-          retVal += " OR WITHIN(geom," + item + ") ";
-        }
+        retVal = "WITHIN(geom," + item + ") ";
       }
-    });
+    } else {
+      if (pretragaPoligonPresijeca) {
+        retVal += " OR INTERSECTS(geom," + item + ") ";
+      } else {
+        retVal += " OR WITHIN(geom," + item + ") ";
+      }
+    }
+  });
 
   return retVal;
 }

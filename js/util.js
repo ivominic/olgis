@@ -1,6 +1,6 @@
 /**Inicijalna deklaracija vrijednosti koje se korite u stranici*/
-//const domainUrl = location.origin;
-const domainUrl = "http://167.172.171.249";
+const domainUrl = location.origin;
+//const domainUrl = "http://167.172.171.249";
 const wmsUrl = domainUrl + "/geoserver/winsoft/wms";
 const wfsUrl = domainUrl + "/geoserver/winsoft/wfs";
 const imageUrl = domainUrl + "/slike/";
@@ -10,8 +10,11 @@ const point = "Point",
   tacke = [],
   linije = [],
   poligoni = [];
-let draw, modify, cqlFilter = "",
-  idObjekta, akcija = "pan",
+let draw,
+  modify,
+  cqlFilter = "",
+  idObjekta,
+  akcija = "pan",
   slikaUrl = "";
 let nacrtan = false,
   modifikovan = false;
@@ -116,7 +119,6 @@ function slika() {
   if (slikaUrl === "") {
     poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
   } else {
-
     akcija = "slika";
 
     document.querySelector("#modalFotografija").style.display = "block";
@@ -144,7 +146,6 @@ function crtajPoligon() {
   akcija = polygon;
   setujAktivnu("#poligon");
 }
-
 
 /**Funkcija koja prolazi kroz nizove tačaka, linija i polgiona i kreira CQL uslov u zavisnosti od odabranih opcija */
 function kreiranjeCqlFilteraProstorno() {
@@ -190,21 +191,21 @@ function kreiranjeCqlFilteraProstorno() {
     });
 
   (pretragaPoligonObuhvata || pretragaPoligonPresijeca) &&
-  poligoni.forEach((item) => {
-    if (retVal === "") {
-      if (pretragaPoligonPresijeca) {
-        retVal = "INTERSECTS(geom," + item + ") ";
+    poligoni.forEach((item) => {
+      if (retVal === "") {
+        if (pretragaPoligonPresijeca) {
+          retVal = "INTERSECTS(geom," + item + ") ";
+        } else {
+          retVal = "WITHIN(geom," + item + ") ";
+        }
       } else {
-        retVal = "WITHIN(geom," + item + ") ";
+        if (pretragaPoligonPresijeca) {
+          retVal += " OR INTERSECTS(geom," + item + ") ";
+        } else {
+          retVal += " OR WITHIN(geom," + item + ") ";
+        }
       }
-    } else {
-      if (pretragaPoligonPresijeca) {
-        retVal += " OR INTERSECTS(geom," + item + ") ";
-      } else {
-        retVal += " OR WITHIN(geom," + item + ") ";
-      }
-    }
-  });
+    });
 
   return retVal;
 }
@@ -264,43 +265,49 @@ function showDiv(nazivDiva) {
 
 /**Tri funkcije koje rade sa konfirm modalom - za potvrdu akcija/brisanja */
 function confirmModal(naslov, text, funkcija) {
-  document.querySelector('#modalConfirmHeader').innerHTML = naslov;
-  document.querySelector('#modalConfirmText').innerHTML = text;
-  document.querySelector('#modalConfirm').style.display = 'block'
+  document.querySelector("#modalConfirmHeader").innerHTML = naslov;
+  document.querySelector("#modalConfirmText").innerHTML = text;
+  document.querySelector("#modalConfirm").style.display = "block";
 }
 
 function confirmPotvrdi(funkcija) {
-  document.querySelector('#modalConfirm').style.display = 'none';
+  document.querySelector("#modalConfirm").style.display = "none";
   brisanje();
 }
 
 function confirmOdustani() {
-  document.querySelector('#modalConfirm').style.display = 'none';
+  document.querySelector("#modalConfirm").style.display = "none";
 }
 
 /**Funkcije za setovanje podloga */
 function osmPodloga() {
   map.getLayers().setAt(0, osmBaseMap);
+  zatvoriHamburger();
 }
 
 function topoPodloga() {
   map.getLayers().setAt(0, katastarBaseMap);
+  zatvoriHamburger();
 }
 
 function satelitPodloga() {
   map.getLayers().setAt(0, satelitBaseMap);
+  zatvoriHamburger();
 }
 
 /**Funkcije za download WFS-a */
 function shpDownload() {
+  zatvoriHamburger();
   wfsDownload("SHAPE-ZIP");
 }
 
 function kmlDownload() {
+  zatvoriHamburger();
   wfsDownload("KML");
 }
 
 function excelDownload() {
+  zatvoriHamburger();
   wfsDownload("excel2007");
 }
 

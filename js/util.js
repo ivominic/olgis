@@ -102,9 +102,11 @@ featureLineOverlay.getSource().on("addfeature", (evt) => linije.push(wktGeometri
 featurePointOverlay.getSource().on("addfeature", (evt) => tacke.push(wktGeometrije(evt.feature)));
 featurePolygonOverlay.getSource().on("addfeature", (evt) => poligoni.push(wktGeometrije(evt.feature)));
 
+let slikeUrl = [],
+  slikeIndex = 0;
 /** Klikom na modalnu sliku, otvara novi tab sa istom slikom */
 document.querySelector("#imgModal").onclick = function () {
-  window.open(slikaUrl, "_blank");
+  window.open(slikeUrl[slikeIndex], "_blank");
 };
 
 /** Podešava vrijednost ddl liste */
@@ -116,13 +118,17 @@ function setujDdlVrijednost(ddl, vrijednost) {
 
 /** Prikazuje sliku za odabrani objekat u modalnom prozoru */
 function slika() {
-  if (slikaUrl === "") {
+  slikeIndex = 0;
+  slikeUrl[0] = "https://cdn.pixabay.com/photo/2017/07/10/23/45/cubes-2492010_960_720.jpg";
+  slikeUrl[1] = "https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg";
+  if (slikeUrl.length === 0) {
     poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
   } else {
     akcija = "slika";
 
     document.querySelector("#modalFotografija").style.display = "block";
-    document.querySelector("#imgModal").src = slikaUrl;
+    //document.querySelector("#imgModal").src = slikeUrl[0];
+    prikaziSliku(0);
     document.querySelector("#naslovFotografija").innerHTML = opisSlike;
 
     document.querySelector("#zatvoriModalFotografija").onclick = function () {
@@ -131,6 +137,14 @@ function slika() {
     setujAktivnu("#slika");
   }
 }
+
+function prikaziSliku(n) {
+  slikeIndex += n;
+  slikeIndex < 0 && (slikeIndex = slikeUrl.length - 1);
+  slikeIndex >= slikeUrl.length && (slikeIndex = 0);
+  document.querySelector("#imgModal").src = slikeUrl[slikeIndex];
+}
+
 
 function crtajTacku() {
   akcija = point;

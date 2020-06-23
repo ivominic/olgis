@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Antenski stubovi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400&display=swap" rel="stylesheet" />
+    <!-- Add icon library -->
+    <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <link rel="stylesheet" href="css/util.css" />
+    <link rel="stylesheet" href="css/stil.css" />
+    <link rel="stylesheet" href="css/slika.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="css/ol.css" />    
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/build/ol.js"></script>    
+</head>
+<body>
+<div class="pocetni-div">
+    <div class="topnav" id="topNav">
+        <a href="#" class="active tooltip" id="pan" data-tool="Pan"><i class="far fa-hand-paper"></i></a>
+        <a href="#" id="dodaj" class="tooltip" data-tool="Novi objekat"><i class="far fa-plus-square"></i></a>
+        <a href="#" id="izmijeni" class="tooltip" data-tool="Izmjena geometrije"><i class="fas fa-edit"></i></a>
+        <a href="#" id="atributi" class="tooltip" data-tool="Atributi"><i class="fas fa-info-circle"></i></a>
+        <a href="#" id="slika" class="tooltip" data-tool="Fotografija"><i class="fas fa-camera-retro"></i></a>
+        <a href="#" id="marker" class="tooltip" data-tool="Crtanje tačke"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <a href="#" id="linija" class="tooltip" data-tool="Crtanje linije"><i class="fas fa-route"></i></a>
+        <a href="#" id="poligon" class="tooltip" data-tool="Crtanje poligona"><i class="fas fa-draw-polygon"></i></a>
+        <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
+        <div class="dropdown">
+            <button class="dropbtn">
+                <i class="fab fa-buffer"></i>
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#" id="podloga_osm">OSM</a>
+                <a href="#" id="podloga_topo">Katastar</a>
+                <a href="#" id="podloga_satelit">Satelit</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">
+                <i class="fas fa-download"></i>
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#" id="shp">SHP</a>
+                <a href="#" id="kml">KML</a>
+                <a href="#" id="excel">Excel</a>
+            </div>
+        </div>
+        <a href="#" id="restart" class="tooltip" data-tool="Restart"><i class="fas fa-power-off"></i></a>
+        <a href='${g.createLink(controller: 'drvece', action: 'uvodna')}' id="home" class="tooltip" data-tool="Početna"><i class="fas fa-home"></i></a>
+        <a href="javascript:void(0);" class="icon" onclick="zatvoriHamburger()">&#9776;</a>
+    </div>
+</div>
+<div id="map" class="map"></div>
+
+<div id="atributiDiv" class="sidenav">
+
+    <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#atributiDiv')">&times;</a>
+    <h1>Atributi objekta</h1>
+    <div class="row">
+        <div class="column">
+            <label for="idObjekta">Id objekta:</label>
+            <input type="text" id="idObjekta" readonly />
+        </div>
+        <div class="column">
+            <label for="objectid">Objectid:</label>
+            <input type="text" id="objectid" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="idAs">Id antenskog stuba:</label>
+            <input type="text" id="idAs" />
+        </div>
+        <div class="column">
+            <label for="idOperato">Id operatora:</label>
+            <input type="text" id="idOperato" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="nazivAs">Naziv stuba:</label>
+            <input type="text" id="nazivAs" />
+        </div>
+        <div class="column">
+            <label for="nazivLok">Naziv lokacije:</label>
+            <input type="text" id="nazivLok" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="opstina">Opstina:</label>
+            <input type="text" id="opstina" />
+        </div>
+        <div class="column">
+            <label for="tip">Tip stuba:</label>
+            <input type="text" id="tip" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="nadVisina">Nadmorska visina:</label>
+            <input type="text" id="nadVisina" />
+        </div>
+        <div class="column">
+            <label for="dimOsnove">Dimenzije osnove:</label>
+            <input type="text" id="dimOsnove" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="visStuba">Visina stuba:</label>
+            <input type="text" id="visStuba" />
+        </div>
+        <div class="column">
+            <label for="visinaObj">Visina objekta (m):</label>
+            <input type="number" id="visinaObj" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="ekipId">Ekip id:</label>
+            <input type="text" id="ekipId" />
+        </div>
+        <div class="column">
+            <label for="userId">User id:</label>
+            <input type="text" id="userId" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="fotoSever">Foto sjever:</label>
+            <input type="text" id="fotoSever" />
+        </div>
+        <div class="column">
+            <label for="fotoIstok">Foto istok</label>
+            <input type="text" id="fotoIstok" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="fotoJug">Foto jug:</label>
+            <input type="text" id="fotoJug" />
+        </div>
+        <div class="column">
+            <label for="fotoZapad">Foto zapad:</label>
+            <input type="text" id="fotoZapad" />
+        </div>
+    </div>
+    <div class="row">
+        <input type="file" class="sama" accept="image/*" capture="environment" id="dodavanjeSlike" />
+    </div>
+    <div class="row">
+        <button type="button" class="btn" id="btnSacuvaj"><i class="fas fa-check-circle"></i> Sačuvaj</button>
+        <!--<button type="button" class="btn" id="btnPonisti"><i class="fas fa-undo-alt"></i> Poništi</button>-->
+        <button type="button" class="btn" id="btnIzbrisi"><i class="fas fa-trash"></i> Izbriši</button>
+    </div>
+    <div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>
+</div>
+
+<div id="pretragaDiv" class="sidenav">
+    <h1>Pretraga</h1>
+    <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#pretragaDiv')">&times;</a>
+    <div class="row">
+        <div class="column">
+            <label class="container">
+                Od tačke
+                <input type="checkbox" id="pretragaTacke" />
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="column">
+            <label for="pretragaTackeUdaljenost">Udaljenost:</label>
+            <input type="number" id="pretragaTackeUdaljenost" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label class="container">
+                Linija presijeca
+                <input type="checkbox" id="pretragaLinije" />
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label class="container">
+                Poligon obuhvata
+                <input type="checkbox" id="pretragaPoligonObuhvata" />
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="column">
+            <label class="container">
+                Poligon presijeca
+                <input type="checkbox" id="pretragaPoligonPresijeca" />
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaIdObjekta">Id objekta:</label>
+            <input type="text" id="pretragaIdObjekta" />
+        </div>
+        <div class="column">
+            <label for="pretragaObjectid">Objectid:</label>
+            <input type="text" id="pretragaObjectid" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaIdAs">Id antenskog stuba:</label>
+            <input type="text" id="pretragaIdAs" />
+        </div>
+        <div class="column">
+            <label for="pretragaIdOperato">Id operatora:</label>
+            <input type="text" id="pretragaIdOperato" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaNazivAs">Naziv antenskog stuba:</label>
+            <input type="text" id="pretragaNazivAs" />
+        </div>
+        <div class="column">
+            <label for="pretragaNazivLok">Naziv lokacije:</label>
+            <input type="text" id="pretragaNazivLok" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaOpstina">Opština:</label>
+            <input type="text" id="pretragaOpstina" />
+        </div>
+        <div class="column">
+            <label for="pretragaTip">Tip stuba:</label>
+            <input type="text" id="pretragaTip" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaNadVisina">Nadmorska visina:</label>
+            <input type="text" id="pretragaNadVisina" />
+        </div>
+        <div class="column">
+            <label for="pretragaDimOsnove">Dimenzije osnove:</label>
+            <input type="text" id="pretragaDimOsnove" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaVisStuba">Visina stuba:</label>
+            <input type="text" id="pretragaVisStuba" />
+        </div>
+        <div class="column">
+            <label for="pretragaVisinaObj">Visina objekta (m):</label>
+            <input type="number" id="pretragaVisinaObj" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaEkipId">Ekip id:</label>
+            <input type="text" id="pretragaEkipId" />
+        </div>
+        <div class="column">
+            <label for="pretragaUserId">User id:</label>
+            <input type="text" id="pretragaUserId" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaFotoSever">Foto sjever:</label>
+            <input type="text" id="pretragaFotoSever" />
+        </div>
+        <div class="column">
+            <label for="pretragaFotoIstok">Foto istok:</label>
+            <input type="text" id="pretragaFotoIstok" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="pretragaFotoJug">Foto jug:</label>
+            <input type="text" id="pretragaFotoJug" />
+        </div>
+        <div class="column">
+            <label for="pretragaFotoZapad">Foto zapad:</label>
+            <input type="text" id="pretragaFotoZapad" />
+        </div>
+    </div>
+    <div class="row"></div>
+    <div class="row">
+        <button type="button" class="btn" id="btnFilter"><i class="fas fa-search"></i> Filtriranje</button>
+    </div>
+    <div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>
+</div>
+
+<!-- Modalna fotografija -->
+<div id="modalFotografija" class="modal">
+    <span id="zatvoriModalFotografija" class="close">&times;</span>
+    <img class="modal-content" id="imgModal" alt="Nema fotografije" />
+    <div id="naslovFotografija"></div>
+    <a class="prev" onclick="prikaziSliku(-1)">&#10094;</a>
+    <a class="next" onclick="prikaziSliku(1)">&#10095;</a>
+</div>
+<!-- Toast -->
+<div id="toast"></div>
+<!-- Modal confirm-->
+<div id="modalConfirm" class="modal">
+    <span onclick="confirmOdustani" class="close" title="Close Modal">&times;</span>
+    <div class="confirm-modal-content confirm-container">
+        <h2 id="modalConfirmHeader"></h2>
+        <h4 id="modalConfirmText"></h4>
+
+        <div class="confirm-clearfix">
+            <button type="button" class="confirmbtn confirm-cancelbtn" id="confirmOdustani">Odustani</button>
+            <button type="button" class="confirmbtn confirm-deletebtn" id="confirmPotvrdi">Potvrdi</button>
+        </div>
+    </div>
+</div>
+<!-- Modal spinner za ajax request-->
+<div id="fadeSpinner"></div>
+<div id="modalSpinner">
+    <asset:image src="loading.gif" alt="Loading..."/>
+</div>
+<div class="razmjera" id="razmjera"></div>
+<div class="koordinate" id="koordinate"></div>
+
+<script type="text/javascript">
+    const citajSlikeUrl= '';
+</script>
+
+
+
+<script src="js/javna_util.js"></script>
+<script src="js/javna.js"></script>
+</body>
+</html>

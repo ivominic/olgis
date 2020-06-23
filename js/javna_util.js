@@ -1,8 +1,9 @@
 /**Inicijalna deklaracija vrijednosti koje se korite u stranici*/
 const domainUrl = location.origin;
+//const domainUrl = "http://localhost:8088";
 //const domainUrl = "http://167.172.171.249";
-const wmsUrl = domainUrl + "/geoserver/winsoft/wms";
-const wfsUrl = domainUrl + "/geoserver/winsoft/wfs";
+const wmsUrl = domainUrl + "/geoserver/ekip/wms";
+const wfsUrl = domainUrl + "/geoserver/ekip/wfs";
 const imageUrl = domainUrl + "/slike/";
 const point = "Point",
   lineString = "LineString",
@@ -13,10 +14,13 @@ const point = "Point",
 let draw,
   modify,
   cqlFilter = "",
-  idObjekta,
+  idObjekta = 0,
   akcija = "pan",
-  slikaUrl = "";
-let nacrtan = false,
+  slikaUrl = "",
+  slikeUrl = [],
+  slikeIndex = 0;
+let geometrijaZaBazuWkt = "",
+  nacrtan = false,
   modifikovan = false;
 
 /**Definisanje podloga */
@@ -37,7 +41,7 @@ var katastarBaseMap = new ol.layer.Tile({
   source: new ol.source.TileWMS({
     url: wmsUrl,
     params: {
-      LAYERS: "winsoft:uzn",
+      LAYERS: "ekip:uzn",
     },
     ratio: 1,
     serverType: "geoserver",
@@ -67,17 +71,26 @@ var vectorStyle = new ol.style.Style({
 let center = ol.proj.transform([19.26, 42.443], "EPSG:4326", "EPSG:3857");
 let view = new ol.View({
   center: center,
-  zoom: 17,
+  zoom: 9,
+});
+
+/** Prikaz razmjernika na mapi*/
+const razmjera = new ol.control.ScaleLine({
+  target: document.querySelector("#razmjera"),
+  units: "metric",
+  bar: true,
+  steps: 4,
+  text: true,
+  minWidth: 100
 });
 
 /** Vraća well known tekst reprezentaciju geometrije za predati feature */
 function wktGeometrije(feature) {
   let format = new ol.format.WKT();
-  let wktRepresenation = format.writeGeometry(feature.getGeometry(), {
+  return format.writeGeometry(feature.getGeometry(), {
     dataProjection: "EPSG:4326",
     featureProjection: "EPSG:3857",
   });
-  return wktRepresenation;
 }
 
 /**Kreiranje vektorskih lejera za crtanje i kreiranje nove geometrije ili edit postojeće (point, linestring, polygon, new i edit) */
@@ -102,10 +115,9 @@ featureLineOverlay.getSource().on("addfeature", (evt) => linije.push(wktGeometri
 featurePointOverlay.getSource().on("addfeature", (evt) => tacke.push(wktGeometrije(evt.feature)));
 featurePolygonOverlay.getSource().on("addfeature", (evt) => poligoni.push(wktGeometrije(evt.feature)));
 
-let slikeUrl = [],
-  slikeIndex = 0;
 /** Klikom na modalnu sliku, otvara novi tab sa istom slikom */
 document.querySelector("#imgModal").onclick = function () {
+  //window.open(slikaUrl, "_blank");
   window.open(slikeUrl[slikeIndex], "_blank");
 };
 
@@ -116,28 +128,7 @@ function setujDdlVrijednost(ddl, vrijednost) {
   }
 }
 
-/** Prikazuje sliku za odabrani objekat u modalnom prozoru */
-function slika() {
-  slikeIndex = 0;
-  slikeUrl[0] = "https://cdn.pixabay.com/photo/2017/07/10/23/45/cubes-2492010_960_720.jpg";
-  slikeUrl[1] = "https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg";
-  if (slikeUrl.length === 0) {
-    poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
-  } else {
-    akcija = "slika";
-
-    document.querySelector("#modalFotografija").style.display = "block";
-    //document.querySelector("#imgModal").src = slikeUrl[0];
-    prikaziSliku(0);
-    document.querySelector("#naslovFotografija").innerHTML = opisSlike;
-
-    document.querySelector("#zatvoriModalFotografija").onclick = function () {
-      document.querySelector("#modalFotografija").style.display = "none";
-    };
-    setujAktivnu("#slika");
-  }
-}
-
+/** Sljedeća ili prethodna slika, zavisno je li n=1 ili n=-1*/
 function prikaziSliku(n) {
   slikeIndex += n;
   slikeIndex < 0 && (slikeIndex = slikeUrl.length - 1);
@@ -145,6 +136,48 @@ function prikaziSliku(n) {
   document.querySelector("#imgModal").src = slikeUrl[slikeIndex];
 }
 
+/** Prikazuje sliku za odabrani objekat u modalnom prozoru */
+function slika() {
+  slikeIndex = 0;
+  slikeUrl = [];
+
+  if (idObjekta > 0) {
+    let parametri = new FormData();
+    parametri.append("id", idObjekta);
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', citajSlikeUrl, true);
+    xhr.send(parametri);
+    xhr.onreadystatechange = function () {
+      if (this.readyState === 4) {
+        if (this.status === 200) {
+          let jsonResponse = JSON.parse(xhr.responseText);
+          console.log(jsonResponse);
+          if (jsonResponse["success"] === true && jsonResponse["data"].length > 0) {
+            for (let i = 0; i < jsonResponse["data"].length; i++) {
+              let tmpSlika = jsonResponse["data"][i].fotografija;
+              tmpSlika.length && (tmpSlika = tmpSlika.substring(tmpSlika.lastIndexOf("/") + 1, tmpSlika.length));
+              slikeUrl[i] = imageUrl + tmpSlika;
+              console.log(i, slikeUrl[i]);
+            }
+            //akcija = "slika";
+            document.querySelector("#modalFotografija").style.display = "block";
+            prikaziSliku(0);
+            document.querySelector("#naslovFotografija").innerHTML = opisSlike;
+
+            document.querySelector("#zatvoriModalFotografija").onclick = function () {
+              document.querySelector("#modalFotografija").style.display = "none";
+            };
+            //setujAktivnu("#slika"); //Da ne zatvara stranicu sa atributima
+          }
+        } else {
+          poruka("Greska", xhr.statusText);
+        }
+      }
+    };
+  } else {
+    poruka("Upozorenje", "Nije odabran objekat na mapi za koji želite da se prikaže fotografija.");
+  }
+}
 
 function crtajTacku() {
   akcija = point;
@@ -249,7 +282,8 @@ function setujAktivnu(element) {
   document.querySelector(element).classList.add("active");
   closeDiv("#pretragaDiv");
   closeDiv("#atributiDiv");
-  if (element === "#atributi" || element === "#dodaj") {
+  //if (element === "#atributi" || element === "#dodaj") {
+  if (element === "#atributi") {
     showDiv("#atributiDiv");
   }
   if (element === "#pretraga") {
@@ -274,7 +308,12 @@ function closeDiv(nazivDiva) {
 }
 
 function showDiv(nazivDiva) {
-  document.querySelector(nazivDiva).style.width = "500px";
+  if (screen.width < 700) {
+    document.querySelector(nazivDiva).style.width = "340px";
+  } else {
+    document.querySelector(nazivDiva).style.width = "500px";
+  }
+
 }
 
 /**Tri funkcije koje rade sa konfirm modalom - za potvrdu akcija/brisanja */
@@ -291,6 +330,16 @@ function confirmPotvrdi(funkcija) {
 
 function confirmOdustani() {
   document.querySelector("#modalConfirm").style.display = "none";
+}
+
+function openModalSpinner() {
+  document.querySelector('#modalSpinner').style.display = 'block';
+  document.querySelector('#fadeSpinner').style.display = 'block';
+}
+
+function closeModalSpinner() {
+  document.querySelector('#modalSpinner').style.display = 'none';
+  document.querySelector('#fadeSpinner').style.display = 'none';
 }
 
 /**Funkcije za setovanje podloga */

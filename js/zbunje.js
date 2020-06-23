@@ -1,5 +1,5 @@
-/**Inicijalna deklaracija promjenljivih koje su vezane za konretan lejer */
-const layername = "zbunje_v",
+/**Inicijalna deklaracija promjenljivih koje su vezane za konkretan lejer */
+const layername = "drvece_v",
   layertitle = "Žbunje";
 const tipGeometrije = lineString;
 let opisSlike = "";
@@ -82,7 +82,6 @@ function restartovanje() {
   opisSlike = "";
 }
 
-
 /**Smještanje mape u div sa id-jem "map" */
 let map = new ol.Map({
   target: "map",
@@ -101,7 +100,7 @@ let razmjera = new ol.control.ScaleLine({
   bar: true,
   steps: 4,
   text: true,
-  minWidth: 100
+  minWidth: 100,
 });
 map.addControl(razmjera);
 
@@ -167,7 +166,7 @@ function podesiInterakciju() {
       },
     });
     map.addInteraction(modify);
-    modify.on('modifyend', function (e) {
+    modify.on("modifyend", function (e) {
       modifikovan = true;
       console.log("feature geometrija", wktGeometrije(e.features.getArray()[0]));
     });
@@ -183,13 +182,13 @@ function podesiInterakciju() {
         return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
       },
     });
-    draw.on('drawend', function (e) {
+    draw.on("drawend", function (e) {
       nacrtan = true;
       //TODO: ovo možda dodati u promjeni akcije i poništi
-      featureTekuciOverlay.getSource().clear(); //Samo jedan može da se crta      
+      featureTekuciOverlay.getSource().clear(); //Samo jedan može da se crta
       console.log("feature nova geometrija", wktGeometrije(e.feature));
     });
-    modify.on('modifyend', function (e) {
+    modify.on("modifyend", function (e) {
       //Iz nekog razloga na brisanje čvora ne očitava odmah izmjenu
       console.log("broj geometrija", e.features.getArray().length);
       console.log("feature nova mijenjana geometrija", wktGeometrije(e.features.getArray()[0]));
@@ -209,8 +208,10 @@ function onMouseMove(evt) {
   }
   map.getTargetElement().style.cursor = "";
   var pixel = map.getEventPixel(evt.originalEvent);
-  var hit = map.forEachLayerAtPixel(pixel, function (layer) {
-    if (layer.B.name === layername) {
+  var hit = map.forEachLayerAtPixel(pixel, function (layer, feature) {
+    console.log("Lejer", layer);
+    console.log("Lejer prop", rasterLayer);
+    if (layer === rasterLayer) {
       map.getTargetElement().style.cursor = "pointer";
       return false;
     }
@@ -234,7 +235,7 @@ dragAndDrop.on("addfeatures", function (event) {
     })
   );
   //TODO: fitExtent ne radi kako bi trebalo. Pogledati da se ispravi.
-  //view.fitExtent(vectorSource.getExtent(), map.getSize());
+  view.fit(vectorSource.getExtent(), map.getSize());
 });
 map.addInteraction(dragAndDrop);
 
@@ -246,7 +247,7 @@ function onMouseClick(browserEvent) {
     var coordinate = browserEvent.coordinate;
     var pixel = map.getPixelFromCoordinate(coordinate);
 
-    var url = rasterLayer.getSource().getGetFeatureInfoUrl(browserEvent.coordinate, map.getView().getResolution(), "EPSG:3857", {
+    var url = rasterLayer.getSource().getFeatureInfoUrl(browserEvent.coordinate, map.getView().getResolution(), "EPSG:3857", {
       INFO_FORMAT: "application/json",
     });
     if (url) {
@@ -298,6 +299,7 @@ function filtriranje() {
   let params = rasterLayer.getSource().getParams();
   params.CQL_FILTER = cqlFilter;
   rasterLayer.getSource().updateParams(params);
+  wfsFilter();
 }
 
 /** Filtriranje po atributima */
@@ -332,13 +334,14 @@ function wfsFilter() {
       console.log(response);
       var features = new ol.format.GeoJSON().readFeatures(response);
       console.log(features);
+      vektorSource.clear();
       vektorSource.addFeatures(features);
       console.log(vektorSource.getExtent());
-      var boundingExtent = ol.extent.boundingExtent(vektorSource.getExtent());
+      /*var boundingExtent = ol.extent.boundingExtent(vektorSource.getExtent());
       boundingExtent = ol.proj.transformExtent(boundingExtent, ol.proj.get("EPSG:4326"), ol.proj.get("EPSG:3857"));
       console.log(boundingExtent);
-      console.log("size", map.getSize());
-      //map.getView().fit(boundingExtent, map.getSize());
+      console.log("size", map.getSize());*/
+      map.getView().fit(vektorSource.getExtent(), map.getSize());
     },
     fail: function (jqXHR, textStatus) {
       console.log("Request failed: " + textStatus);

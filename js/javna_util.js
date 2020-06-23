@@ -281,9 +281,9 @@ function setujAktivnu(element) {
   }
   document.querySelector(element).classList.add("active");
   closeDiv("#pretragaDiv");
-  closeDiv("#atributiDiv");
-  if (element === "#atributi") {
-    showDiv("#atributiDiv");
+  closeDiv("#lejeriDiv");
+  if (element === "#lejeri") {
+    showDiv("#lejeriDiv");
   }
   if (element === "#pretraga") {
     showDiv("#pretragaDiv");
@@ -342,7 +342,7 @@ function closeModalSpinner() {
 }
 
 /**Funkcije za setovanje podloga */
-function osmPodloga() {
+/*function osmPodloga() {
   map.getLayers().setAt(0, osmBaseMap);
   zatvoriHamburger();
 }
@@ -355,7 +355,7 @@ function topoPodloga() {
 function satelitPodloga() {
   map.getLayers().setAt(0, satelitBaseMap);
   zatvoriHamburger();
-}
+}*/
 
 /**Funkcije za download WFS-a */
 function shpDownload() {
@@ -379,9 +379,10 @@ function pan() {
   setujAktivnu("#pan");
 }
 
-function atributi() {
-  akcija = "atributi";
-  setujAktivnu("#atributi");
+
+function lejeri() {
+  akcija = "lejeri";
+  setujAktivnu("#lejeri");
 }
 
 function pretraga() {
@@ -396,15 +397,13 @@ function restart() {
 /**Povezivanje kontrola sa akcijama */
 document.querySelector("#pan").addEventListener("click", pan);
 document.querySelector("#atributi").addEventListener("click", atributi);
+document.querySelector("#lejeri").addEventListener("click", lejeri);
 document.querySelector("#slika").addEventListener("click", slika);
 document.querySelector("#marker").addEventListener("click", crtajTacku);
 document.querySelector("#linija").addEventListener("click", crtajLiniju);
 document.querySelector("#poligon").addEventListener("click", crtajPoligon);
 document.querySelector("#pretraga").addEventListener("click", pretraga);
 document.querySelector("#restart").addEventListener("click", restart);
-document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
-document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);
-document.querySelector("#podloga_satelit").addEventListener("click", satelitPodloga);
 document.querySelector("#shp").addEventListener("click", shpDownload);
 document.querySelector("#kml").addEventListener("click", kmlDownload);
 document.querySelector("#excel").addEventListener("click", excelDownload);

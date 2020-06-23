@@ -27,17 +27,7 @@
         <a href="#" id="linija" class="tooltip" data-tool="Crtanje linije"><i class="fas fa-route"></i></a>
         <a href="#" id="poligon" class="tooltip" data-tool="Crtanje poligona"><i class="fas fa-draw-polygon"></i></a>
         <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
-        <div class="dropdown">
-          <button class="dropbtn">
-            <i class="fab fa-buffer"></i>
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a href="#" id="podloga_osm">OSM</a>
-            <a href="#" id="podloga_topo">Katastar</a>
-            <a href="#" id="podloga_satelit">Satelit</a>
-          </div>
-        </div>
+        <a href="#" id="lejeri" class="tooltip" data-tool="Lejeri"><i class="fab fa-buffer" aria-hidden="true"></i></a>
         <div class="dropdown">
           <button class="dropbtn">
             <i class="fas fa-download"></i>
@@ -56,122 +46,123 @@
     </div>
     <div id="map" class="map"></div>
 
-    <div id="atributiDiv" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#atributiDiv')">&times;</a>
-      <h1>Atributi objekta</h1>
+    <div id="lejeriDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#lejeriDiv')">&times;</a>
+      <h1>Lejeri</h1>
       <div class="row">
-        <div class="column">
-          <label for="idObjekta">Id objekta:</label>
-          <input type="text" id="idObjekta" readonly />
-        </div>
-        <div class="column">
-          <label for="objectid">Objectid:</label>
-          <input type="text" id="objectid" readonly />
-        </div>
+        <label class="radiocontainer"
+          >Open street map
+          <input type="radio" checked="checked" name="radio" id="radioOsm" />
+          <span class="radiocheckmark"></span>
+        </label>
+        <label class="radiocontainer"
+          >Satelit
+          <input type="radio" name="radio" id="radioSatelit" />
+          <span class="radiocheckmark"></span>
+        </label>
+        <label class="radiocontainer"
+          >Neka podloga
+          <input type="radio" name="radio" id="radio2" />
+          <span class="radiocheckmark"></span>
+        </label>
+        <label class="radiocontainer"
+          >Još neka podloga
+          <input type="radio" name="radio" id="radio3" />
+          <span class="radiocheckmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="idAs">Id antenskog stuba:</label>
-          <input type="text" id="idAs" />
-        </div>
-        <div class="column">
-          <label for="idOperato">Id operatora:</label>
-          <input type="text" id="idOperato" />
-        </div>
+      <div class="row"></div>
+      <div class="row"></div>
+      <div class="checkrow">
+        <label class="container">
+          Antenski stub
+          <input type="checkbox" id="chkAntenskiStub" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="nazivAs">Naziv stuba:</label>
-          <input type="text" id="nazivAs" />
-        </div>
-        <div class="column">
-          <label for="nazivLok">Naziv lokacije:</label>
-          <input type="text" id="nazivLok" />
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Tkk cijev
+          <input type="checkbox" id="chkTkkCijev" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="opstina">Opstina:</label>
-          <input type="text" id="opstina" />
-        </div>
-        <div class="column">
-          <label for="tip">Tip stuba:</label>
-          <input type="text" id="tip" />
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Tkk kabl
+          <input type="checkbox" id="chkTkkKabl" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="nadVisina">Nadmorska visina:</label>
-          <input type="text" id="nadVisina" />
-        </div>
-        <div class="column">
-          <label for="dimOsnove">Dimenzije osnove:</label>
-          <input type="text" id="dimOsnove" />
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Tkk nastavak
+          <input type="checkbox" id="chkTkkNastavak" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="visStuba">Visina stuba:</label>
-          <input type="text" id="visStuba" />
-        </div>
-        <div class="column">
-          <label for="visinaObj">Visina objekta (m):</label>
-          <input type="number" id="visinaObj" />
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Tkk okna
+          <input type="checkbox" id="chkTkkOkna" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="ekipId">Ekip id:</label>
-          <input type="text" id="ekipId" />
-        </div>
-        <div class="column">
-          <label for="userId">User id:</label>
-          <input type="text" id="userId" />
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Tkk trasa
+          <input type="checkbox" id="chkTkkTrasa" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="fotoSever">Foto sjever:</label>
-          <input type="text" id="fotoSever" />
-        </div>
-        <div class="column">
-          <label for="fotoIstok">Foto istok</label>
-          <input type="text" id="fotoIstok" />
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Tkk završetak
+          <input type="checkbox" id="chkTkkZavrsetak" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="fotoJug">Foto jug:</label>
-          <input type="text" id="fotoJug" />
-        </div>
-        <div class="column">
-          <label for="fotoZapad">Foto zapad:</label>
-          <input type="text" id="fotoZapad" />
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Vv kabl
+          <input type="checkbox" id="chkVvKabl" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <div class="column">
-          <label class="container">
-            Antenski stub
-            <input type="checkbox" id="chkAntenskiStub" />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <div class="column">
-          <label class="container">
-            Tkk cijev
-            <input type="checkbox" id="chkTkkCijev" />
-            <span class="checkmark"></span>
-          </label>
-        </div>
+      <div class="checkrow">
+        <label class="container">
+          Vv nastavak
+          <input type="checkbox" id="chkVvNastavak" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <input type="file" class="sama" accept="image/*" capture="environment" id="dodavanjeSlike" />
+      <div class="checkrow">
+        <label class="container">
+          Vv stub
+          <input type="checkbox" id="chkVvStub" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
-      <div class="row">
-        <button type="button" class="btn" id="btnSacuvaj"><i class="fas fa-check-circle"></i> Sačuvaj</button>
-        <!--<button type="button" class="btn" id="btnPonisti"><i class="fas fa-undo-alt"></i> Poništi</button>-->
-        <button type="button" class="btn" id="btnIzbrisi"><i class="fas fa-trash"></i> Izbriši</button>
+      <div class="checkrow">
+        <label class="container">
+          Vv trasa
+          <input type="checkbox" id="chkVvTrasa" checked />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div class="checkrow">
+        <label class="container">
+          Vv završetak
+          <input type="checkbox" id="chkVvZavrsetak" checked />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div class="checkrow">
+        <label class="container">
+          Zgrada
+          <input type="checkbox" id="chkZgrada" checked />
+          <span class="checkmark"></span>
+        </label>
       </div>
       <div class="row"></div>
       <div class="row"></div>

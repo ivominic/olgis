@@ -195,3 +195,88 @@ document.querySelector("#chkTkkCijev").addEventListener("change", function () {
     tkkCijev.setVisible(false);
   }
 });
+document.querySelector("#chkTkkKabl").addEventListener("change", function () {
+  if (this.checked) {
+    tkkKabl.setVisible(true);
+  } else {
+    tkkKabl.setVisible(false);
+  }
+});
+document.querySelector("#chkTkkNastavak").addEventListener("change", function () {
+  if (this.checked) {
+    tkkNastavak.setVisible(true);
+  } else {
+    tkkNastavak.setVisible(false);
+  }
+});
+document.querySelector("#chkTkkOkna").addEventListener("change", function () {
+  if (this.checked) {
+    tkkOkna.setVisible(true);
+  } else {
+    tkkOkna.setVisible(false);
+  }
+});
+document.querySelector("#chkTkkTrasa").addEventListener("change", function () {
+  if (this.checked) {
+    tkkTrasa.setVisible(true);
+  } else {
+    tkkTrasa.setVisible(false);
+  }
+});
+document.querySelector("#chkTkkZavrsetak").addEventListener("change", function () {
+  if (this.checked) {
+    tkkZavrsetak.setVisible(true);
+  } else {
+    tkkZavrsetak.setVisible(false);
+  }
+});
+document.querySelector("#chkVvKabl").addEventListener("change", function () {
+  if (this.checked) {
+    vvKabl.setVisible(true);
+  } else {
+    vvKabl.setVisible(false);
+  }
+});
+document.querySelector("#chkVvNastavak").addEventListener("change", function () {
+  if (this.checked) {
+    vvNastavak.setVisible(true);
+  } else {
+    vvNastavak.setVisible(false);
+  }
+});
+document.querySelector("#chkVvStub").addEventListener("change", function () {
+  if (this.checked) {
+    vvStub.setVisible(true);
+  } else {
+    vvStub.setVisible(false);
+  }
+});
+document.querySelector("#chkVvTrasa").addEventListener("change", function () {
+  if (this.checked) {
+    vvTrasa.setVisible(true);
+  } else {
+    vvTrasa.setVisible(false);
+  }
+});
+document.querySelector("#chkVvZavrsetak").addEventListener("change", function () {
+  if (this.checked) {
+    vvZavrsetak.setVisible(true);
+  } else {
+    vvZavrsetak.setVisible(false);
+  }
+});
+document.querySelector("#chkZgrada").addEventListener("change", function () {
+  if (this.checked) {
+    zgrada.setVisible(true);
+  } else {
+    zgrada.setVisible(false);
+  }
+});
+
+document.querySelector("#radioOsm").addEventListener("change", function () {
+  map.getLayers().setAt(0, osmBaseMap);
+});
+
+document.querySelector("#radioSatelit").addEventListener("change", function () {
+  map.getLayers().setAt(0, satelitBaseMap);
+});

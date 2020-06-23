@@ -1,6 +1,6 @@
 /**Inicijalna deklaracija vrijednosti koje se korite u stranici*/
-const domainUrl = location.origin;
-//const domainUrl = "http://localhost:8088";
+//const domainUrl = location.origin;
+const domainUrl = "http://localhost:8088";
 //const domainUrl = "http://167.172.171.249";
 const wmsUrl = domainUrl + "/geoserver/ekip/wms";
 const wfsUrl = domainUrl + "/geoserver/ekip/wfs";
@@ -282,7 +282,6 @@ function setujAktivnu(element) {
   document.querySelector(element).classList.add("active");
   closeDiv("#pretragaDiv");
   closeDiv("#atributiDiv");
-  //if (element === "#atributi" || element === "#dodaj") {
   if (element === "#atributi") {
     showDiv("#atributiDiv");
   }
@@ -380,16 +379,6 @@ function pan() {
   setujAktivnu("#pan");
 }
 
-function dodaj() {
-  akcija = "dodaj";
-  setujAktivnu("#dodaj");
-}
-
-function izmijeni() {
-  akcija = "izmijeni";
-  setujAktivnu("#izmijeni");
-}
-
 function atributi() {
   akcija = "atributi";
   setujAktivnu("#atributi");
@@ -406,8 +395,6 @@ function restart() {
 
 /**Povezivanje kontrola sa akcijama */
 document.querySelector("#pan").addEventListener("click", pan);
-document.querySelector("#dodaj").addEventListener("click", dodaj);
-document.querySelector("#izmijeni").addEventListener("click", izmijeni);
 document.querySelector("#atributi").addEventListener("click", atributi);
 document.querySelector("#slika").addEventListener("click", slika);
 document.querySelector("#marker").addEventListener("click", crtajTacku);

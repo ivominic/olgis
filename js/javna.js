@@ -49,74 +49,6 @@ function popuniKontrole(odgovor) {
   }
 }
 
-
-/** Unos izmijenjenih vrijednosti atributa, nove fotografije ili unos svih podataka za novu geometriju */
-function sacuvaj() {
-  if (akcija === "dodaj" && geometrijaZaBazuWkt === "") {
-    poruka("Upozorenje", "Potrebno je nacrtati objekat.");
-    return false
-  }
-  if (akcija === "izmijeni" && (geometrijaZaBazuWkt === "" || idObjekta === 0)) {
-    poruka("Upozorenje", "Potrebno je izmijeniti geometriju odabranog objekta.");
-    return false
-  }
-  if (akcija === "atributi" && idObjekta === 0) {
-    poruka("Upozorenje", "Potrebno je odabrati objekat čije atribute mijenjate.");
-    return false
-  }
-
-  let podaciForme = new FormData();
-  podaciForme.append("id", idObjekta);
-  podaciForme.append("akcija", akcija);
-  podaciForme.append("geom", geometrijaZaBazuWkt);
-  podaciForme.append("objectid", document.querySelector("#objectid").value);
-  podaciForme.append("nazivAs", document.querySelector("#nazivAs").value);
-  podaciForme.append("nazivLok", document.querySelector("#nazivLok").value);
-  podaciForme.append("opstina", document.querySelector("#opstina").value);
-  podaciForme.append("nadVisina", document.querySelector("#nadVisina").value);
-  podaciForme.append("tip", document.querySelector("#tip").value);
-  podaciForme.append("dimOsnove", document.querySelector("#dimOsnove").value);
-  podaciForme.append("visStuba", document.querySelector("#visStuba").value);
-  podaciForme.append("visinaObj", document.querySelector("#visinaObj").value);
-  podaciForme.append("fotoSever", document.querySelector("#fotoSever").value);
-  podaciForme.append("fotoIstok", document.querySelector("#fotoIstok").value);
-  podaciForme.append("fotoJug", document.querySelector("#fotoJug").value);
-  podaciForme.append("fotoZapad", document.querySelector("#fotoZapad").value);
-  podaciForme.append("idAs", document.querySelector("#idAs").value);
-  podaciForme.append("idOperato", document.querySelector("#idOperato").value);
-  podaciForme.append("ekipId", document.querySelector("#ekipId").value);
-  podaciForme.append("userId", document.querySelector("#userId").value);
-  if (document.querySelector("#dodavanjeSlike").files.length > 0) {
-    podaciForme.append("file", document.querySelector("#dodavanjeSlike").files[0]);
-  }
-
-  let xhr = new XMLHttpRequest();
-  xhr.open('POST', sacuvajZapisUrl, true);
-  xhr.timeout = 100000;
-  xhr.ontimeout = function () {
-    poruka("Greska", "Akcija je prekinuta jer je trajala predugo.");
-  };
-  xhr.send(podaciForme);
-  openModalSpinner();
-  xhr.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      if (this.status === 200) {
-        let jsonResponse = JSON.parse(xhr.responseText);
-        if (jsonResponse["success"] === true) {
-          poruka("Uspjeh", jsonResponse["message"]);
-          restartovanje();
-        } else {
-          poruka("Upozorenje", jsonResponse["message"]);
-        }
-        closeModalSpinner();
-      } else {
-        poruka("Greska", xhr.statusText);
-        closeModalSpinner();
-      }
-    }
-  };
-}
-
 /** Sve podešava na početne vrijednosti*/
 function restartovanje() {
   idObjekta = 0;
@@ -156,12 +88,11 @@ function isprazniGeometrije() {
   rasterLayer.getSource().updateParams(paramsRestart);
 }
 
-
 /**Smještanje mape u div sa id-jem "map" */
 let map = new ol.Map({
   target: "map",
   //interactions: ol.interaction.defaults().extend([new ol.interaction.PinchZoom(), new ol.interaction.DragPan()]),
-  layers: [osmBaseMap, rasterLayer],
+  layers: [osmBaseMap], //, tkkCijev, antenskiStub
   view: view,
 });
 
@@ -222,49 +153,6 @@ function podesiInterakciju() {
       deleteCondition: function (event) {
         return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
       },
-    });
-    map.addInteraction(draw);
-    map.addInteraction(modify);
-  }
-  if (akcija === "izmijeni") {
-    modify = new ol.interaction.Modify({
-      features: featuresTekuci,
-      deleteCondition: function (event) {
-        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
-      },
-    });
-    map.addInteraction(modify);
-    modify.on('modifyend', function (e) {
-      modifikovan = true;
-      geometrijaZaBazuWkt = wktGeometrije(e.features.getArray()[0]);
-      console.log("feature geometrija", wktGeometrije(e.features.getArray()[0]));
-    });
-  }
-  if (akcija === "dodaj") {
-    draw = new ol.interaction.Draw({
-      features: featuresTekuci,
-      type: tipGeometrije,
-    });
-    modify = new ol.interaction.Modify({
-      features: featuresTekuci,
-      deleteCondition: function (event) {
-        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
-      },
-    });
-    draw.on('drawend', function (e) {
-      nacrtan = true;
-      //TODO: ovo možda dodati u promjeni akcije i poništi
-      featureTekuciOverlay.getSource().clear(); //Samo jedan može da se crta
-      geometrijaZaBazuWkt = wktGeometrije(e.feature);
-      showDiv("#atributiDiv");
-      console.log("feature nova geometrija", geometrijaZaBazuWkt);
-    });
-    modify.on('modifyend', function (e) {
-      //Iz nekog razloga na brisanje čvora ne očitava odmah izmjenu
-      console.log("broj geometrija", e.features.getArray().length);
-      geometrijaZaBazuWkt = wktGeometrije(e.features.getArray()[0]);
-      showDiv("#atributiDiv");
-      console.log("feature nova mijenjana geometrija", geometrijaZaBazuWkt);
     });
     map.addInteraction(draw);
     map.addInteraction(modify);
@@ -344,7 +232,7 @@ function brisanje() {
   let podaciForme = new FormData();
   podaciForme.append("id", idObjekta);
   let xhr = new XMLHttpRequest();
-  xhr.open('POST', izbrisiZapisUrl, true);
+  xhr.open("POST", izbrisiZapisUrl, true);
   xhr.timeout = 100000;
   xhr.ontimeout = function () {
     poruka("Greska", "Akcija je prekinuta jer je trajala predugo.");
@@ -416,7 +304,6 @@ function kreiranjeCqlFilteraAtributi() {
   return retVal;
 }
 
-
 function wfsFilter() {
   $.ajax({
     method: "POST",
@@ -486,6 +373,4 @@ function wfsDownload(format) {
 }
 
 /**Povezivanje kontrola koje zavise od lejera sa akcijama */
-document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
-document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
 document.querySelector("#btnFilter").addEventListener("click", filtriranje);

@@ -45,6 +45,12 @@ input[type] {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
 }
 
+
+::placeholder {
+  color: rgba(0, 0, 0, .3);
+
+}
+
 /** Podijeljena stranica na dvije kolone*/
 .column {
   float: left;
@@ -63,6 +69,17 @@ input[type] {
 .spojena {
   float: left;
   width: 100% !important;
+}
+
+/**Labela i kontrola u istoj vrsti*/
+.istavrsta {
+  display: inline-flex;
+  height: 24px;
+  padding: 6px 12px;
+}
+
+.istavrsta label {
+  width: 240px;
 }
 
 .row {

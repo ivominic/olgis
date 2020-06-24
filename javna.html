@@ -175,13 +175,12 @@
       <div class="row">
         <div class="column">
           <label class="container">
-            Od tačke
+            Udaljenost od tačke
             <input type="checkbox" id="pretragaTacke" />
             <span class="checkmark"></span>
           </label>
         </div>
         <div class="column">
-          <label for="pretragaTackeUdaljenost">Udaljenost:</label>
           <input type="number" id="pretragaTackeUdaljenost" />
         </div>
       </div>
@@ -232,117 +231,325 @@
         </div>
       </div>
       <div id="divAntenskiStub" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaIdObjekta">Id objekta:</label>
-            <input type="text" id="pretragaIdObjekta" />
-          </div>
-          <div class="column">
-            <label for="pretragaObjectid">Objectid:</label>
-            <input type="text" id="pretragaObjectid" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaASnazivLok">Naziv lokacije stuba:</label>
+          <input type="text" id="pretragaASnazivLok" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaASnazivAs">Naziv stuba:</label>
+          <input type="text" id="pretragaASnazivAs" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaASopstina">Opština:</label>
+          <input type="text" id="pretragaASopstina" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaAStip">Tip:</label>
+          <input type="text" id="pretragaAStip" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaASidAs">Id antenskog stuba:</label>
+          <input type="text" id="pretragaASidAs" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaASidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaASidOperato" />
         </div>
       </div>
       <div id="divTkkCijev" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaIdAs">Id antenskog stuba:</label>
-            <input type="text" id="pretragaIdAs" />
+        <div class="istavrsta">
+          <label for="pretragaTCcevTip">Tip kablovske cijevi:</label>
+          <input type="text" id="pretragaTCcevTip" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTCcevStatus">Status cijevi:</label>
+          <input type="text" id="pretragaTCcevStatus" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTCkorisnik">Korisnik:</label>
+          <input type="text" id="pretragaTCkorisnik" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTCcevParent">Cijev kojoj pripada:</label>
+          <input type="text" id="pretragaTCcevParent" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTCpopPresekOd">Poprečni presjek cijevi:</label>
+          <div style="display: inline-flex;">
+            <input type="number" id="pretragaTCpopPresekOd" placeholder="Od" />
+            <input type="number" id="pretragaTCpopPresekDo" placeholder="Do" />
           </div>
-          <div class="column">
-            <label for="pretragaIdOperato">Id operatora:</label>
-            <input type="text" id="pretragaIdOperato" />
-          </div>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTCprohodnost">Prohodnost:</label>
+          <input type="number" id="pretragaTCprohodnost" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTCidCev">ID cijevi:</label>
+          <input type="text" id="pretragaTCidCev" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTCidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaTCidOperato" />
         </div>
       </div>
       <div id="divTkkKabl" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaNazivAs">Naziv antenskog stuba:</label>
-            <input type="text" id="pretragaNazivAs" />
-          </div>
-          <div class="column">
-            <label for="pretragaNazivLok">Naziv lokacije:</label>
-            <input type="text" id="pretragaNazivLok" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaTKoznaka">Oznaka:</label>
+          <input type="text" id="pretragaTKoznaka" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTKtip">Tip kabla:</label>
+          <input type="text" id="pretragaTKtip" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTKnamena">Namjena:</label>
+          <input type="text" id="pretragaTKnamena" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTKpolaganje">Godina polaganja:</label>
+          <input type="text" id="pretragaTKpolaganje" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTKstatus">Status:</label>
+          <input type="text" id="pretragaTKstatus" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTKidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaTKidOperato" />
         </div>
       </div>
       <div id="divTkkNastavak" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaOpstina">Opština:</label>
-            <input type="text" id="pretragaOpstina" />
-          </div>
-          <div class="column">
-            <label for="pretragaTip">Tip stuba:</label>
-            <input type="text" id="pretragaTip" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaTNtipNastav">Tip nastavka/ ormana/ račvalice:</label>
+          <input type="text" id="pretragaTNtipNastav" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTNpolozaj">Položaj(podzemni /nadzemni):</label>
+          <input type="text" id="pretragaTNpolozaj" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTNidNas">ID nastavka:</label>
+          <input type="text" id="pretragaTNidNas" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTNidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaTNidOperato" />
         </div>
       </div>
       <div id="divTkkOkna" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaNadVisina">Nadmorska visina:</label>
-            <input type="text" id="pretragaNadVisina" />
-          </div>
-          <div class="column">
-            <label for="pretragaDimOsnove">Dimenzije osnove:</label>
-            <input type="text" id="pretragaDimOsnove" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaTOtipOkn">Tip kablovskog okna EKM:</label>
+          <input type="text" id="pretragaTOtipOkn" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTKidOkn">ID okna:</label>
+          <input type="text" id="pretragaTKidOkn" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTOidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaTOidOperato" />
         </div>
       </div>
       <div id="divTkkTrasa" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaVisStuba">Visina stuba:</label>
-            <input type="text" id="pretragaVisStuba" />
-          </div>
-          <div class="column">
-            <label for="pretragaVisinaObj">Visina objekta (m):</label>
-            <input type="number" id="pretragaVisinaObj" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaTTopstina">Opština:</label>
+          <input type="text" id="pretragaTTopstina" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTTlokacija">Lokacija:</label>
+          <input type="text" id="pretragaTTlokacija" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTTtrasa">Naziv trase:</label>
+          <input type="text" id="pretragaTTtrasa" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTTmrPrisN">Naziv pristupne mreže:</label>
+          <input type="text" id="pretragaTTmrPrisN" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTTgeodSnTr">Kablovski pravac:</label>
+          <input type="number" id="pretragaTTgeodSnTr" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTTprenosniP">Prenosni put:</label>
+          <input type="number" id="pretragaTTprenosniP" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTTidTrasa">ID trase:</label>
+          <input type="text" id="pretragaTTidTrasa" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTTidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaTTidOperato" />
         </div>
       </div>
       <div id="divTkkZavrsetak" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaEkipId">Ekip id:</label>
-            <input type="text" id="pretragaEkipId" />
-          </div>
-          <div class="column">
-            <label for="pretragaUserId">User id:</label>
-            <input type="text" id="pretragaUserId" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaTZmestoOpis">Završetak kabla u objektu - mjesto i opis:</label>
+          <input type="text" id="pretragaTZmestoOpis" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTZtipZavrse">Tip završetka:</label>
+          <input type="text" id="pretragaTZtipZavrse" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTZidZav">ID završetka:</label>
+          <input type="text" id="pretragaTZidZav" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTZidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaTZidOperato" />
         </div>
       </div>
       <div id="divVvKabl" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaFotoSever">Foto sjever:</label>
-            <input type="text" id="pretragaFotoSever" />
-          </div>
-          <div class="column">
-            <label for="pretragaFotoIstok">Foto istok:</label>
-            <input type="text" id="pretragaFotoIstok" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaVKoznaka">Oznaka:</label>
+          <input type="text" id="pretragaVKoznaka" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVKtip">Tip kabla:</label>
+          <input type="text" id="pretragaVKtip" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVKnamena">Namjena:</label>
+          <input type="text" id="pretragaVKnamena" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVKpolaganje">Godina polaganja:</label>
+          <input type="text" id="pretragaVKpolaganje" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVKstatus">Status:</label>
+          <input type="text" id="pretragaVKstatus" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVKidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaVKidOperato" />
         </div>
       </div>
       <div id="divVvNastavak" style="display: none;">
-        <div class="row">
-          <div class="column">
-            <label for="pretragaFotoJug">Foto jug:</label>
-            <input type="text" id="pretragaFotoJug" />
-          </div>
-          <div class="column">
-            <label for="pretragaFotoZapad">Foto zapad:</label>
-            <input type="text" id="pretragaFotoZapad" />
-          </div>
+        <div class="istavrsta">
+          <label for="pretragaVNtipNastav">Tip nastavka/ ormana/ račvalice:</label>
+          <input type="text" id="pretragaVNtipNastav" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVNtipSpojn">Tip spojnice:</label>
+          <input type="text" id="pretragaVNtipSpojn" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVNpolozaj">Položaj (podzemni /nadzemni):</label>
+          <input type="text" id="pretragaVNpolozaj" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVNidNas">ID nastavka:</label>
+          <input type="text" id="pretragaVNidNas" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVNidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaVNidOperato" />
         </div>
       </div>
-      <div id="divVvStub" style="display: none;"></div>
-      <div id="divVvTrasa" style="display: none;"></div>
-      <div id="divVvZavrsetak" style="display: none;"></div>
-      <div id="divZgrada" style="display: none;"></div>
+      <div id="divVvStub" style="display: none;">
+        <div class="istavrsta">
+          <label for="pretragaVStip">Tip stuba:</label>
+          <input type="text" id="pretragaVStip" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVSidVvStub">ID stuba vazdušnog voda:</label>
+          <input type="text" id="pretragaVSidVvStub" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVSidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaVSidOperato" />
+        </div>
+      </div>
+      <div id="divVvTrasa" style="display: none;">
+        <div class="istavrsta">
+          <label for="pretragaVTopstina">Opština:</label>
+          <input type="text" id="pretragaVTopstina" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVTlokacija">Lokacija:</label>
+          <input type="text" id="pretragaVTlokacija" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVTtrasa">Naziv trase:</label>
+          <input type="text" id="pretragaVTtrasa" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVTmrPrisN">Naziv pristupne mreže:</label>
+          <input type="text" id="pretragaVTmrPrisN" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVTgeodSnTr">Kablovski pravac:</label>
+          <input type="number" id="pretragaVTgeodSnTr" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVTprenosniP">Prenosni put:</label>
+          <input type="number" id="pretragaVTprenosniP" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVTidTrasa">ID trase:</label>
+          <input type="text" id="pretragaVTidTrasa" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVTidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaVTidOperato" />
+        </div>
+      </div>
+      <div id="divVvZavrsetak" style="display: none;">
+        <div class="istavrsta">
+          <label for="pretragaVZmestoOpis">Mjesto i opis:</label>
+          <input type="text" id="pretragaVZmestoOpis" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVZtipZavrse">Tip završetka:</label>
+          <input type="text" id="pretragaVZtipZavrse" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVZidZav">ID završetka vv:</label>
+          <input type="text" id="pretragaVZidZav" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVZidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaVZidOperato" />
+        </div>
+      </div>
+      <div id="divZgrada" style="display: none;">
+        <div class="istavrsta">
+          <label for="pretragaZGnazivLok">Naziv lokacije:</label>
+          <input type="text" id="pretragaZGnazivLok" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZGopstina">Opština:</label>
+          <input type="text" id="pretragaZGopstina" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZGnazivZgr">Naziv zgrade:</label>
+          <input type="text" id="pretragaZGnazivZgr" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZGtipZgr">Tip zgrade:</label>
+          <input type="text" id="pretragaZGtipZgr" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZGukIznaOd">Ukupni iznajmljeni prostor:</label>
+          <div style="display: inline-flex;">
+            <input type="number" id="pretragaZGukIznaOd" placeholder="Od" />
+            <input type="number" id="pretragaZGukIznaDo" placeholder="Do" />
+          </div>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZGidZgr">ID zgrade:</label>
+          <input type="text" id="pretragaTGidZgr" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZGidOperato">Naziv operatora:</label>
+          <input type="text" id="pretragaZGidOperato" />
+        </div>
+      </div>
 
       <div class="row"></div>
       <div class="row">

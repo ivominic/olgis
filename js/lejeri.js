@@ -276,7 +276,103 @@ document.querySelector("#chkZgrada").addEventListener("change", function () {
 document.querySelector("#radioOsm").addEventListener("change", function () {
   map.getLayers().setAt(0, osmBaseMap);
 });
-
 document.querySelector("#radioSatelit").addEventListener("change", function () {
   map.getLayers().setAt(0, satelitBaseMap);
 });
+document.querySelector("#radioTopo").addEventListener("change", function () {
+  map.getLayers().setAt(0, topoMap);
+});
+document.querySelector("#radioHiker").addEventListener("change", function () {
+  map.getLayers().setAt(0, hikerMap);
+});
+
+
+/***** PRETRAGA LEJERA */
+document.querySelector("#ddlLejerPretraga").addEventListener("change", function () {
+  prikaziDivPretraga(this.value);
+});
+
+function prikaziDivPretraga(ddlValue) {
+  sakrijSveDivPretrage();
+  if (ddlValue === "antenskiStub") {
+    document.querySelector("#divAntenskiStub").style.display = "block";
+    document.querySelector("#chkAntenskiStub").checked = true;
+    antenskiStub.setVisible(true);
+  }
+  if (ddlValue === "tkkCijev") {
+    document.querySelector("#divTkkCijev").style.display = "block";
+    document.querySelector("#chkTkkCijev").checked = true;
+    tkkCijev.setVisible(true);
+  }
+  if (ddlValue === "tkkKabl") {
+    document.querySelector("#divTkkKabl").style.display = "block";
+    document.querySelector("#chkTkkKabl").checked = true;
+    tkkKabl.setVisible(true);
+  }
+  if (ddlValue === "tkkNastavak") {
+    document.querySelector("#divTkkNastavak").style.display = "block";
+    document.querySelector("#chkTkkNastavak").checked = true;
+    tkkNastavak.setVisible(true);
+  }
+  if (ddlValue === "tkkOkna") {
+    document.querySelector("#divTkkOkna").style.display = "block";
+    document.querySelector("#chkTkkOkna").checked = true;
+    tkkOkna.setVisible(true);
+  }
+  if (ddlValue === "tkkTrasa") {
+    document.querySelector("#divTkkTrasa").style.display = "block";
+    document.querySelector("#chkTkkTrasa").checked = true;
+    tkkTrasa.setVisible(true);
+  }
+  if (ddlValue === "tkkZavrsetak") {
+    document.querySelector("#divTkkZavrsetak").style.display = "block";
+    document.querySelector("#chkTkkZavrsetak").checked = true;
+    tkkZavrsetak.setVisible(true);
+  }
+  if (ddlValue === "vvKabl") {
+    document.querySelector("#divVvKabl").style.display = "block";
+    document.querySelector("#chkVvKabl").checked = true;
+    vvKabl.setVisible(true);
+  }
+  if (ddlValue === "vvNastavak") {
+    document.querySelector("#divVvNastavak").style.display = "block";
+    document.querySelector("#chkVvNastavak").checked = true;
+    vvNastavak.setVisible(true);
+  }
+  if (ddlValue === "vvStub") {
+    document.querySelector("#divVvStub").style.display = "block";
+    document.querySelector("#chkVvStub").checked = true;
+    vvStub.setVisible(true);
+  }
+  if (ddlValue === "vvTrasa") {
+    document.querySelector("#divVvTrasa").style.display = "block";
+    document.querySelector("#chkVvTrasa").checked = true;
+    vvTrasa.setVisible(true);
+  }
+  if (ddlValue === "vvZavrsetak") {
+    document.querySelector("#divVvZavrsetak").style.display = "block";
+    document.querySelector("#chkVvZavrsetak").checked = true;
+    vvZavrsetak.setVisible(true);
+  }
+  if (ddlValue === "zgrada") {
+    document.querySelector("#divZgrada").style.display = "block";
+    document.querySelector("#chkZgrada").checked = true;
+    zgrada.setVisible(true);
+  }
+}
+
+function sakrijSveDivPretrage() {
+  document.querySelector("#divAntenskiStub").style.display = "none";
+  document.querySelector("#divTkkCijev").style.display = "none";
+  document.querySelector("#divTkkKabl").style.display = "none";
+  document.querySelector("#divTkkNastavak").style.display = "none";
+  document.querySelector("#divTkkOkna").style.display = "none";
+  document.querySelector("#divTkkTrasa").style.display = "none";
+  document.querySelector("#divTkkZavrsetak").style.display = "none";
+  document.querySelector("#divVvKabl").style.display = "none";
+  document.querySelector("#divVvNastavak").style.display = "none";
+  document.querySelector("#divVvStub").style.display = "none";
+  document.querySelector("#divVvTrasa").style.display = "none";
+  document.querySelector("#divVvZavrsetak").style.display = "none";
+  document.querySelector("#divZgrada").style.display = "none";
+}

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Antenski stubovi</title>
+    <title>Mapa</title>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400&display=swap" rel="stylesheet" />
     <!-- Add icon library -->
     <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
@@ -61,13 +61,13 @@
           <span class="radiocheckmark"></span>
         </label>
         <label class="radiocontainer"
-          >Neka podloga
-          <input type="radio" name="radio" id="radio2" />
+          >Topo mapa
+          <input type="radio" name="radio" id="radioTopo" />
           <span class="radiocheckmark"></span>
         </label>
         <label class="radiocontainer"
-          >Još neka podloga
-          <input type="radio" name="radio" id="radio3" />
+          >Pješačka mapa
+          <input type="radio" name="radio" id="radioHiker" />
           <span class="radiocheckmark"></span>
         </label>
       </div>
@@ -212,94 +212,138 @@
       </div>
       <div class="row">
         <div class="column">
-          <label for="pretragaIdObjekta">Id objekta:</label>
-          <input type="text" id="pretragaIdObjekta" />
-        </div>
-        <div class="column">
-          <label for="pretragaObjectid">Objectid:</label>
-          <input type="text" id="pretragaObjectid" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaIdAs">Id antenskog stuba:</label>
-          <input type="text" id="pretragaIdAs" />
-        </div>
-        <div class="column">
-          <label for="pretragaIdOperato">Id operatora:</label>
-          <input type="text" id="pretragaIdOperato" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaNazivAs">Naziv antenskog stuba:</label>
-          <input type="text" id="pretragaNazivAs" />
-        </div>
-        <div class="column">
-          <label for="pretragaNazivLok">Naziv lokacije:</label>
-          <input type="text" id="pretragaNazivLok" />
+          <label for="ddlLejerPretraga">Lejer za pretragu:</label>
+          <select id="ddlLejerPretraga" class="select-css">
+            <option value="">Svi lejeri</option>
+            <option value="antenskiStub">Antenski stub</option>
+            <option value="tkkCijev">Tkk cijev</option>
+            <option value="tkkKabl">Tkk kabl</option>
+            <option value="tkkNastavak">Tkk nastavak</option>
+            <option value="tkkOkna">Tkk okna</option>
+            <option value="tkkTrasa">Tkk trasa</option>
+            <option value="tkkZavrsetak">Tkk završetak</option>
+            <option value="vvKabl">Vv kabl</option>
+            <option value="vvNastavak">Vv nastavak</option>
+            <option value="vvStub">Vv stub</option>
+            <option value="vvTrasa">Vv trasa</option>
+            <option value="vvZavrsetak">Vv završetak</option>
+            <option value="zgrada">Zgrada</option>
+          </select>
         </div>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaOpstina">Opština:</label>
-          <input type="text" id="pretragaOpstina" />
-        </div>
-        <div class="column">
-          <label for="pretragaTip">Tip stuba:</label>
-          <input type="text" id="pretragaTip" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaNadVisina">Nadmorska visina:</label>
-          <input type="text" id="pretragaNadVisina" />
-        </div>
-        <div class="column">
-          <label for="pretragaDimOsnove">Dimenzije osnove:</label>
-          <input type="text" id="pretragaDimOsnove" />
+      <div id="divAntenskiStub" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaIdObjekta">Id objekta:</label>
+            <input type="text" id="pretragaIdObjekta" />
+          </div>
+          <div class="column">
+            <label for="pretragaObjectid">Objectid:</label>
+            <input type="text" id="pretragaObjectid" />
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaVisStuba">Visina stuba:</label>
-          <input type="text" id="pretragaVisStuba" />
-        </div>
-        <div class="column">
-          <label for="pretragaVisinaObj">Visina objekta (m):</label>
-          <input type="number" id="pretragaVisinaObj" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaEkipId">Ekip id:</label>
-          <input type="text" id="pretragaEkipId" />
-        </div>
-        <div class="column">
-          <label for="pretragaUserId">User id:</label>
-          <input type="text" id="pretragaUserId" />
+      <div id="divTkkCijev" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaIdAs">Id antenskog stuba:</label>
+            <input type="text" id="pretragaIdAs" />
+          </div>
+          <div class="column">
+            <label for="pretragaIdOperato">Id operatora:</label>
+            <input type="text" id="pretragaIdOperato" />
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaFotoSever">Foto sjever:</label>
-          <input type="text" id="pretragaFotoSever" />
-        </div>
-        <div class="column">
-          <label for="pretragaFotoIstok">Foto istok:</label>
-          <input type="text" id="pretragaFotoIstok" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="column">
-          <label for="pretragaFotoJug">Foto jug:</label>
-          <input type="text" id="pretragaFotoJug" />
-        </div>
-        <div class="column">
-          <label for="pretragaFotoZapad">Foto zapad:</label>
-          <input type="text" id="pretragaFotoZapad" />
+      <div id="divTkkKabl" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaNazivAs">Naziv antenskog stuba:</label>
+            <input type="text" id="pretragaNazivAs" />
+          </div>
+          <div class="column">
+            <label for="pretragaNazivLok">Naziv lokacije:</label>
+            <input type="text" id="pretragaNazivLok" />
+          </div>
         </div>
       </div>
+      <div id="divTkkNastavak" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaOpstina">Opština:</label>
+            <input type="text" id="pretragaOpstina" />
+          </div>
+          <div class="column">
+            <label for="pretragaTip">Tip stuba:</label>
+            <input type="text" id="pretragaTip" />
+          </div>
+        </div>
+      </div>
+      <div id="divTkkOkna" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaNadVisina">Nadmorska visina:</label>
+            <input type="text" id="pretragaNadVisina" />
+          </div>
+          <div class="column">
+            <label for="pretragaDimOsnove">Dimenzije osnove:</label>
+            <input type="text" id="pretragaDimOsnove" />
+          </div>
+        </div>
+      </div>
+      <div id="divTkkTrasa" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaVisStuba">Visina stuba:</label>
+            <input type="text" id="pretragaVisStuba" />
+          </div>
+          <div class="column">
+            <label for="pretragaVisinaObj">Visina objekta (m):</label>
+            <input type="number" id="pretragaVisinaObj" />
+          </div>
+        </div>
+      </div>
+      <div id="divTkkZavrsetak" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaEkipId">Ekip id:</label>
+            <input type="text" id="pretragaEkipId" />
+          </div>
+          <div class="column">
+            <label for="pretragaUserId">User id:</label>
+            <input type="text" id="pretragaUserId" />
+          </div>
+        </div>
+      </div>
+      <div id="divVvKabl" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaFotoSever">Foto sjever:</label>
+            <input type="text" id="pretragaFotoSever" />
+          </div>
+          <div class="column">
+            <label for="pretragaFotoIstok">Foto istok:</label>
+            <input type="text" id="pretragaFotoIstok" />
+          </div>
+        </div>
+      </div>
+      <div id="divVvNastavak" style="display: none;">
+        <div class="row">
+          <div class="column">
+            <label for="pretragaFotoJug">Foto jug:</label>
+            <input type="text" id="pretragaFotoJug" />
+          </div>
+          <div class="column">
+            <label for="pretragaFotoZapad">Foto zapad:</label>
+            <input type="text" id="pretragaFotoZapad" />
+          </div>
+        </div>
+      </div>
+      <div id="divVvStub" style="display: none;"></div>
+      <div id="divVvTrasa" style="display: none;"></div>
+      <div id="divVvZavrsetak" style="display: none;"></div>
+      <div id="divZgrada" style="display: none;"></div>
+
       <div class="row"></div>
       <div class="row">
         <button type="button" class="btn" id="btnFilter"><i class="fas fa-search"></i> Filtriranje</button>

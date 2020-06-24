@@ -35,6 +35,23 @@ let satelitBaseMap = new ol.layer.Tile({
     maxZoom: 23,
   }),
 });
+let topoMap = new ol.layer.Tile({
+  title: "Open Topo Maps",
+  type: "base",
+  visible: true,
+  source: new ol.source.XYZ({
+    url: "https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png"
+  })
+});
+let hikerMap = new ol.layer.Tile({
+  title: "Pješačka mapa",
+  type: "base",
+  visible: true,
+  source: new ol.source.XYZ({
+    url: "https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png"
+  })
+});
+
 var katastarBaseMap = new ol.layer.Tile({
   title: "Katastar",
   name: "uzn",

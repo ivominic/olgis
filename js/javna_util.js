@@ -402,6 +402,11 @@ function lejeri() {
   setujAktivnu("#lejeri");
 }
 
+function atributi() {
+  akcija = "atributi";
+  setujAktivnu("#atributi");
+}
+
 function pretraga() {
   akcija = "pretraga";
   setujAktivnu("#pretraga");

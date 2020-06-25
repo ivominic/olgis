@@ -401,6 +401,16 @@ function filtriranje() {
 
   if (ddlValue === "") {
     //TODO filter svih prikazanih lejera
+    map.getLayers().forEach(function (layer) {
+      if (layer instanceof ol.layer.Image) {
+        if (layer.N.visible) {
+          let params = layer.getSource().getParams();
+          params.CQL_FILTER = cqlFilter;
+          layer.getSource().updateParams(params);
+        }
+      }
+
+    });
 
   } else {
     if (ddlValue === "antenskiStub") {

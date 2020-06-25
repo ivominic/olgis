@@ -389,7 +389,7 @@ function filtriranje() {
     atributniFilter = "";
   prostorniFilter = kreiranjeCqlFilteraProstorno();
   //Atributi se pretražuju samo ako je odabran lejer. Za sve lejere se radi samo prostorna selekcija
-  (ddlValue !== "") && (atributniFilter = kreiranjeCqlFilteraAtributi());
+  (ddlValue !== "") && (atributniFilter = kreiranjeCqlFilteraAtributiZaJavnuStranicu(ddlValue));
   if (prostorniFilter !== "" && atributniFilter !== "") {
     cqlFilter = "(" + prostorniFilter + ") AND " + atributniFilter;
   } else {
@@ -472,29 +472,110 @@ function filtriranje() {
 }
 
 /** Filtriranje po atributima */
-function kreiranjeCqlFilteraAtributi() {
+function kreiranjeCqlFilteraAtributiZaJavnuStranicu(ddlValue) {
   let retVal = "";
-  /*
-    document.querySelector("#pretragaIdObjekta").value !== "" && (retVal += "id = " + document.querySelector("#pretragaIdObjekta").value + " AND ");
-    document.querySelector("#pretragaObjectid").value !== "" && (retVal += "objectid = " + document.querySelector("#pretragaObjectid").value + " AND ");
 
-    document.querySelector("#pretragaNazivAs").value !== "" && (retVal += "naziv_as ILIKE '%" + document.querySelector("#pretragaNazivAs").value + "%' AND ");
-    document.querySelector("#pretragaFotoSever").value !== "" && (retVal += "foto_sever ILIKE '%" + document.querySelector("#pretragaFotoSever").value + "%' AND ");
-    document.querySelector("#pretragaFotoIstok").value !== "" && (retVal += "foto_istok ILIKE '%" + document.querySelector("#pretragaFotoIstok").value + "%' AND ");
-    document.querySelector("#pretragaFotoJug").value !== "" && (retVal += "foto_jug ILIKE '%" + document.querySelector("#pretragaFotoJug").value + "%' AND ");
-    document.querySelector("#pretragaFotoZapad").value !== "" && (retVal += "foto_zapad ILIKE '%" + document.querySelector("#pretragaFotoZapad").value + "%' AND ");
+  if (ddlValue === "antenskiStub") {
+    document.querySelector("#pretragaASnazivLok").value !== "" && (retVal += "naziv_lok ILIKE '%" + document.querySelector("#pretragaASnazivLok").value + "%' AND ");
+    document.querySelector("#pretragaASopstina").value !== "" && (retVal += "opstina ILIKE '%" + document.querySelector("#pretragaASopstina").value + "%' AND ");
+    document.querySelector("#pretragaASnazivAs").value !== "" && (retVal += "naziv_as = '" + document.querySelector("#pretragaASnazivAs").value + "' AND ");
+    document.querySelector("#pretragaAStip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaAStip").value + "' AND ");
+    document.querySelector("#pretragaASidAs").value !== "" && (retVal += "id_as = '" + document.querySelector("#pretragaASidAs").value + "' AND ");
+    document.querySelector("#pretragaASidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaASidOperato").value + "' AND ");
+  }
+  if (ddlValue === "tkkCijev") {
+    document.querySelector("#pretragaTCcevTip").value !== "" && (retVal += "cev_tip = '" + document.querySelector("#pretragaTCcevTip").value + "' AND ");
+    document.querySelector("#pretragaTCcevStatus").value !== "" && (retVal += "cev_status = '" + document.querySelector("#pretragaTCcevStatus").value + "' AND ");
+    document.querySelector("#pretragaTCkorisnik").value !== "" && (retVal += "korisnik = '" + document.querySelector("#pretragaTCkorisnik").value + "' AND ");
+    document.querySelector("#pretragaTCcevParent").value !== "" && (retVal += "cev_parent = '" + document.querySelector("#pretragaTCcevParent").value + "' AND ");
+    document.querySelector("#pretragaTCidCev").value !== "" && (retVal += "id_cev = '" + document.querySelector("#pretragaTCidCev").value + "' AND ");
+    document.querySelector("#pretragaTCpopPresekOd").value !== "" && (retVal += "pop_presek >= " + document.querySelector("#pretragaTCpopPresekOd").value + " AND ");
+    document.querySelector("#pretragaTCpopPresekDo").value !== "" && (retVal += "pop_presek <= " + document.querySelector("#pretragaTCpopPresekDo").value + " AND ");
+    document.querySelector("#pretragaTCprohodnost").value !== "" && (retVal += "prohodnost = " + document.querySelector("#pretragaTCprohodnost").value + " AND ");
+    document.querySelector("#pretragaTCidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaTCidOperato").value + "' AND ");
+  }
+  if (ddlValue === "tkkKabl") {
+    document.querySelector("#pretragaTKnamena").value !== "" && (retVal += "namena ILIKE '%" + document.querySelector("#pretragaTKnamena").value + "%' AND ");
+    document.querySelector("#pretragaTKpolaganje").value !== "" && (retVal += "polaganje ILIKE '%" + document.querySelector("#pretragaTKpolaganje").value + "%' AND ");
+    document.querySelector("#pretragaTKoznaka").value !== "" && (retVal += "oznaka = '" + document.querySelector("#pretragaTKoznaka").value + "' AND ");
+    document.querySelector("#pretragaTKtip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaTKtip").value + "' AND ");
+    document.querySelector("#pretragaTKstatus").value !== "" && (retVal += "status = '" + document.querySelector("#pretragaTKstatus").value + "' AND ");
+    document.querySelector("#pretragaTKidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaTKidOperato").value + "' AND ");
+  }
+  if (ddlValue === "tkkNastavak") {
+    document.querySelector("#pretragaTNpolozaj").value !== "" && (retVal += "polozaj = '" + document.querySelector("#pretragaTNpolozaj").value + "' AND ");
+    document.querySelector("#pretragaTNtipNastav").value !== "" && (retVal += "tip_nastav = '" + document.querySelector("#pretragaTNtipNastav").value + "' AND ");
+    document.querySelector("#pretragaTNidNas").value !== "" && (retVal += "id_nas = '" + document.querySelector("#pretragaTNidNas").value + "' AND ");
+    document.querySelector("#pretragaTNidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaTNidOperato").value + "' AND ");
+  }
+  if (ddlValue === "tkkOkna") {
+    document.querySelector("#pretragaTOtipOkn").value !== "" && (retVal += "tip_okn = '" + document.querySelector("#pretragaTOtipOkn").value + "' AND ");
+    document.querySelector("#pretragaTOidOkn").value !== "" && (retVal += "id_okn = '" + document.querySelector("#pretragaTOidOkn").value + "' AND ");
+    document.querySelector("#pretragaTOidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaTOidOperato").value + "' AND ");
+  }
+  if (ddlValue === "tkkTrasa") {
+    document.querySelector("#pretragaTTopstina").value !== "" && (retVal += "opstina ILIKE '%" + document.querySelector("#pretragaTTopstina").value + "%' AND ");
+    document.querySelector("#pretragaTTlokacija").value !== "" && (retVal += "lokacija ILIKE '%" + document.querySelector("#pretragaTTlokacija").value + "%' AND ");
+    document.querySelector("#pretragaTTmrPrisN").value !== "" && (retVal += "mr_pris_n ILIKE '%" + document.querySelector("#pretragaTTmrPrisN").value + "%' AND ");
+    document.querySelector("#pretragaTTgeodSnTr").value !== "" && (retVal += "geod_sn_tr ILIKE '%" + document.querySelector("#pretragaTTgeodSnTr").value + "%' AND ");
+    document.querySelector("#pretragaTTtrasa").value !== "" && (retVal += "trasa = '" + document.querySelector("#pretragaTTtrasa").value + "' AND ");
+    document.querySelector("#pretragaTTprenosniP").value !== "" && (retVal += "prenosni_p = '" + document.querySelector("#pretragaTTprenosniP").value + "' AND ");
+    document.querySelector("#pretragaTTidTrasa").value !== "" && (retVal += "id_trasa = '" + document.querySelector("#pretragaTTidTrasa").value + "' AND ");
+    document.querySelector("#pretragaTTidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaTTidOperato").value + "' AND ");
+  }
+  if (ddlValue === "tkkZavrsetak") {
+    document.querySelector("#pretragaTZmestoOpis").value !== "" && (retVal += "mesto_opis ILIKE '%" + document.querySelector("#pretragaTZmestoOpis").value + "%' AND ");
+    document.querySelector("#pretragaTZtipZavrse").value !== "" && (retVal += "tip_zavrse = '" + document.querySelector("#pretragaTZtipZavrse").value + "' AND ");
+    document.querySelector("#pretragaTZidZav").value !== "" && (retVal += "id_zav = '" + document.querySelector("#pretragaTZidZav").value + "' AND ");
+    document.querySelector("#pretragaTZidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaTZidOperato").value + "' AND ");
+  }
+  if (ddlValue === "vvKabl") {
+    document.querySelector("#pretragaVKnamena").value !== "" && (retVal += "namena ILIKE '%" + document.querySelector("#pretragaVKnamena").value + "%' AND ");
+    document.querySelector("#pretragaVKpolaganje").value !== "" && (retVal += "polaganje ILIKE '%" + document.querySelector("#pretragaVKpolaganje").value + "%' AND ");
+    document.querySelector("#pretragaVKoznaka").value !== "" && (retVal += "oznaka = '" + document.querySelector("#pretragaVKoznaka").value + "' AND ");
+    document.querySelector("#pretragaVKtip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaVKtip").value + "' AND ");
+    document.querySelector("#pretragaVKstatus").value !== "" && (retVal += "status = '" + document.querySelector("#pretragaVKstatus").value + "' AND ");
+    document.querySelector("#pretragaVKidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaVKidOperato").value + "' AND ");
+  }
+  if (ddlValue === "vvNastavak") {
+    document.querySelector("#pretragaVNpolozaj").value !== "" && (retVal += "polozaj = '" + document.querySelector("#pretragaVNpolozaj").value + "' AND ");
+    document.querySelector("#pretragaVNtipNastav").value !== "" && (retVal += "tip_nastav = '" + document.querySelector("#pretragaVNtipNastav").value + "' AND ");
+    document.querySelector("#pretragaVNtipSpojn").value !== "" && (retVal += "tip_spojn = '" + document.querySelector("#pretragaVNtipSpojn").value + "' AND ");
+    document.querySelector("#pretragaVNidNas").value !== "" && (retVal += "id_nas = '" + document.querySelector("#pretragaVNidNas").value + "' AND ");
+    document.querySelector("#pretragaVNidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaVNidOperato").value + "' AND ");
+  }
+  if (ddlValue === "vvStub") {
+    document.querySelector("#pretragaVStip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaVStip").value + "' AND ");
+    document.querySelector("#pretragaVSidVvStub").value !== "" && (retVal += "id_vv_stub = '" + document.querySelector("#pretragaVSidVvStub").value + "' AND ");
+    document.querySelector("#pretragaVSidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaVSidOperato").value + "' AND ");
+  }
+  if (ddlValue === "vvTrasa") {
+    document.querySelector("#pretragaVTopstina").value !== "" && (retVal += "opstina ILIKE '%" + document.querySelector("#pretragaVTopstina").value + "%' AND ");
+    document.querySelector("#pretragaVTlokacija").value !== "" && (retVal += "lokacija ILIKE '%" + document.querySelector("#pretragaVTlokacija").value + "%' AND ");
+    document.querySelector("#pretragaVTmrPrisN").value !== "" && (retVal += "mr_pris_n ILIKE '%" + document.querySelector("#pretragaVTmrPrisN").value + "%' AND ");
+    document.querySelector("#pretragaVTgeodSnTr").value !== "" && (retVal += "geod_sn_tr ILIKE '%" + document.querySelector("#pretragaVTgeodSnTr").value + "%' AND ");
+    document.querySelector("#pretragaVTtrasa").value !== "" && (retVal += "trasa = '" + document.querySelector("#pretragaVTtrasa").value + "' AND ");
+    document.querySelector("#pretragaVTprenosniP").value !== "" && (retVal += "prenosni_p = '" + document.querySelector("#pretragaVTprenosniP").value + "' AND ");
+    document.querySelector("#pretragaVTidTrasa").value !== "" && (retVal += "id_trasa = '" + document.querySelector("#pretragaVTidTrasa").value + "' AND ");
+    document.querySelector("#pretragaVTidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaVTidOperato").value + "' AND ");
+  }
+  if (ddlValue === "vvZavrsetak") {
+    document.querySelector("#pretragaVZmestoOpis").value !== "" && (retVal += "mesto_opis ILIKE '%" + document.querySelector("#pretragaVZmestoOpis").value + "%' AND ");
+    document.querySelector("#pretragaVZtipZavrse").value !== "" && (retVal += "tip_zavrse = '" + document.querySelector("#pretragaVZtipZavrse").value + "' AND ");
+    document.querySelector("#pretragaVZidZav").value !== "" && (retVal += "id_zav = '" + document.querySelector("#pretragaVZidZav").value + "' AND ");
+    document.querySelector("#pretragaVZidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaVZidOperato").value + "' AND ");
+  }
+  if (ddlValue === "zgrada") {
+    document.querySelector("#pretragaZGnazivLok").value !== "" && (retVal += "naziv_lok ILIKE '%" + document.querySelector("#pretragaZGnazivLok").value + "%' AND ");
+    document.querySelector("#pretragaZGopstina").value !== "" && (retVal += "opstina ILIKE '%" + document.querySelector("#pretragaZGopstina").value + "%' AND ");
+    document.querySelector("#pretragaZGnazivZgr").value !== "" && (retVal += "naziv_zgr ILIKE '%" + document.querySelector("#pretragaZGnazivZgr").value + "%' AND ");
+    document.querySelector("#pretragaZGtipZgr").value !== "" && (retVal += "tip_zgr = '" + document.querySelector("#pretragaZGtipZgr").value + "' AND ");
+    document.querySelector("#pretragaZGukIznaOd").value !== "" && (retVal += "uk_izna >= " + document.querySelector("#pretragaZGukIznaOd").value + " AND ");
+    document.querySelector("#pretragaZGukIznaDo").value !== "" && (retVal += "uk_izna <= " + document.querySelector("#pretragaZGukIznaDo").value + " AND ");
+    document.querySelector("#pretragaZGidZgr").value !== "" && (retVal += "id_zgr = '" + document.querySelector("#pretragaZGidZgr").value + "' AND ");
+    document.querySelector("#pretragaZGidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaZGidOperato").value + "' AND ");
+  }
 
-    document.querySelector("#pretragaIdAs").value !== "" && (retVal += "id_as = '" + document.querySelector("#pretragaIdAs").value + "' AND ");
-    document.querySelector("#pretragaIdOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaIdOperato").value + "' AND ");
-    document.querySelector("#pretragaOpstina").value !== "" && (retVal += "opstina = '" + document.querySelector("#pretragaOpstina").value + "' AND ");
-    document.querySelector("#pretragaTip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaTip").value + "' AND ");
-    document.querySelector("#pretragaNadVisina").value !== "" && (retVal += "nad_visina = '" + document.querySelector("#pretragaNadVisina").value + "' AND ");
-    document.querySelector("#pretragaDimOsnove").value !== "" && (retVal += "dim_osnove = '" + document.querySelector("#pretragaDimOsnove").value + "' AND ");
-    document.querySelector("#pretragaVisStuba").value !== "" && (retVal += "vis_stuba = '" + document.querySelector("#pretragaVisStuba").value + "' AND ");
-    document.querySelector("#pretragaVisinaObj").value !== "" && (retVal += "visina_obj = " + document.querySelector("#pretragaVisinaObj").value + " AND ");
-    document.querySelector("#pretragaEkipId").value !== "" && (retVal += "ekip_id = '" + document.querySelector("#pretragaEkipId").value + "' AND ");
-    document.querySelector("#pretragaUserId").value !== "" && (retVal += "user_id = '" + document.querySelector("#pretragaUserId").value + "' AND ");
-  */
   retVal.length > 5 && (retVal = retVal.substring(0, retVal.length - 5));
   return retVal;
 }

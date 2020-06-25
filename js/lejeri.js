@@ -556,13 +556,13 @@ function kreiranjeCqlFilteraAtributiZaJavnuStranicu(ddlValue) {
     document.querySelector("#pretragaVTgeodSnTr").value !== "" && (retVal += "geod_sn_tr ILIKE '%" + document.querySelector("#pretragaVTgeodSnTr").value + "%' AND ");
     document.querySelector("#pretragaVTtrasa").value !== "" && (retVal += "trasa = '" + document.querySelector("#pretragaVTtrasa").value + "' AND ");
     document.querySelector("#pretragaVTprenosniP").value !== "" && (retVal += "prenosni_p = '" + document.querySelector("#pretragaVTprenosniP").value + "' AND ");
-    document.querySelector("#pretragaVTidTrasa").value !== "" && (retVal += "id_trasa = '" + document.querySelector("#pretragaVTidTrasa").value + "' AND ");
+    document.querySelector("#pretragaVTidTrasa").value !== "" && (retVal += "id_vv_tras = '" + document.querySelector("#pretragaVTidTrasa").value + "' AND ");
     document.querySelector("#pretragaVTidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaVTidOperato").value + "' AND ");
   }
   if (ddlValue === "vvZavrsetak") {
     document.querySelector("#pretragaVZmestoOpis").value !== "" && (retVal += "mesto_opis ILIKE '%" + document.querySelector("#pretragaVZmestoOpis").value + "%' AND ");
     document.querySelector("#pretragaVZtipZavrse").value !== "" && (retVal += "tip_zavrse = '" + document.querySelector("#pretragaVZtipZavrse").value + "' AND ");
-    document.querySelector("#pretragaVZidZav").value !== "" && (retVal += "id_zav = '" + document.querySelector("#pretragaVZidZav").value + "' AND ");
+    document.querySelector("#pretragaVZidZav").value !== "" && (retVal += "id_vv_zav = '" + document.querySelector("#pretragaVZidZav").value + "' AND ");
     document.querySelector("#pretragaVZidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaVZidOperato").value + "' AND ");
   }
   if (ddlValue === "zgrada") {

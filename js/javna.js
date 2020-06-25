@@ -276,33 +276,7 @@ function filtriranje() {
   rasterLayer.getSource().updateParams(params);
 }
 
-/** Filtriranje po atributima */
-function kreiranjeCqlFilteraAtributi() {
-  let retVal = "";
 
-  document.querySelector("#pretragaIdObjekta").value !== "" && (retVal += "id = " + document.querySelector("#pretragaIdObjekta").value + " AND ");
-  document.querySelector("#pretragaObjectid").value !== "" && (retVal += "objectid = " + document.querySelector("#pretragaObjectid").value + " AND ");
-
-  document.querySelector("#pretragaNazivAs").value !== "" && (retVal += "naziv_as ILIKE '%" + document.querySelector("#pretragaNazivAs").value + "%' AND ");
-  document.querySelector("#pretragaFotoSever").value !== "" && (retVal += "foto_sever ILIKE '%" + document.querySelector("#pretragaFotoSever").value + "%' AND ");
-  document.querySelector("#pretragaFotoIstok").value !== "" && (retVal += "foto_istok ILIKE '%" + document.querySelector("#pretragaFotoIstok").value + "%' AND ");
-  document.querySelector("#pretragaFotoJug").value !== "" && (retVal += "foto_jug ILIKE '%" + document.querySelector("#pretragaFotoJug").value + "%' AND ");
-  document.querySelector("#pretragaFotoZapad").value !== "" && (retVal += "foto_zapad ILIKE '%" + document.querySelector("#pretragaFotoZapad").value + "%' AND ");
-
-  document.querySelector("#pretragaIdAs").value !== "" && (retVal += "id_as = '" + document.querySelector("#pretragaIdAs").value + "' AND ");
-  document.querySelector("#pretragaIdOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaIdOperato").value + "' AND ");
-  document.querySelector("#pretragaOpstina").value !== "" && (retVal += "opstina = '" + document.querySelector("#pretragaOpstina").value + "' AND ");
-  document.querySelector("#pretragaTip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaTip").value + "' AND ");
-  document.querySelector("#pretragaNadVisina").value !== "" && (retVal += "nad_visina = '" + document.querySelector("#pretragaNadVisina").value + "' AND ");
-  document.querySelector("#pretragaDimOsnove").value !== "" && (retVal += "dim_osnove = '" + document.querySelector("#pretragaDimOsnove").value + "' AND ");
-  document.querySelector("#pretragaVisStuba").value !== "" && (retVal += "vis_stuba = '" + document.querySelector("#pretragaVisStuba").value + "' AND ");
-  document.querySelector("#pretragaVisinaObj").value !== "" && (retVal += "visina_obj = " + document.querySelector("#pretragaVisinaObj").value + " AND ");
-  document.querySelector("#pretragaEkipId").value !== "" && (retVal += "ekip_id = '" + document.querySelector("#pretragaEkipId").value + "' AND ");
-  document.querySelector("#pretragaUserId").value !== "" && (retVal += "user_id = '" + document.querySelector("#pretragaUserId").value + "' AND ");
-
-  retVal.length > 5 && (retVal = retVal.substring(0, retVal.length - 5));
-  return retVal;
-}
 
 function wfsFilter() {
   $.ajax({
@@ -371,6 +345,3 @@ function wfsDownload(format) {
   window.open(wfsUrl + "?version=1.0.0&request=GetFeature&typeName=" + fulllayername + "&outputformat=" + format + dodajCqlFilter, "_blank");
   return false;
 }
-
-/**Povezivanje kontrola koje zavise od lejera sa akcijama */
-document.querySelector("#btnFilter").addEventListener("click", filtriranje);

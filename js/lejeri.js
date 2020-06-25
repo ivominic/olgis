@@ -376,3 +376,125 @@ function sakrijSveDivPretrage() {
   document.querySelector("#divVvZavrsetak").style.display = "none";
   document.querySelector("#divZgrada").style.display = "none";
 }
+
+
+/*** FILTRIRANJE */
+
+/**Povezivanje kontrola koje zavise od lejera sa akcijama */
+document.querySelector("#btnFilter").addEventListener("click", filtriranje);
+
+function filtriranje() {
+  let ddlValue = document.querySelector("#ddlLejerPretraga").value,
+    prostorniFilter = "",
+    atributniFilter = "";
+  prostorniFilter = kreiranjeCqlFilteraProstorno();
+  //Atributi se pretražuju samo ako je odabran lejer. Za sve lejere se radi samo prostorna selekcija
+  (ddlValue !== "") && (atributniFilter = kreiranjeCqlFilteraAtributi());
+  if (prostorniFilter !== "" && atributniFilter !== "") {
+    cqlFilter = "(" + prostorniFilter + ") AND " + atributniFilter;
+  } else {
+    cqlFilter = prostorniFilter + atributniFilter;
+  }
+  if (cqlFilter === "") {
+    return false;
+  }
+
+  if (ddlValue === "") {
+    //TODO filter svih prikazanih lejera
+
+  } else {
+    if (ddlValue === "antenskiStub") {
+      let params = antenskiStub.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      antenskiStub.getSource().updateParams(params);
+    }
+    if (ddlValue === "tkkCijev") {
+      let params = tkkCijev.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      tkkCijev.getSource().updateParams(params);
+    }
+    if (ddlValue === "tkkKabl") {
+      let params = tkkKabl.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      tkkKabl.getSource().updateParams(params);
+    }
+    if (ddlValue === "tkkNastavak") {
+      let params = tkkNastavak.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      tkkNastavak.getSource().updateParams(params);
+    }
+    if (ddlValue === "tkkOkna") {
+      let params = tkkOkna.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      tkkOkna.getSource().updateParams(params);
+    }
+    if (ddlValue === "tkkTrasa") {
+      let params = tkkTrasa.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      tkkTrasa.getSource().updateParams(params);
+    }
+    if (ddlValue === "tkkZavrsetak") {
+      let params = tkkZavrsetak.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      tkkZavrsetak.getSource().updateParams(params);
+    }
+    if (ddlValue === "vvKabl") {
+      let params = vvKabl.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      vvKabl.getSource().updateParams(params);
+    }
+    if (ddlValue === "vvNastavak") {
+      let params = vvNastavak.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      vvNastavak.getSource().updateParams(params);
+    }
+    if (ddlValue === "vvStub") {
+      let params = vvStub.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      vvStub.getSource().updateParams(params);
+    }
+    if (ddlValue === "vvTrasa") {
+      let params = vvTrasa.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      vvTrasa.getSource().updateParams(params);
+    }
+    if (ddlValue === "vvZavrsetak") {
+      let params = vvZavrsetak.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      vvZavrsetak.getSource().updateParams(params);
+    }
+    if (ddlValue === "zgrada") {
+      let params = zgrada.getSource().getParams();
+      params.CQL_FILTER = cqlFilter;
+      zgrada.getSource().updateParams(params);
+    }
+  }
+}
+
+/** Filtriranje po atributima */
+function kreiranjeCqlFilteraAtributi() {
+  let retVal = "";
+  /*
+    document.querySelector("#pretragaIdObjekta").value !== "" && (retVal += "id = " + document.querySelector("#pretragaIdObjekta").value + " AND ");
+    document.querySelector("#pretragaObjectid").value !== "" && (retVal += "objectid = " + document.querySelector("#pretragaObjectid").value + " AND ");
+
+    document.querySelector("#pretragaNazivAs").value !== "" && (retVal += "naziv_as ILIKE '%" + document.querySelector("#pretragaNazivAs").value + "%' AND ");
+    document.querySelector("#pretragaFotoSever").value !== "" && (retVal += "foto_sever ILIKE '%" + document.querySelector("#pretragaFotoSever").value + "%' AND ");
+    document.querySelector("#pretragaFotoIstok").value !== "" && (retVal += "foto_istok ILIKE '%" + document.querySelector("#pretragaFotoIstok").value + "%' AND ");
+    document.querySelector("#pretragaFotoJug").value !== "" && (retVal += "foto_jug ILIKE '%" + document.querySelector("#pretragaFotoJug").value + "%' AND ");
+    document.querySelector("#pretragaFotoZapad").value !== "" && (retVal += "foto_zapad ILIKE '%" + document.querySelector("#pretragaFotoZapad").value + "%' AND ");
+
+    document.querySelector("#pretragaIdAs").value !== "" && (retVal += "id_as = '" + document.querySelector("#pretragaIdAs").value + "' AND ");
+    document.querySelector("#pretragaIdOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaIdOperato").value + "' AND ");
+    document.querySelector("#pretragaOpstina").value !== "" && (retVal += "opstina = '" + document.querySelector("#pretragaOpstina").value + "' AND ");
+    document.querySelector("#pretragaTip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaTip").value + "' AND ");
+    document.querySelector("#pretragaNadVisina").value !== "" && (retVal += "nad_visina = '" + document.querySelector("#pretragaNadVisina").value + "' AND ");
+    document.querySelector("#pretragaDimOsnove").value !== "" && (retVal += "dim_osnove = '" + document.querySelector("#pretragaDimOsnove").value + "' AND ");
+    document.querySelector("#pretragaVisStuba").value !== "" && (retVal += "vis_stuba = '" + document.querySelector("#pretragaVisStuba").value + "' AND ");
+    document.querySelector("#pretragaVisinaObj").value !== "" && (retVal += "visina_obj = " + document.querySelector("#pretragaVisinaObj").value + " AND ");
+    document.querySelector("#pretragaEkipId").value !== "" && (retVal += "ekip_id = '" + document.querySelector("#pretragaEkipId").value + "' AND ");
+    document.querySelector("#pretragaUserId").value !== "" && (retVal += "user_id = '" + document.querySelector("#pretragaUserId").value + "' AND ");
+  */
+  retVal.length > 5 && (retVal = retVal.substring(0, retVal.length - 5));
+  return retVal;
+}

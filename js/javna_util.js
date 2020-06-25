@@ -432,3 +432,20 @@ document.querySelector("#excel").addEventListener("click", excelDownload);
 
 document.querySelector("#confirmPotvrdi").addEventListener("click", confirmPotvrdi);
 document.querySelector("#confirmOdustani").addEventListener("click", confirmOdustani);
+
+
+/**Kreiranje wms lejera za mape */
+function kreirajNoviImageWmsLejer(title, name, fullname) {
+  return new ol.layer.Image({
+    title: title,
+    name: name,
+    source: new ol.source.ImageWMS({
+      url: wmsUrl,
+      params: {
+        LAYERS: fullname,
+      },
+      ratio: 1,
+      serverType: "geoserver",
+    }),
+  });
+}

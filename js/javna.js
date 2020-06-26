@@ -31,14 +31,12 @@ function popuniKontrole(odgovor) {
     let div_sadrzaj = "";
     for (let key in metapodaci) {
       if (key !== "active" && key !== "version" && key !== "username" && key !== "validiran" && key !== "date_created" && key !== "last_updated") {
-        naziv_atributa = key;
+        naziv_atributa = preimenujNazivAtributaZaJavnuStranu(key);
         vrijednost_atributa = metapodaci[key];
-        //slika
         vrijednost_atributa === 'null' && (vrijednost_atributa = '');
         vrijednost_atributa === true && (vrijednost_atributa = 'Da');
         vrijednost_atributa === false && (vrijednost_atributa = 'Ne');
-        naziv_atributa = naziv_atributa.replace(/_/g, " ");
-        div_sadrzaj += '<div class="checkrow"><div class="column"><span>' + naziv_atributa + '</span></div><div class="column"><span>' + vrijednost_atributa + '</span></div></div>';
+        div_sadrzaj += '<div class="checkrow"><div class="column"><strong>' + naziv_atributa + '</strong></div><div class="column"><span>' + vrijednost_atributa + '</span></div></div>';
         //div_sadrzaj += '<div class="istavrsta"><label">' + naziv_atributa + '</label><label">' + vrijednost_atributa + '</label></div>';
       }
     }

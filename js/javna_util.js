@@ -502,3 +502,58 @@ function preimenujNazivLejeraZaAtributJavneStrane(nazivLejera) {
   }
   return retVal;
 }
+/**Funkcija koja vrši preimenovanje naziva atributa za prikaz na javnoj stranici */
+function preimenujNazivAtributaZaJavnuStranu(nazivAtributa) {
+  let retVal = nazivAtributa;
+  switch (nazivAtributa) {
+    case "id":
+      retVal = "ID"
+      break;
+    case "objectid":
+      retVal = "Object ID"
+      break;
+    case "ekip_id":
+      retVal = "EKIP ID"
+      break;
+    case "user_id":
+      retVal = "User ID"
+      break;
+    case "id_operato":
+      retVal = "Operator ID"
+      break;
+    case "tip":
+      retVal = "Tip"
+      break;
+    case "tip_nosaca":
+      retVal = "Tip nosača"
+      break;
+    case "visina":
+      retVal = "Visina"
+      break;
+    case "visina_obj":
+      retVal = "Visina objekta"
+      break;
+    case "vis_stuba":
+      retVal = "Visina stuba"
+      break;
+    case "namena":
+      retVal = "Namjena"
+      break;
+    case "opstina":
+      retVal = "Opština"
+      break;
+    case "naziv_lok":
+      retVal = "Naziv lokacije"
+      break;
+    case "id_as":
+      retVal = "Antenski stub ID"
+      break;
+    case "id_vv_stub":
+      retVal = "VV stub ID"
+      break;
+    default:
+
+  }
+  retVal = retVal.replace(/_/g, " ");
+  return retVal;
+}

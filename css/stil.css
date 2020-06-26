@@ -797,7 +797,8 @@ h3 {
 }
 
 .collapse:target .content {
-  max-height: 15em;
+  max-height: 25em;
+  /*Ovdje se definiše maksimalna visina accordion contenta*/
 }
 
 .collapse:target a:before {
@@ -808,7 +809,7 @@ h3 {
   .collapse-content {
     width: 80vw;
     margin: auto;
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    /*box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);*/
   }
 }
 

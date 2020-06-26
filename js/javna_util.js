@@ -305,6 +305,9 @@ function setujAktivnu(element) {
   if (element === "#pretraga") {
     showDiv("#pretragaDiv");
   }
+  if (element === "#atributi") {
+    showDiv("#atributiDiv");
+  }
   podesiInterakciju();
   zatvoriHamburger();
 }
@@ -448,4 +451,54 @@ function kreirajNoviImageWmsLejer(title, name, fullname) {
       serverType: "geoserver",
     }),
   });
+}
+
+
+/****PREVOĐENJE NAZIVA LEJERA I POLJA */
+function preimenujNazivLejeraZaAtributJavneStrane(nazivLejera) {
+  let retVal = nazivLejera;
+  switch (nazivLejera) {
+    case "antenski_stub_v":
+      retVal = "Antenski stub"
+      break;
+    case "tkk_cijev_v":
+      retVal = "TKK cijev"
+      break;
+    case "tkk_kabl_v":
+      retVal = "TKK kabl"
+      break;
+    case "tkk_nastavak_v":
+      retVal = "TKK nastavak"
+      break;
+    case "tkk_okna_v":
+      retVal = "TKK okna"
+      break;
+    case "tkk_trasa_v":
+      retVal = "TKK trasa"
+      break;
+    case "tkk_zavrsetak_v":
+      retVal = "TKK završetak"
+      break;
+    case "vv_kabl_v":
+      retVal = "VV kabl"
+      break;
+    case "vv_nastavak_v":
+      retVal = "VV nastavak"
+      break;
+    case "vv_stub_v":
+      retVal = "VV stub"
+      break;
+    case "vv_trasa_v":
+      retVal = "VV trasa"
+      break;
+    case "vv_zavrsetak_v":
+      retVal = "VV završetak"
+      break;
+    case "zgrada":
+      retVal = "Zgrada"
+      break;
+    default:
+
+  }
+  return retVal;
 }

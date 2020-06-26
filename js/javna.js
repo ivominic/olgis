@@ -21,31 +21,28 @@ let rasterLayer = new ol.layer.Image({
 /**Popunjavanje komponenti u divu za prikaz atributa, nakon pročitanog odgovora za WMS objekat */
 function popuniKontrole(odgovor) {
   let atributi = odgovor.features[0]["properties"];
-  idObjekta = atributi["id"];
-  document.querySelector("#idObjekta").value = idObjekta;
-  document.querySelector("#objectid").value = atributi["objectid"];
-  document.querySelector("#nazivAs").value = atributi["naziv_as"];
-  document.querySelector("#nazivLok").value = atributi["naziv_lok"];
-  document.querySelector("#opstina").value = atributi["opstina"];
-  document.querySelector("#nadVisina").value = atributi["nad_visina"];
-  document.querySelector("#tip").value = atributi["tip"];
-  document.querySelector("#dimOsnove").value = atributi["dim_osnove"];
-  document.querySelector("#visStuba").value = atributi["vis_stuba"];
-  document.querySelector("#visinaObj").value = atributi["visina_obj"];
-  document.querySelector("#fotoSever").value = atributi["foto_sever"];
-  document.querySelector("#fotoIstok").value = atributi["foto_istok"];
-  document.querySelector("#fotoJug").value = atributi["foto_jug"];
-  document.querySelector("#fotoZapad").value = atributi["foto_zapad"];
-  document.querySelector("#idAs").value = atributi["id_as"];
-  document.querySelector("#idOperato").value = atributi["id_operato"];
-  document.querySelector("#ekipId").value = atributi["ekip_id"];
-  document.querySelector("#userId").value = atributi["user_id"];
-
-  //setujDdlVrijednost("#tip", atributi["tip"]);
-
-  if (akcija === "izmijeni") {
-    //Ako se radi o izmjeni geometrije, čita objekad za idObjekta i postavlja ga kao vektor na mapi
-    wfsZaEdit(idObjekta);
+  for (let i = 0; i < odgovor.features.length; i++) {
+    let metapodaci = odgovor.features[i]["properties"];
+    let element_id = odgovor.features[i]['id'];
+    let objekat = element_id.split(".");
+    let collapse_name = preimenujNazivLejeraZaAtributJavneStrane(objekat[0]) + " - " + metapodaci["id"];
+    let collapse_id = objekat[0] + '.' + metapodaci["id"];
+    let div_heder = '<div class="collapse" id="' + collapse_id + '"><a href="#' + collapse_id + '">' + collapse_name + '</a><div class="content"><div class="inner-content">';
+    let div_sadrzaj = "";
+    for (let key in metapodaci) {
+      if (key !== "active" && key !== "version" && key !== "username" && key !== "validiran" && key !== "date_created" && key !== "last_updated") {
+        naziv_atributa = key;
+        vrijednost_atributa = metapodaci[key];
+        //slika
+        vrijednost_atributa === 'null' && (vrijednost_atributa = '');
+        vrijednost_atributa === true && (vrijednost_atributa = 'Da');
+        vrijednost_atributa === false && (vrijednost_atributa = 'Ne');
+        naziv_atributa = naziv_atributa.replace(/_/g, " ");
+        div_sadrzaj += '<div class="checkrow"><div class="column"><span>' + naziv_atributa + '</span></div><div class="column"><span>' + vrijednost_atributa + '</span></div></div>';
+        //div_sadrzaj += '<div class="istavrsta"><label">' + naziv_atributa + '</label><label">' + vrijednost_atributa + '</label></div>';
+      }
+    }
+    document.querySelector("#accordion").innerHTML += div_heder + div_sadrzaj + '</div></div></div>';
   }
 }
 
@@ -196,6 +193,7 @@ map.on("click", onMouseClick);
 
 function onMouseClick(browserEvent) {
   if (akcija === "atributi") {
+    document.querySelector("#accordion").innerHTML = "";
     let coordinate = browserEvent.coordinate;
     let pixel = map.getPixelFromCoordinate(coordinate);
 
@@ -221,7 +219,7 @@ function onMouseClick(browserEvent) {
                 let odgovor = JSON.parse(json);
                 if (odgovor.features.length > 0) {
                   console.log(odgovor);
-                  //popuniKontrole(odgovor);
+                  popuniKontrole(odgovor);
                   //showDiv("#atributiDiv");
                 }
               });
@@ -229,32 +227,6 @@ function onMouseClick(browserEvent) {
         }
       }
     })
-
-    /*map.getLayers().forEach(function (layer) {
-      if (layer instanceof ol.layer.Image) {
-        if (layer.N.visible) {
-          console.log("lejer", layer);
-        }
-      }
-    });*/
-
-    /*let url = rasterLayer.getSource().getGetFeatureInfoUrl(browserEvent.coordinate, map.getView().getResolution(), "EPSG:3857", {
-      INFO_FORMAT: "application/json",
-    });
-    if (url) {
-      fetch(url)
-        .then(function (response) {
-          restartovanje();
-          return response.text();
-        })
-        .then(function (json) {
-          let odgovor = JSON.parse(json);
-          if (odgovor.features.length > 0) {
-            popuniKontrole(odgovor);
-            showDiv("#atributiDiv");
-          }
-        });
-    }*/
   }
 }
 
@@ -297,25 +269,6 @@ function brisanje() {
     }
   };
 }
-
-/* Filter wms-a po prostornim i atributskim podacima*/
-function filtriranje() {
-  let prostorniFilter = kreiranjeCqlFilteraProstorno();
-  let atributniFilter = kreiranjeCqlFilteraAtributi();
-  if (prostorniFilter !== "" && atributniFilter !== "") {
-    cqlFilter = "(" + prostorniFilter + ") AND " + atributniFilter;
-  } else {
-    cqlFilter = prostorniFilter + atributniFilter;
-  }
-  if (cqlFilter === "") {
-    return false;
-  }
-  let params = rasterLayer.getSource().getParams();
-  params.CQL_FILTER = cqlFilter;
-  rasterLayer.getSource().updateParams(params);
-}
-
-
 
 function wfsFilter() {
   $.ajax({

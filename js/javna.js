@@ -28,6 +28,8 @@ function popuniKontrole(odgovor) {
     let collapse_name = preimenujNazivLejeraZaAtributJavneStrane(objekat[0]) + " - " + metapodaci["id"];
     let collapse_id = objekat[0] + '.' + metapodaci["id"];
     let div_heder = '<div class="collapse" id="' + collapse_id + '"><a href="#' + collapse_id + '">' + collapse_name + '</a><div class="content"><div class="inner-content">';
+    //div_heder += '<div class="checkrow"><div class="column"><button onclick="slika()" style="width: 35px;height: 30px;font-size: 20px;"><i class="fas fa-camera-retro"></i></button></div><div class="column">x</div></div>'
+    div_heder += '<button onclick="slika()" style="width: 35px;height: 30px;font-size: 20px;"><i class="fas fa-camera-retro"></i></button>'
     let div_sadrzaj = "";
     for (let key in metapodaci) {
       if (key !== "active" && key !== "version" && key !== "username" && key !== "validiran" && key !== "date_created" && key !== "last_updated") {
@@ -43,6 +45,7 @@ function popuniKontrole(odgovor) {
     document.querySelector("#accordion").innerHTML += div_heder + div_sadrzaj + '</div></div></div>';
   }
 }
+
 
 /** Sve podešava na početne vrijednosti*/
 function restartovanje() {

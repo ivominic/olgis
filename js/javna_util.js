@@ -158,8 +158,12 @@ function slika() {
   slikeIndex = 0;
   slikeUrl = [];
 
-  if (idObjekta > 0) {
+  if (location.hash && location.hash.substring(1)) {
+    let objekat = location.hash.substring(1).split(".");
+    let lejerSlike = objekat[0];
+    let idObjekta = objekat[1];
     let parametri = new FormData();
+    parametri.append("lejer", lejerSlike);
     parametri.append("id", idObjekta);
     let xhr = new XMLHttpRequest();
     xhr.open('POST', citajSlikeUrl, true);
@@ -167,8 +171,8 @@ function slika() {
     xhr.onreadystatechange = function () {
       if (this.readyState === 4) {
         if (this.status === 200) {
+          console.log(xhr.responseText);
           let jsonResponse = JSON.parse(xhr.responseText);
-          console.log(jsonResponse);
           if (jsonResponse["success"] === true && jsonResponse["data"].length > 0) {
             for (let i = 0; i < jsonResponse["data"].length; i++) {
               let tmpSlika = jsonResponse["data"][i].fotografija;
@@ -185,6 +189,10 @@ function slika() {
               document.querySelector("#modalFotografija").style.display = "none";
             };
             //setujAktivnu("#slika"); //Da ne zatvara stranicu sa atributima
+          } else {
+            if (jsonResponse["data"].length == 0) {
+              poruka("Upozorenje", "Ne postoji slika za odabrani objekat.");
+            }
           }
         } else {
           poruka("Greska", xhr.statusText);
@@ -494,7 +502,7 @@ function preimenujNazivLejeraZaAtributJavneStrane(nazivLejera) {
     case "vv_zavrsetak_v":
       retVal = "VV završetak"
       break;
-    case "zgrada":
+    case "zgrada_v":
       retVal = "Zgrada"
       break;
     default:

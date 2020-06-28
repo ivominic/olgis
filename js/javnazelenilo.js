@@ -1,22 +1,5 @@
-/**Inicijalna deklaracija promjenljivih koje su vezane za konkretan lejer */
-const layername = "antenski_stub_v",
-  fulllayername = "ekip:" + layername,
-  layertitle = "Antenski stubovi";
 const tipGeometrije = point;
 let opisSlike = "";
-
-let rasterLayer = new ol.layer.Image({
-  title: layertitle,
-  name: layername,
-  source: new ol.source.ImageWMS({
-    url: wmsUrl,
-    params: {
-      LAYERS: fulllayername,
-    },
-    ratio: 1,
-    serverType: "geoserver",
-  }),
-});
 
 /**Popunjavanje komponenti u divu za prikaz atributa, nakon pročitanog odgovora za WMS objekat */
 function popuniKontrole(odgovor) {
@@ -46,44 +29,12 @@ function popuniKontrole(odgovor) {
   }
 }
 
-
-/** Sve podešava na početne vrijednosti*/
-function restartovanje() {
-  idObjekta = 0;
-  document.querySelector("#idObjekta").value = "";
-  document.querySelector("#objectid").value = "";
-  document.querySelector("#nazivAs").value = "";
-  document.querySelector("#nazivLok").value = "";
-  document.querySelector("#opstina").value = "";
-  document.querySelector("#nadVisina").value = "";
-  document.querySelector("#tip").value = "";
-  document.querySelector("#dimOsnove").value = "";
-  document.querySelector("#visStuba").value = "";
-  document.querySelector("#visinaObj").value = "";
-  document.querySelector("#fotoSever").value = "";
-  document.querySelector("#fotoIstok").value = "";
-  document.querySelector("#fotoJug").value = "";
-  document.querySelector("#fotoZapad").value = "";
-  document.querySelector("#idAs").value = "";
-  document.querySelector("#idOperato").value = "";
-  document.querySelector("#ekipId").value = "";
-  document.querySelector("#userId").value = "";
-  document.querySelector("#dodavanjeSlike").value = "";
-  slikaUrl = "";
-  opisSlike = "";
-  slikeUrl = [];
-
-  isprazniGeometrije();
-}
-
 /** Prazni sve promjenljive vezane za crtanje i edit geometrije*/
 function isprazniGeometrije() {
   featureTekuciOverlay.getSource().clear();
   geometrijaZaBazuWkt = "";
   nacrtan = false;
   modifikovan = false;
-  let paramsRestart = rasterLayer.getSource().getParams();
-  rasterLayer.getSource().updateParams(paramsRestart);
 }
 
 /**Smještanje mape u div sa id-jem "map" */
@@ -94,11 +45,6 @@ let map = new ol.Map({
   view: view,
 });
 
-/** Prikaz razmjere na mapi */
-/*let razmjera = new ol.control.ScaleLine({
-  target: document.querySelector("#razmjera")
-});*/
-//Sve ovo je nepotrebno u OL3, u šestici prikazuje i scale bar
 map.addControl(razmjera);
 
 /** Dodavanje vektorskih lejera za crtanje i edit geometrije na mapu */
@@ -237,38 +183,7 @@ function izbrisi() {
 
 /**Metoda koja će sve resetovati na početne vrijednosti */
 function ponisti() {
-  restartovanje();
-}
-
-function brisanje() {
-  let podaciForme = new FormData();
-  podaciForme.append("id", idObjekta);
-  let xhr = new XMLHttpRequest();
-  xhr.open("POST", izbrisiZapisUrl, true);
-  xhr.timeout = 100000;
-  xhr.ontimeout = function () {
-    poruka("Greska", "Akcija je prekinuta jer je trajala predugo.");
-  };
-  xhr.send(podaciForme);
-  openModalSpinner();
-
-  xhr.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      if (this.status === 200) {
-        let jsonResponse = JSON.parse(xhr.responseText);
-        if (jsonResponse["success"] === true) {
-          poruka("Uspjeh", jsonResponse["message"]);
-          restartovanje();
-        } else {
-          poruka("Upozorenje", jsonResponse["message"]);
-        }
-        closeModalSpinner();
-      } else {
-        poruka("Greska", xhr.statusText);
-        closeModalSpinner();
-      }
-    }
-  };
+  //restartovanje();
 }
 
 function wfsFilter() {

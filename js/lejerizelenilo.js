@@ -167,14 +167,45 @@ function kreiranjeCqlFilteraAtributiZaJavnuStranicu(ddlValue) {
   let retVal = "";
 
   if (ddlValue === "drvece") {
-    document.querySelector("#pretragaASnazivLok").value !== "" && (retVal += "naziv_lok ILIKE '%" + document.querySelector("#pretragaASnazivLok").value + "%' AND ");
-    document.querySelector("#pretragaASopstina").value !== "" && (retVal += "opstina ILIKE '%" + document.querySelector("#pretragaASopstina").value + "%' AND ");
-    document.querySelector("#pretragaASnazivAs").value !== "" && (retVal += "naziv_as = '" + document.querySelector("#pretragaASnazivAs").value + "' AND ");
-    document.querySelector("#pretragaAStip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaAStip").value + "' AND ");
-    document.querySelector("#pretragaASidAs").value !== "" && (retVal += "id_as = '" + document.querySelector("#pretragaASidAs").value + "' AND ");
-    document.querySelector("#pretragaASidOperato").value !== "" && (retVal += "id_operato = '" + document.querySelector("#pretragaASidOperato").value + "' AND ");
-    document.querySelector("#pretragaTCpopPresekOd").value !== "" && (retVal += "pop_presek >= " + document.querySelector("#pretragaTCpopPresekOd").value + " AND ");
-    document.querySelector("#pretragaTCpopPresekDo").value !== "" && (retVal += "pop_presek <= " + document.querySelector("#pretragaTCpopPresekDo").value + " AND ");
+    document.querySelector("#pretragaIdObjekta").value !== "" && (retVal += "id = " + document.querySelector("#pretragaIdObjekta").value + " AND ");
+    document.querySelector("#pretragaLatinskiNaziv").value !== "" && (retVal += "latinski_naziv ILIKE '%" + document.querySelector("#pretragaLatinskiNaziv").value + "%' AND ");
+    document.querySelector("#pretragaNarodniNaziv").value !== "" && (retVal += "narodni_naziv ILIKE '%" + document.querySelector("#pretragaNarodniNaziv").value + "%' AND ");
+    document.querySelector("#pretragaFitopatoloskePromjene").value !== "" && (retVal += "fitopatoloske_promjene ILIKE '%" + document.querySelector("#pretragaFitopatoloskePromjene").value + "%' AND ");
+    document.querySelector("#pretragaVrstaFitopatoloskePromjene").value !== "" && (retVal += "vrsta_fitopatoloske_promjene ILIKE '%" + document.querySelector("#pretragaVrstaFitopatoloskePromjene").value + "%' AND ");
+    document.querySelector("#pretragaEntomoloskePromjene").value !== "" && (retVal += "entomoloske_promjene ILIKE '%" + document.querySelector("#pretragaEntomoloskePromjene").value + "%' AND ");
+    document.querySelector("#pretragaVrstaEntomoloskePromjene").value !== "" && (retVal += "vrsta_entomoloske_promjene ILIKE '%" + document.querySelector("#pretragaVrstaEntomoloskePromjene").value + "%' AND ");
+    document.querySelector("#pretragaTipKragne").value !== "" && (retVal += "tip_kragne ILIKE '%" + document.querySelector("#pretragaTipKragne").value + "%' AND ");
+    document.querySelector("#pretragaVrijemeSadnje").value !== "" && (retVal += "vrijeme_sadnje ILIKE '%" + document.querySelector("#pretragaVrijemeSadnje").value + "%' AND ");
+    document.querySelector("#pretragaNapomena").value !== "" && (retVal += "napomena ILIKE '%" + document.querySelector("#pretragaNapomena").value + "%' AND ");
+    document.querySelector("#pretragaOstaliDetalji").value !== "" && (retVal += "ostali_detalji ILIKE '%" + document.querySelector("#pretragaOstaliDetalji").value + "%' AND ");
+    document.querySelector("#pretragaTip").value !== "" && (retVal += "tip = '" + document.querySelector("#pretragaTip").value + "' AND ");
+    document.querySelector("#pretragaIzrazenostOtvoreneTruleziDebla").value !== "" && (retVal += "izrazenost_otvorene_trulezi_debla = '" + document.querySelector("#pretragaIzrazenostOtvoreneTruleziDebla").value + "' AND ");
+    document.querySelector("#pretragaVelicinaOtvoreneTruleziDebla").value !== "" && (retVal += "velicina_otvorene_trulezi_debla = '" + document.querySelector("#pretragaVelicinaOtvoreneTruleziDebla").value + "' AND ");
+    document.querySelector("#pretragaIzrazenostOtvoreneTruleziGrana").value !== "" && (retVal += "izrazenost_otvorene_trulezi_grana = '" + document.querySelector("#pretragaIzrazenostOtvoreneTruleziGrana").value + "' AND ");
+    document.querySelector("#pretragaVelicinaOtvoreneTruleziGrana").value !== "" && (retVal += "velicina_otvorene_trulezi_grana = '" + document.querySelector("#pretragaVelicinaOtvoreneTruleziGrana").value + "' AND ");
+    document.querySelector("#pretragaOcjenaVitalnosti").value !== "" && (retVal += "ocjena_vitalnosti = '" + document.querySelector("#pretragaOcjenaVitalnosti").value + "' AND ");
+    document.querySelector("#pretragaOcjenaDekorativnosti").value !== "" && (retVal += "ocjena_dekorativnosti = '" + document.querySelector("#pretragaOcjenaDekorativnosti").value + "' AND ");
+    document.querySelector("#pretragaOpsegStarosti").value !== "" && (retVal += "opseg_starosti = '" + document.querySelector("#pretragaOpsegStarosti").value + "' AND ");
+    document.querySelector("#pretragaSlomljeneGrane").value !== "" && (retVal += "slomljene_grane = '" + document.querySelector("#pretragaSlomljeneGrane").value + "' AND ");
+    document.querySelector("#pretragaSuveGrane").value !== "" && (retVal += "suve_grane = '" + document.querySelector("#pretragaSuveGrane").value + "' AND ");
+    document.querySelector("#pretragaSuhovrhost").value !== "" && (retVal += "suhovrhost = '" + document.querySelector("#pretragaSuhovrhost").value + "' AND ");
+    document.querySelector("#pretragaKvalitet").value !== "" && (retVal += "kvalitet = '" + document.querySelector("#pretragaKvalitet").value + "' AND ");
+    document.querySelector("#pretragaVisinaStablaOd").value !== "" && (retVal += "visina_stabla <= " + document.querySelector("#pretragaVisinaStablaOd").value + " AND ");
+    document.querySelector("#pretragaVisinaStablaDo").value !== "" && (retVal += "visina_stabla >= " + document.querySelector("#pretragaVisinaStablaDo").value + " AND ");
+    document.querySelector("#pretragaVisinaDeblaOd").value !== "" && (retVal += "visina_debla <= " + document.querySelector("#pretragaVisinaDeblaOd").value + " AND ");
+    document.querySelector("#pretragaVisinaDeblaDo").value !== "" && (retVal += "visina_debla >= " + document.querySelector("#pretragaVisinaDeblaDo").value + " AND ");
+    document.querySelector("#pretragaPrsniPrecnikOd").value !== "" && (retVal += "prsni_precnik <= " + document.querySelector("#pretragaPrsniPrecnikOd").value + " AND ");
+    document.querySelector("#pretragaPrsniPrecnikDo").value !== "" && (retVal += "prsni_precnik >= " + document.querySelector("#pretragaPrsniPrecnikDo").value + " AND ");
+    document.querySelector("#pretragaSirinaKrosnjeOd").value !== "" && (retVal += "sirina_krosnje <= " + document.querySelector("#pretragaSirinaKrosnjeOd").value + " AND ");
+    document.querySelector("#pretragaSirinaKrosnjeDo").value !== "" && (retVal += "sirina_krosnje >= " + document.querySelector("#pretragaSirinaKrosnjeDo").value + " AND ");
+    document.querySelector("#pretragaOcekivanoTrajanjeZivotaOd").value !== "" && (retVal += "ocekivano_trajanje_zivota <= " + document.querySelector("#pretragaOcekivanoTrajanjeZivotaOd").value + " AND ");
+    document.querySelector("#pretragaOcekivanoTrajanjeZivotaDo").value !== "" && (retVal += "ocekivano_trajanje_zivota >= " + document.querySelector("#pretragaOcekivanoTrajanjeZivotaDo").value + " AND ");
+    document.querySelector("#pretragaCijenaSadniceOd").value !== "" && (retVal += "cijena_sadnice <= " + document.querySelector("#pretragaCijenaSadniceOd").value + " AND ");
+    document.querySelector("#pretragaCijenaSadniceDo").value !== "" && (retVal += "cijena_sadnice >= " + document.querySelector("#pretragaCijenaSadniceDo").value + " AND ");
+    document.querySelector("#pretragaIsjeceneDebeleGrane").value !== "" && (retVal += "isjecene_debele_grane = " + document.querySelector("#pretragaIsjeceneDebeleGrane").value + " AND ");
+    document.querySelector("#pretragaPremazivanjeNakonSjece").value !== "" && (retVal += "premazivanje_nakon_sjece = " + document.querySelector("#pretragaPremazivanjeNakonSjece").value + " AND ");
+    document.querySelector("#pretragaIsjecenoUklonjenoStablo").value !== "" && (retVal += "isjeceno_uklonjeno_stablo = " + document.querySelector("#pretragaIsjecenoUklonjenoStablo").value + " AND ");
+    document.querySelector("#pretragaPripadnostDrvoredu").value !== "" && (retVal += "pripadnost_drvoredu = " + document.querySelector("#pretragaPripadnostDrvoredu").value + " AND ");
   }
   if (ddlValue === "zbunjeLinija") {
     document.querySelector("#pretragaZLIdObjekta").value !== "" && (retVal += "id = " + document.querySelector("#pretragaZLIdObjekta").value + " AND ");

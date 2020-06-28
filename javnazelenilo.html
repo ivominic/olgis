@@ -169,35 +169,228 @@
       </div>
       <div id="divDrvece" style="display: none;">
         <div class="istavrsta">
-          <label for="pretragaASnazivLok">Naziv lokacije stuba:</label>
-          <input type="text" id="pretragaASnazivLok" />
+          <label for="pretragaIdObjekta">Id objekta:</label>
+          <input type="number" id="pretragaIdObjekta" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaASnazivAs">Naziv stuba:</label>
-          <input type="text" id="pretragaASnazivAs" />
+          <label for="pretragaTip">Tip objekta:</label>
+          <select id="pretragaTip" class="select-css">
+            <option value=""></option>
+            <option value="Četinar">Četinar</option>
+            <option value="Listopadni lišćar">Listopadni lišćar</option>
+            <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+            <option value="Palme">Palme</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaASopstina">Opština:</label>
-          <input type="text" id="pretragaASopstina" />
+          <label for="pretragaNarodniNaziv">Narodni naziv:</label>
+          <input type="text" id="pretragaNarodniNaziv" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaAStip">Tip:</label>
-          <input type="text" id="pretragaAStip" />
+          <label for="pretragaLatinskiNaziv">Latinski naziv:</label>
+          <input type="text" id="pretragaLatinskiNaziv" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaASidAs">Id antenskog stuba:</label>
-          <input type="text" id="pretragaASidAs" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaASidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaASidOperato" />
-          <label for="pretragaTCpopPresekOd">Poprečni presjek cijevi:</label>
+          <label for="pretragaVisinaStablaOd">Visina stabla (m):</label>
           <div style="display: inline-flex;">
-            <input type="number" id="pretragaTCpopPresekOd" placeholder="Od" />
-            <input type="number" id="pretragaTCpopPresekDo" placeholder="Do" />
+            <input type="number" id="pretragaVisinaStablaOd" placeholder="Od" /> <input type="number" id="pretragaVisinaStablaDo" placeholder="Do" />
           </div>
         </div>
+        <div class="istavrsta">
+          <label for="pretragaVisinaDeblaOd">Visina debla (m):</label>
+          <div style="display: inline-flex;">
+            <input type="number" id="pretragaVisinaDeblaOd" placeholder="Od" /> <input type="number" id="pretragaVisinaDeblaDo" placeholder="Do" />
+          </div>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaPrsniPrecnikOd">Obim stabla (cm):</label>
+          <div style="display: inline-flex;">
+            <input type="number" id="pretragaPrsniPrecnikOd" placeholder="Od" /> <input type="number" id="pretragaPrsniPrecnikDo" placeholder="Do" />
+          </div>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaSirinaKrosnjeOd">Širina krošnje (m):</label>
+          <div style="display: inline-flex;">
+            <input type="number" id="pretragaSirinaKrosnjeOd" placeholder="Od" /> <input type="number" id="pretragaSirinaKrosnjeDo" placeholder="Do" />
+          </div>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaTipKragne">Tip kragne:</label>
+          <input type="text" id="pretragaTipKragne" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaNapomena">Napomena:</label>
+          <input type="text" class="form-control" id="pretragaNapomena" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaFitopatoloskePromjene">Fitopatološke promjene:</label>
+          <input type="text" id="pretragaFitopatoloskePromjene" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVrstaFitopatoloskePromjene">Vrsta fp promjene:</label>
+          <input type="text" id="pretragaVrstaFitopatoloskePromjene" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaEntomoloskePromjene">Entomološke promjene:</label>
+          <input type="text" id="pretragaEntomoloskePromjene" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVrstaEntomoloskePromjene">Vrsta em promjene:</label>
+          <input type="text" id="pretragaVrstaEntomoloskePromjene" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaIzrazenostOtvoreneTruleziDebla">Izražena trulež debla:</label>
+          <select class="select-css" id="pretragaIzrazenostOtvoreneTruleziDebla">
+            <option value=""></option>
+            <option value="Izražena">Izražena</option>
+            <option value="Malo prisutna">Malo prisutna</option>
+            <option value="Nema">Nema</option>
+            <option value="Vrlo prisutna">Vrlo prisutna</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVelicinaOtvoreneTruleziDebla">Veličina truleži debla:</label>
+          <select class="select-css" id="pretragaVelicinaOtvoreneTruleziDebla">
+            <option value=""></option>
+            <option value="Do 10cm">Do 10cm</option>
+            <option value="Preko 10cm">Preko 10cm</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaIzrazenostOtvoreneTruleziGrana">Izražena trulež grana:</label>
+          <select class="select-css" id="pretragaIzrazenostOtvoreneTruleziGrana">
+            <option value=""></option>
+            <option value="Izražena">Izražena</option>
+            <option value="Malo prisutna">Malo prisutna</option>
+            <option value="Nema">Nema</option>
+            <option value="Vrlo prisutna">Vrlo prisutna</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVelicinaOtvoreneTruleziGrana">Veličina truleži grana:</label>
+          <select class="select-css" id="pretragaVelicinaOtvoreneTruleziGrana">
+            <option value=""></option>
+            <option value="Do 10cm">Do 10cm</option>
+            <option value="Preko 10cm">Preko 10cm</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaOcjenaVitalnosti">Ocjena vitalnosti:</label>
+          <select class="select-css" id="pretragaOcjenaVitalnosti">
+            <option value=""></option>
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaOcjenaDekorativnosti">Ocjena dekorativnosti:</label>
+          <select class="select-css" id="pretragaOcjenaDekorativnosti">
+            <option value=""></option>
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaOpsegStarosti">Opseg starosti:</label>
+          <select class="select-css" id="pretragaOpsegStarosti">
+            <option value=""></option>
+            <option value="10g - 30g">10g - 30g</option>
+            <option value="Mlađe od 10g">Mlađe od 10g</option>
+            <option value="Starije od 30g">Starije od 30g</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaOcekivanoTrajanjeZivotaOd">Životni vijek (godina):</label>
+          <div style="display: inline-flex;">
+            <input type="number" id="pretragaOcekivanoTrajanjeZivotaOd" placeholder="Od" /> <input type="number" id="pretragaOcekivanoTrajanjeZivotaDo" placeholder="Do" />
+          </div>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaCijenaSadniceOd">Cijena sadnice (€):</label>
+          <div style="display: inline-flex;">
+            <input type="number" id="pretragaCijenaSadniceOd" placeholder="Od" /> <input type="number" id="pretragaCijenaSadniceDo" placeholder="Do" />
+          </div>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaVrijemeSadnje">Vrijeme sadnje:</label>
+          <input type="text" id="pretragaVrijemeSadnje" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaOstaliDetalji">Ostali detalji:</label>
+          <input type="text" id="pretragaOstaliDetalji" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaSlomljeneGrane">Slomljene grane:</label>
+          <select class="select-css" id="pretragaSlomljeneGrane">
+            <option value=""></option>
+            <option value="da">Da</option>
+            <option value="ne">Ne</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaSuveGrane">Suve grane:</label>
+          <select class="select-css" id="pretragaSuveGrane">
+            <option value=""></option>
+            <option value="da">Da</option>
+            <option value="ne">Ne</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaSuhovrhost">Suhovrhost:</label>
+          <select class="select-css" id="pretragaSuhovrhost">
+            <option value=""></option>
+            <option value="da">Da</option>
+            <option value="ne">Ne</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaKvalitet">Za uklanjanje:</label>
+          <select class="select-css" id="pretragaKvalitet">
+            <option value=""></option>
+            <option value="da">Da</option>
+            <option value="ne">Ne</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaIsjeceneDebeleGrane">Isječene debele grane:</label>
+          <select class="select-css" id="pretragaIsjeceneDebeleGrane">
+            <option value=""></option>
+            <option value="true">Da</option>
+            <option value="false">Ne</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaPremazivanjeNakonSjece">Premazivanje nakon sječe:</label>
+          <select class="select-css" id="pretragaPremazivanjeNakonSjece">
+            <option value=""></option>
+            <option value="true">Da</option>
+            <option value="false">Ne</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaIsjecenoUklonjenoStablo">Isječeno stablo:</label>
+          <select class="select-css" id="pretragaIsjecenoUklonjenoStablo">
+            <option value=""></option>
+            <option value="true">Da</option>
+            <option value="false">Ne</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaPripadnostDrvoredu">Pripadnost drvoredu:</label>
+          <select class="select-css" id="pretragaPripadnostDrvoredu">
+            <option value=""></option>
+            <option value="true">Da</option>
+            <option value="false">Ne</option>
+          </select>
+        </div>
       </div>
+
       <div id="divZbunjeLinija" style="display: none;">
         <div class="istavrsta">
           <label for="pretragaZLIdObjekta">Id objekta:</label>

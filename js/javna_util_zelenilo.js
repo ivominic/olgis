@@ -369,22 +369,6 @@ function closeModalSpinner() {
   document.querySelector('#fadeSpinner').style.display = 'none';
 }
 
-/**Funkcije za setovanje podloga */
-/*function osmPodloga() {
-  map.getLayers().setAt(0, osmBaseMap);
-  zatvoriHamburger();
-}
-
-function topoPodloga() {
-  map.getLayers().setAt(0, katastarBaseMap);
-  zatvoriHamburger();
-}
-
-function satelitPodloga() {
-  map.getLayers().setAt(0, satelitBaseMap);
-  zatvoriHamburger();
-}*/
-
 /**Funkcije za download WFS-a */
 function shpDownload() {
   zatvoriHamburger();
@@ -434,8 +418,8 @@ document.querySelector("#lejeri").addEventListener("click", lejeri);
 document.querySelector("#marker").addEventListener("click", crtajTacku);
 document.querySelector("#linija").addEventListener("click", crtajLiniju);
 document.querySelector("#poligon").addEventListener("click", crtajPoligon);
-//document.querySelector("#pretraga").addEventListener("click", pretraga);
-//document.querySelector("#restart").addEventListener("click", restart);
+document.querySelector("#pretraga").addEventListener("click", pretraga);
+document.querySelector("#restart").addEventListener("click", restart);
 
 document.querySelector("#confirmPotvrdi").addEventListener("click", confirmPotvrdi);
 document.querySelector("#confirmOdustani").addEventListener("click", confirmOdustani);
@@ -462,44 +446,23 @@ function kreirajNoviImageWmsLejer(title, name, fullname) {
 function preimenujNazivLejeraZaAtributJavneStrane(nazivLejera) {
   let retVal = nazivLejera;
   switch (nazivLejera) {
-    case "antenski_stub_v":
-      retVal = "Antenski stub"
+    case "drvece_v":
+      retVal = "Drveće"
       break;
-    case "tkk_cijev_v":
-      retVal = "TKK cijev"
+    case "zbunje_linija_v":
+      retVal = "Žbunje linija"
       break;
-    case "tkk_kabl_v":
-      retVal = "TKK kabl"
+    case "zbunje_tacka_v":
+      retVal = "Žbunje tačka"
       break;
-    case "tkk_nastavak_v":
-      retVal = "TKK nastavak"
+    case "zelene_povrsine_v":
+      retVal = "Zelene površine"
       break;
-    case "tkk_okna_v":
-      retVal = "TKK okna"
+    case "urbani_mobilijar_V":
+      retVal = "Urbani mobilijar"
       break;
-    case "tkk_trasa_v":
-      retVal = "TKK trasa"
-      break;
-    case "tkk_zavrsetak_v":
-      retVal = "TKK završetak"
-      break;
-    case "vv_kabl_v":
-      retVal = "VV kabl"
-      break;
-    case "vv_nastavak_v":
-      retVal = "VV nastavak"
-      break;
-    case "vv_stub_v":
-      retVal = "VV stub"
-      break;
-    case "vv_trasa_v":
-      retVal = "VV trasa"
-      break;
-    case "vv_zavrsetak_v":
-      retVal = "VV završetak"
-      break;
-    case "zgrada_v":
-      retVal = "Zgrada"
+    case "rekreativne_povrsine_v":
+      retVal = "Rekreativne površine"
       break;
     default:
 
@@ -513,47 +476,8 @@ function preimenujNazivAtributaZaJavnuStranu(nazivAtributa) {
     case "id":
       retVal = "ID"
       break;
-    case "objectid":
-      retVal = "Object ID"
-      break;
-    case "ekip_id":
-      retVal = "EKIP ID"
-      break;
-    case "user_id":
-      retVal = "User ID"
-      break;
-    case "id_operato":
-      retVal = "Operator ID"
-      break;
-    case "tip":
-      retVal = "Tip"
-      break;
-    case "tip_nosaca":
-      retVal = "Tip nosača"
-      break;
     case "visina":
       retVal = "Visina"
-      break;
-    case "visina_obj":
-      retVal = "Visina objekta"
-      break;
-    case "vis_stuba":
-      retVal = "Visina stuba"
-      break;
-    case "namena":
-      retVal = "Namjena"
-      break;
-    case "opstina":
-      retVal = "Opština"
-      break;
-    case "naziv_lok":
-      retVal = "Naziv lokacije"
-      break;
-    case "id_as":
-      retVal = "Antenski stub ID"
-      break;
-    case "id_vv_stub":
-      retVal = "VV stub ID"
       break;
     default:
 

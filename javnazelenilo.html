@@ -27,6 +27,7 @@
         <a href="#" id="poligon" class="tooltip" data-tool="Crtanje poligona"><i class="fas fa-draw-polygon"></i></a>
         <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
         <a href="#" id="lejeri" class="tooltip" data-tool="Lejeri"><i class="fab fa-buffer" aria-hidden="true"></i></a>
+        <a href="#" id="restart" class="tooltip" data-tool="Restart"><i class="fas fa-power-off"></i></a>
         <a href="javascript:void(0);" class="icon" onclick="zatvoriHamburger()">&#9776;</a>
       </div>
     </div>
@@ -67,92 +68,43 @@
       <div class="row"></div>
       <div class="checkrow">
         <label class="container">
-          Antenski stub
-          <input type="checkbox" id="chkAntenskiStub" checked />
+          Drveće
+          <input type="checkbox" id="chkDrvece" checked />
           <span class="checkmark"></span>
         </label>
       </div>
       <div class="checkrow">
         <label class="container">
-          Tkk cijev
-          <input type="checkbox" id="chkTkkCijev" checked />
+          Žbunje linija
+          <input type="checkbox" id="chkZbunjeLinija" checked />
           <span class="checkmark"></span>
         </label>
       </div>
       <div class="checkrow">
         <label class="container">
-          Tkk kabl
-          <input type="checkbox" id="chkTkkKabl" checked />
+          Žbunje tačka
+          <input type="checkbox" id="chkZbunjeTacka" checked />
           <span class="checkmark"></span>
         </label>
       </div>
       <div class="checkrow">
         <label class="container">
-          Tkk nastavak
-          <input type="checkbox" id="chkTkkNastavak" checked />
+          Zelene površine
+          <input type="checkbox" id="chkZelenePovrsine" checked />
           <span class="checkmark"></span>
         </label>
       </div>
       <div class="checkrow">
         <label class="container">
-          Tkk okna
-          <input type="checkbox" id="chkTkkOkna" checked />
+          Urbani mobilijar
+          <input type="checkbox" id="chkUrbaniMobilijar" checked />
           <span class="checkmark"></span>
         </label>
       </div>
       <div class="checkrow">
         <label class="container">
-          Tkk trasa
-          <input type="checkbox" id="chkTkkTrasa" checked />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="checkrow">
-        <label class="container">
-          Tkk završetak
-          <input type="checkbox" id="chkTkkZavrsetak" checked />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="checkrow">
-        <label class="container">
-          Vv kabl
-          <input type="checkbox" id="chkVvKabl" checked />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="checkrow">
-        <label class="container">
-          Vv nastavak
-          <input type="checkbox" id="chkVvNastavak" checked />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="checkrow">
-        <label class="container">
-          Vv stub
-          <input type="checkbox" id="chkVvStub" checked />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="checkrow">
-        <label class="container">
-          Vv trasa
-          <input type="checkbox" id="chkVvTrasa" checked />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="checkrow">
-        <label class="container">
-          Vv završetak
-          <input type="checkbox" id="chkVvZavrsetak" checked />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="checkrow">
-        <label class="container">
-          Zgrada
-          <input type="checkbox" id="chkZgrada" checked />
+          Rekreativne površine
+          <input type="checkbox" id="chkRekreativnePovrsine" checked />
           <span class="checkmark"></span>
         </label>
       </div>
@@ -206,23 +158,16 @@
           <label for="ddlLejerPretraga">Lejer za pretragu:</label>
           <select id="ddlLejerPretraga" class="select-css">
             <option value="">Svi lejeri</option>
-            <option value="antenskiStub">Antenski stub</option>
-            <option value="tkkCijev">Tkk cijev</option>
-            <option value="tkkKabl">Tkk kabl</option>
-            <option value="tkkNastavak">Tkk nastavak</option>
-            <option value="tkkOkna">Tkk okna</option>
-            <option value="tkkTrasa">Tkk trasa</option>
-            <option value="tkkZavrsetak">Tkk završetak</option>
-            <option value="vvKabl">Vv kabl</option>
-            <option value="vvNastavak">Vv nastavak</option>
-            <option value="vvStub">Vv stub</option>
-            <option value="vvTrasa">Vv trasa</option>
-            <option value="vvZavrsetak">Vv završetak</option>
-            <option value="zgrada">Zgrada</option>
+            <option value="drvece">Drveće</option>
+            <option value="zbunjeLinija">Žbunje linijsko</option>
+            <option value="zbunjeTacka">Žbunje tačkasto</option>
+            <option value="zelenePovrsine">Zelene površine</option>
+            <option value="urbaniMobilijar">Urbani mobilijar</option>
+            <option value="rekreativnePovrsine">Rekreativne površine</option>
           </select>
         </div>
       </div>
-      <div id="divAntenskiStub" style="display: none;">
+      <div id="divDrvece" style="display: none;">
         <div class="istavrsta">
           <label for="pretragaASnazivLok">Naziv lokacije stuba:</label>
           <input type="text" id="pretragaASnazivLok" />
@@ -246,300 +191,196 @@
         <div class="istavrsta">
           <label for="pretragaASidOperato">Naziv operatora:</label>
           <input type="text" id="pretragaASidOperato" />
-        </div>
-      </div>
-      <div id="divTkkCijev" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaTCcevTip">Tip kablovske cijevi:</label>
-          <input type="text" id="pretragaTCcevTip" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTCcevStatus">Status cijevi:</label>
-          <input type="text" id="pretragaTCcevStatus" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTCkorisnik">Korisnik:</label>
-          <input type="text" id="pretragaTCkorisnik" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTCcevParent">Cijev kojoj pripada:</label>
-          <input type="text" id="pretragaTCcevParent" />
-        </div>
-        <div class="istavrsta">
           <label for="pretragaTCpopPresekOd">Poprečni presjek cijevi:</label>
           <div style="display: inline-flex;">
             <input type="number" id="pretragaTCpopPresekOd" placeholder="Od" />
             <input type="number" id="pretragaTCpopPresekDo" placeholder="Do" />
           </div>
         </div>
+      </div>
+      <div id="divZbunjeLinija" style="display: none;">
         <div class="istavrsta">
-          <label for="pretragaTCprohodnost">Prohodnost:</label>
-          <input type="number" id="pretragaTCprohodnost" />
+          <label for="pretragaZLIdObjekta">Id objekta:</label>
+          <input type="text" id="pretragaZLIdObjekta" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTCidCev">ID cijevi:</label>
-          <input type="text" id="pretragaTCidCev" />
+          <label for="pretragaZLTip">Tip objekta:</label>
+          <select id="pretragaZLTip" class="select-css">
+            <option value=""></option>
+            <option value="Četinar">Četinar</option>
+            <option value="Listopadni lišćar">Listopadni lišćar</option>
+            <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaTCidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaTCidOperato" />
+          <label for="pretragaZLLatinskiNaziv">Latinski naziv:</label>
+          <input type="text" id="pretragaZLLatinskiNaziv" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZLNarodniNaziv">Narodni naziv:</label>
+          <input type="text" id="pretragaZLNarodniNaziv" />
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZLZdravstvenoStanje">Zdravstveno stanje:</label>
+          <select class="select-css" id="pretragaZLZdravstvenoStanje">
+            <option value=""></option>
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
+        </div>
+        <div class="istavrsta">
+          <label for="pretragaZLNapomena">Napomena:</label>
+          <input type="text" class="form-control" id="pretragaZLNapomena" />
         </div>
       </div>
-      <div id="divTkkKabl" style="display: none;">
+      <div id="divZbunjeTacka" style="display: none;">
         <div class="istavrsta">
-          <label for="pretragaTKoznaka">Oznaka:</label>
-          <input type="text" id="pretragaTKoznaka" />
+          <label for="pretragaZTIdObjekta">Id objekta:</label>
+          <input type="text" id="pretragaZTIdObjekta" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTKtip">Tip kabla:</label>
-          <input type="text" id="pretragaTKtip" />
+          <label for="pretragaZTip">Tip objekta:</label>
+          <select id="pretragaZTTip" class="select-css">
+            <option value=""></option>
+            <option value="Četinar">Četinar</option>
+            <option value="Listopadni lišćar">Listopadni lišćar</option>
+            <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaTKnamena">Namjena:</label>
-          <input type="text" id="pretragaTKnamena" />
+          <label for="pretragaZTLatinskiNaziv">Latinski naziv:</label>
+          <input type="text" id="pretragaZTLatinskiNaziv" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTKpolaganje">Godina polaganja:</label>
-          <input type="text" id="pretragaTKpolaganje" />
+          <label for="pretragaZTNarodniNaziv">Narodni naziv:</label>
+          <input type="text" id="pretragaZTNarodniNaziv" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTKstatus">Status:</label>
-          <input type="text" id="pretragaTKstatus" />
+          <label for="pretragaZTZdravstvenoStanje">Zdravstveno stanje:</label>
+          <select class="select-css" id="pretragaZTZdravstvenoStanje">
+            <option value=""></option>
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaTKidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaTKidOperato" />
-        </div>
-      </div>
-      <div id="divTkkNastavak" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaTNtipNastav">Tip nastavka/ ormana/ račvalice:</label>
-          <input type="text" id="pretragaTNtipNastav" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTNpolozaj">Položaj(podzemni /nadzemni):</label>
-          <input type="text" id="pretragaTNpolozaj" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTNidNas">ID nastavka:</label>
-          <input type="text" id="pretragaTNidNas" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTNidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaTNidOperato" />
+          <label for="pretragaZTNapomena">Napomena:</label>
+          <input type="text" class="form-control" id="pretragaZTNapomena" />
         </div>
       </div>
-      <div id="divTkkOkna" style="display: none;">
+      <div id="divZelenePovrsine" style="display: none;">
         <div class="istavrsta">
-          <label for="pretragaTOtipOkn">Tip kablovskog okna EKM:</label>
-          <input type="text" id="pretragaTOtipOkn" />
+          <label for="pretragaZPIdObjekta">Id objekta:</label>
+          <input type="number" id="pretragaZPIdObjekta" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTOidOkn">ID okna:</label>
-          <input type="text" id="pretragaTOidOkn" />
+          <label for="pretragaZPTip">Tip objekta:</label>
+          <select id="pretragaZPTip" class="select-css">
+            <option value=""></option>
+            <option value="Parkovska">Parkovska</option>
+            <option value="Ostrvo">Ostrvo</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaTOidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaTOidOperato" />
-        </div>
-      </div>
-      <div id="divTkkTrasa" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaTTopstina">Opština:</label>
-          <input type="text" id="pretragaTTopstina" />
+          <label for="pretragaZPNamjena">Namjena:</label>
+          <input type="text" id="pretragaZPNamjena" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTTlokacija">Lokacija:</label>
-          <input type="text" id="pretragaTTlokacija" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTTtrasa">Naziv trase:</label>
-          <input type="text" id="pretragaTTtrasa" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTTmrPrisN">Naziv pristupne mreže:</label>
-          <input type="text" id="pretragaTTmrPrisN" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTTgeodSnTr">Kablovski pravac:</label>
-          <input type="number" id="pretragaTTgeodSnTr" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTTprenosniP">Prenosni put:</label>
-          <input type="number" id="pretragaTTprenosniP" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTTidTrasa">ID trase:</label>
-          <input type="text" id="pretragaTTidTrasa" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaTTidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaTTidOperato" />
+          <label for="pretragaZPOpis">Opis:</label>
+          <input type="text" id="pretragaZPOpis" />
         </div>
       </div>
-      <div id="divTkkZavrsetak" style="display: none;">
+      <div id="divUrbaniMobilijar" style="display: none;">
         <div class="istavrsta">
-          <label for="pretragaTZmestoOpis">Završetak kabla - mjesto i opis:</label>
-          <input type="text" id="pretragaTZmestoOpis" />
+          <label for="pretragaUMIdObjekta">Id objekta:</label>
+          <input type="number" id="pretragaUMIdObjekta" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTZtipZavrse">Tip završetka:</label>
-          <input type="text" id="pretragaTZtipZavrse" />
+          <label for="pretragaUMTip">Tip objekta:</label>
+          <select id="pretragaUMTip" class="select-css">
+            <option value=""></option>
+            <option value="Bilbord">Bilbord</option>
+            <option value="Česma">Česma</option>
+            <option value="Fontana">Fontana</option>
+            <option value="Hidrant">Hidrant</option>
+            <option value="Javni toalet">Javni toalet</option>
+            <option value="Korpa za otpatke">Korpa za otpatke</option>
+            <option value="Klupa">Klupa</option>
+            <option value="Parkovska rasvjeta">Parkovska rasvjeta</option>
+            <option value="Spomenik">Spomenik</option>
+            <option value="Žardinjera">Žardinjera</option>
+            <option value="Mobilijar">Mobilijar</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaTZidZav">ID završetka:</label>
-          <input type="text" id="pretragaTZidZav" />
+          <label for="pretragaUMMaterijal">Materijal:</label>
+          <input type="text" id="pretragaUMMaterijal" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaTZidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaTZidOperato" />
-        </div>
-      </div>
-      <div id="divVvKabl" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaVKoznaka">Oznaka:</label>
-          <input type="text" id="pretragaVKoznaka" />
+          <label for="pretragaUMBoja">Boja:</label>
+          <input type="text" id="pretragaUMBoja" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaVKtip">Tip kabla:</label>
-          <input type="text" id="pretragaVKtip" />
+          <label for="pretragaUMStanje">Stanje:</label>
+          <select class="select-css" id="pretragaUMStanje">
+            <option value=""></option>
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaVKnamena">Namjena:</label>
-          <input type="text" id="pretragaVKnamena" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVKpolaganje">Godina polaganja:</label>
-          <input type="text" id="pretragaVKpolaganje" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVKstatus">Status:</label>
-          <input type="text" id="pretragaVKstatus" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVKidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaVKidOperato" />
-        </div>
-      </div>
-      <div id="divVvNastavak" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaVNtipNastav">Tip nastavka/ ormana/ račvalice:</label>
-          <input type="text" id="pretragaVNtipNastav" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVNtipSpojn">Tip spojnice:</label>
-          <input type="text" id="pretragaVNtipSpojn" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVNpolozaj">Položaj (podzemni /nadzemni):</label>
-          <input type="text" id="pretragaVNpolozaj" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVNidNas">ID nastavka:</label>
-          <input type="text" id="pretragaVNidNas" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVNidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaVNidOperato" />
+          <label for="pretragaUMNapomena">Napomena:</label>
+          <input type="text" id="pretragaUMNapomena" />
         </div>
       </div>
-      <div id="divVvStub" style="display: none;">
+      <div id="divRekreativnePovrsine" style="display: none;">
         <div class="istavrsta">
-          <label for="pretragaVStip">Tip stuba:</label>
-          <input type="text" id="pretragaVStip" />
+          <label for="pretragaRPIdObjekta">Id objekta:</label>
+          <input type="number" id="pretragaRPIdObjekta" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaVSidVvStub">ID stuba vazdušnog voda:</label>
-          <input type="text" id="pretragaVSidVvStub" />
+          <label for="pretragaRPTip">Tip objekta:</label>
+          <select id="pretragaRPTip" class="select-css">
+            <option value=""></option>
+            <option value="Igralište">Igralište</option>
+            <option value="Sportski teren">Sportski teren</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaVSidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaVSidOperato" />
-        </div>
-      </div>
-      <div id="divVvTrasa" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaVTopstina">Opština:</label>
-          <input type="text" id="pretragaVTopstina" />
+          <label for="pretragaRPMaterijal">Materijal:</label>
+          <input type="text" id="pretragaRPMaterijal" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaVTlokacija">Lokacija:</label>
-          <input type="text" id="pretragaVTlokacija" />
+          <label for="pretragaRPBoja">Boja:</label>
+          <input type="text" id="pretragaRPBoja" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaVTtrasa">Naziv trase:</label>
-          <input type="text" id="pretragaVTtrasa" />
+          <label for="pretragaRPStanje">Zdravstveno stanje:</label>
+          <select class="select-css" id="pretragaRPStanje">
+            <option value=""></option>
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
         </div>
         <div class="istavrsta">
-          <label for="pretragaVTmrPrisN">Naziv pristupne mreže:</label>
-          <input type="text" id="pretragaVTmrPrisN" />
+          <label for="pretragaRPDimenzije">Dimenzije:</label>
+          <input type="text" class="form-control" id="pretragaRPDimenzije" />
         </div>
         <div class="istavrsta">
-          <label for="pretragaVTgeodSnTr">Kablovski pravac:</label>
-          <input type="text" id="pretragaVTgeodSnTr" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVTprenosniP">Prenosni put:</label>
-          <input type="text" id="pretragaVTprenosniP" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVTidTrasa">ID trase:</label>
-          <input type="text" id="pretragaVTidTrasa" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVTidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaVTidOperato" />
-        </div>
-      </div>
-      <div id="divVvZavrsetak" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaVZmestoOpis">Mjesto i opis:</label>
-          <input type="text" id="pretragaVZmestoOpis" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVZtipZavrse">Tip završetka:</label>
-          <input type="text" id="pretragaVZtipZavrse" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVZidZav">ID završetka vv:</label>
-          <input type="text" id="pretragaVZidZav" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaVZidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaVZidOperato" />
-        </div>
-      </div>
-      <div id="divZgrada" style="display: none;">
-        <div class="istavrsta">
-          <label for="pretragaZGnazivLok">Naziv lokacije:</label>
-          <input type="text" id="pretragaZGnazivLok" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaZGopstina">Opština:</label>
-          <input type="text" id="pretragaZGopstina" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaZGnazivZgr">Naziv zgrade:</label>
-          <input type="text" id="pretragaZGnazivZgr" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaZGtipZgr">Tip zgrade:</label>
-          <input type="text" id="pretragaZGtipZgr" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaZGukIznaOd">Ukupni iznajmljeni prostor:</label>
-          <div style="display: inline-flex;">
-            <input type="number" id="pretragaZGukIznaOd" placeholder="Od" />
-            <input type="number" id="pretragaZGukIznaDo" placeholder="Do" />
-          </div>
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaZGidZgr">ID zgrade:</label>
-          <input type="text" id="pretragaZGidZgr" />
-        </div>
-        <div class="istavrsta">
-          <label for="pretragaZGidOperato">Naziv operatora:</label>
-          <input type="text" id="pretragaZGidOperato" />
+          <label for="pretragaRPNapomena">Napomena:</label>
+          <input type="text" class="form-control" id="pretragaRPNapomena" />
         </div>
       </div>
 
@@ -586,9 +427,6 @@
     <script type="text/javascript">
       const citajSlikeUrl = "";
     </script>
-
-    <!--<link rel="stylesheet" href="css/ol-layerswitcher.css" />
-    <script src="js/ol-layerswitcher.js"></script>-->
 
     <script src="js/javna_util_zelenilo.js"></script>
     <script src="js/javnazelenilo.js"></script>

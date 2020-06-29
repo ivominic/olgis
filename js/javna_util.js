@@ -407,7 +407,6 @@ function pan() {
   setujAktivnu("#pan");
 }
 
-
 function lejeri() {
   akcija = "lejeri";
   setujAktivnu("#lejeri");
@@ -434,8 +433,8 @@ document.querySelector("#lejeri").addEventListener("click", lejeri);
 document.querySelector("#marker").addEventListener("click", crtajTacku);
 document.querySelector("#linija").addEventListener("click", crtajLiniju);
 document.querySelector("#poligon").addEventListener("click", crtajPoligon);
-//document.querySelector("#pretraga").addEventListener("click", pretraga);
-//document.querySelector("#restart").addEventListener("click", restart);
+document.querySelector("#pretraga").addEventListener("click", pretraga);
+document.querySelector("#restart").addEventListener("click", restart);
 
 document.querySelector("#confirmPotvrdi").addEventListener("click", confirmPotvrdi);
 document.querySelector("#confirmOdustani").addEventListener("click", confirmOdustani);

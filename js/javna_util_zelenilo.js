@@ -88,7 +88,7 @@ var vectorStyle = new ol.style.Style({
 let center = ol.proj.transform([19.26, 42.443], "EPSG:4326", "EPSG:3857");
 let view = new ol.View({
   center: center,
-  zoom: 9,
+  zoom: 14,
 });
 
 /** Prikaz razmjernika na mapi*/

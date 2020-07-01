@@ -449,6 +449,7 @@ function kreirajNoviImageWmsLejer(title, name, fullname) {
       url: wmsUrl,
       params: {
         LAYERS: fullname,
+        feature_count: "5",
       },
       ratio: 1,
       serverType: "geoserver",
@@ -462,43 +463,43 @@ function preimenujNazivLejeraZaAtributJavneStrane(nazivLejera) {
   let retVal = nazivLejera;
   switch (nazivLejera) {
     case "antenski_stub_v":
-      retVal = "Antenski stub"
+      retVal = "Antenski stub";
       break;
     case "tkk_cijev_v":
-      retVal = "TKK cijev"
+      retVal = "TKK cijev";
       break;
     case "tkk_kabl_v":
-      retVal = "TKK kabl"
+      retVal = "TKK kabl";
       break;
     case "tkk_nastavak_v":
-      retVal = "TKK nastavak"
+      retVal = "TKK nastavak";
       break;
     case "tkk_okna_v":
-      retVal = "TKK okna"
+      retVal = "TKK okna";
       break;
     case "tkk_trasa_v":
-      retVal = "TKK trasa"
+      retVal = "TKK trasa";
       break;
     case "tkk_zavrsetak_v":
-      retVal = "TKK završetak"
+      retVal = "TKK završetak";
       break;
     case "vv_kabl_v":
-      retVal = "VV kabl"
+      retVal = "VV kabl";
       break;
     case "vv_nastavak_v":
-      retVal = "VV nastavak"
+      retVal = "VV nastavak";
       break;
     case "vv_stub_v":
-      retVal = "VV stub"
+      retVal = "VV stub";
       break;
     case "vv_trasa_v":
-      retVal = "VV trasa"
+      retVal = "VV trasa";
       break;
     case "vv_zavrsetak_v":
-      retVal = "VV završetak"
+      retVal = "VV završetak";
       break;
     case "zgrada_v":
-      retVal = "Zgrada"
+      retVal = "Zgrada";
       break;
     default:
 
@@ -510,49 +511,49 @@ function preimenujNazivAtributaZaJavnuStranu(nazivAtributa) {
   let retVal = nazivAtributa;
   switch (nazivAtributa) {
     case "id":
-      retVal = "ID"
+      retVal = "ID";
       break;
     case "objectid":
-      retVal = "Object ID"
+      retVal = "Object ID";
       break;
     case "ekip_id":
-      retVal = "EKIP ID"
+      retVal = "EKIP ID";
       break;
     case "user_id":
-      retVal = "User ID"
+      retVal = "User ID";
       break;
     case "id_operato":
-      retVal = "Operator ID"
+      retVal = "Operator ID";
       break;
     case "tip":
-      retVal = "Tip"
+      retVal = "Tip";
       break;
     case "tip_nosaca":
-      retVal = "Tip nosača"
+      retVal = "Tip nosača";
       break;
     case "visina":
-      retVal = "Visina"
+      retVal = "Visina";
       break;
     case "visina_obj":
-      retVal = "Visina objekta"
+      retVal = "Visina objekta";
       break;
     case "vis_stuba":
-      retVal = "Visina stuba"
+      retVal = "Visina stuba";
       break;
     case "namena":
-      retVal = "Namjena"
+      retVal = "Namjena";
       break;
     case "opstina":
-      retVal = "Opština"
+      retVal = "Opština";
       break;
     case "naziv_lok":
-      retVal = "Naziv lokacije"
+      retVal = "Naziv lokacije";
       break;
     case "id_as":
-      retVal = "Antenski stub ID"
+      retVal = "Antenski stub ID";
       break;
     case "id_vv_stub":
-      retVal = "VV stub ID"
+      retVal = "VV stub ID";
       break;
     default:
 

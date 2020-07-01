@@ -434,6 +434,7 @@ function kreirajNoviImageWmsLejer(title, name, fullname) {
       url: wmsUrl,
       params: {
         LAYERS: fullname,
+        feature_count: "5",
       },
       ratio: 1,
       serverType: "geoserver",

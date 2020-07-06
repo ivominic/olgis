@@ -1,9 +1,9 @@
 /**Inicijalna deklaracija vrijednosti koje se korite u stranici*/
-//const domainUrl = location.origin;
-const domainUrl = "http://localhost:8088";
+const domainUrl = location.origin;
+//const domainUrl = "http://localhost:8088";
 //const domainUrl = "http://167.172.171.249";
-const wmsUrl = domainUrl + "/geoserver/ekip/wms";
-const wfsUrl = domainUrl + "/geoserver/ekip/wfs";
+const wmsUrl = domainUrl + "/geoserver/winsoft/wms";
+const wfsUrl = domainUrl + "/geoserver/winsoft/wfs";
 const imageUrl = domainUrl + "/slike/";
 const point = "Point",
   lineString = "LineString",
@@ -160,7 +160,7 @@ function slika() {
 
   if (location.hash && location.hash.substring(1)) {
     let objekat = location.hash.substring(1).split(".");
-    let lejerSlike = objekat[0];
+    let lejerSlike = preimenujNazivLejeraZaFotografije(objekat[0]);
     let idObjekta = objekat[1];
     let parametri = new FormData();
     parametri.append("lejer", lejerSlike);
@@ -470,6 +470,35 @@ function preimenujNazivLejeraZaAtributJavneStrane(nazivLejera) {
   }
   return retVal;
 }
+
+function preimenujNazivLejeraZaFotografije(nazivLejera) {
+  let retVal = nazivLejera;
+  switch (nazivLejera) {
+    case "drvece_v":
+      retVal = "Drvece"
+      break;
+    case "zbunje_linija_v":
+      retVal = "ŽbunjeLinija"
+      break;
+    case "zbunje_tacka_v":
+      retVal = "ŽbunjeTacka"
+      break;
+    case "zelene_povrsine_v":
+      retVal = "ZelenePovrsine"
+      break;
+    case "urbani_mobilijar_V":
+      retVal = "UrbaniMobilijar"
+      break;
+    case "rekreativne_povrsine_v":
+      retVal = "RekreativnePovrsine"
+      break;
+    default:
+
+  }
+  return retVal;
+}
+
+
 /**Funkcija koja vrši preimenovanje naziva atributa za prikaz na javnoj stranici */
 function preimenujNazivAtributaZaJavnuStranu(nazivAtributa) {
   let retVal = nazivAtributa;

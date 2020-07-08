@@ -39,20 +39,66 @@ function popuniKontrole(odgovor) {
   }
 }
 
-//TODO: Ovo napraviti
-/** Unos izmijenjenih vrijednosti atributa, nove fotografije ili unos svih podataka za novu geometriju */
-function sacuvaj() {
+function shpTestiraj() {
+  shpUpload(0);
+}
+
+function shpUvezi() {
+  shpUpload(1);
+}
+
+/** Prosljeđuje geojson kontroleru za unos ili testiranje */
+function shpUpload(uvoz) {
   if (document.querySelector("#dodavanjeSlike").files.length > 0) {
-    loadshp({
-      url: document.querySelector("#dodavanjeSlike").files[0]
-    }, function (geojson) {
-      // geojson returned
-      console.log(geojson);
-    });
+    var reader = new FileReader();
+    reader.onload = function () {
+      var dataURL = reader.result;
+      shp(dataURL).then(function (geojson) {
+        //shp(new File(document.querySelector("#dodavanjeSlike").files[0], 'fileName.zip')).then(function (geojson) {
+        let podaciForme = new FormData();
+        podaciForme.append("uvoz", uvoz);
+        podaciForme.append("lejer", "antenskiStubovi");
+        podaciForme.append("geojson", geojson);
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', shpUvozUrl, true);
+        xhr.timeout = 100000;
+        xhr.ontimeout = function () {
+          poruka("Greska", "Akcija je prekinuta jer je trajala predugo.");
+        };
+        xhr.send(podaciForme);
+        openModalSpinner();
+        xhr.onreadystatechange = function () {
+          if (this.readyState === 4) {
+            if (this.status === 200) {
+              let jsonResponse = JSON.parse(xhr.responseText);
+              if (jsonResponse["success"] === true) {
+                document.querySelector("#shpOdgovor").value = jsonResponse["message"];
+              } else {
+                document.querySelector("#shpOdgovor").value = jsonResponse["message"];
+              }
+              closeModalSpinner();
+            } else {
+              poruka("Greska", xhr.statusText);
+              closeModalSpinner();
+            }
+          }
+        };
+        let result = geojson.features;
+        console.log(geojson);
+        console.log(geojson.features.length);
+        for (var i = 0; i < result.length; i++) {
+          console.log(result[i]);
+          //alert(result[i].properties.ID)
+        }
+        //see bellow for whats here this internally call shp.parseZip()
+      });
+
+    };
+    reader.readAsArrayBuffer(document.querySelector("#dodavanjeSlike").files[0]);
+  } else {
+    poruka("Upozorenje", "Nije odabran zip fajl.")
   }
-
-
-
 }
 
 function restartovanje() {
@@ -374,3 +420,6 @@ document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
 document.querySelector("#btnPonisti").addEventListener("click", ponisti);
 document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
 document.querySelector("#btnFilter").addEventListener("click", filtriranje);
+
+document.querySelector("#btnShpTestiraj").addEventListener("click", shpTestiraj);
+document.querySelector("#btnUvezi").addEventListener("click", shpUvezi);

@@ -249,11 +249,15 @@ function setujAktivnu(element) {
   document.querySelector(element).classList.add("active");
   closeDiv("#pretragaDiv");
   closeDiv("#atributiDiv");
+  closeDiv("#shpDiv");
   if (element === "#atributi" || element === "#dodaj") {
     showDiv("#atributiDiv");
   }
   if (element === "#pretraga") {
     showDiv("#pretragaDiv");
+  }
+  if (element === "#uvozshp") {
+    showDiv("#shpDiv");
   }
   podesiInterakciju();
   zatvoriHamburger();
@@ -351,6 +355,11 @@ function pretraga() {
   setujAktivnu("#pretraga");
 }
 
+function uvozshp() {
+  akcija = "uvozshp";
+  setujAktivnu("#uvozshp");
+}
+
 function restart() {
   location.reload(true);
 }
@@ -365,6 +374,7 @@ document.querySelector("#marker").addEventListener("click", crtajTacku);
 document.querySelector("#linija").addEventListener("click", crtajLiniju);
 document.querySelector("#poligon").addEventListener("click", crtajPoligon);
 document.querySelector("#pretraga").addEventListener("click", pretraga);
+document.querySelector("#uvozshp").addEventListener("click", uvozshp);
 document.querySelector("#restart").addEventListener("click", restart);
 document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
 document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);

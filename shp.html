@@ -21,10 +21,7 @@
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/build/ol.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.3/proj4.js"></script>
-    <script src="js/shp/jszip.js"></script>
-    <script src="js/shp/jszip-utils.js"></script>
-    <script src="js/shp/preprocess.js"></script>
-    <script src="js/shp/preview.js"></script>
+    <script src="js/shp/shp.min.js"></script>
   </head>
   <body>
     <div class="pocetni-div">
@@ -39,6 +36,7 @@
         <a href="#" id="linija" class="tooltip" data-tool="Crtanje linije"><i class="fas fa-route"></i></a>
         <a href="#" id="poligon" class="tooltip" data-tool="Crtanje poligona"><i class="fas fa-draw-polygon"></i></a>
         <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
+        <a href="#" id="uvozshp" class="tooltip" data-tool="Uvoz shp"><i class="fa fa-upload" aria-hidden="true"></i></a>
         <div class="dropdown">
           <button class="dropbtn">
             <i class="fab fa-buffer"></i>
@@ -66,6 +64,24 @@
       </div>
     </div>
     <div id="map" class="map"></div>
+
+    <div id="shpDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#shpDiv')">&times;</a>
+      <h1>Uvoz podataka - SHP</h1>
+
+      <div class="row">
+        <input type="file" class="sama" id="shpFile" />
+      </div>
+      <div class="row">
+        <button type="button" class="btn" id="btnShpTestiraj"><i class="fas fa-check-circle"></i> Testiranje</button>
+        <button type="button" class="btn" id="btnShpUvezi"><i class="fas fa-undo-alt"></i> Uvoz</button>
+      </div>
+      <div class="row">
+        <label for="shpOdgovor">Analiza fajla:</label>
+        <textarea id="shpOdgovor" name="shpOdgovor" rows="20" cols="60"></textarea>
+      </div>
+      <div class="row"></div>
+    </div>
 
     <div id="atributiDiv" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#atributiDiv')">&times;</a>

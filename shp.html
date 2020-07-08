@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zelenilo modifikacija geometrije</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400&display=swap" rel="stylesheet" />
+    <!-- Add icon library -->
+    <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <link rel="stylesheet" href="css/util.css" />
+    <link rel="stylesheet" href="css/stil.css" />
+    <link rel="stylesheet" href="css/slika.css" />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/css/ol.css" />
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.6.0/ol.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/build/ol.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.3/proj4.js"></script>
+    <script src="js/shp/jszip.js"></script>
+    <script src="js/shp/jszip-utils.js"></script>
+    <script src="js/shp/preprocess.js"></script>
+    <script src="js/shp/preview.js"></script>
+  </head>
+  <body>
+    <div class="pocetni-div">
+      <div class="topnav" id="topNav">
+        <a href="#" class="active tooltip" id="pan" data-tool="Pan"><i class="far fa-hand-paper"></i></a>
+        <!--<a href="#" id="odaberi" class="tooltip" data-tool="Odabir"><i class="fas fa-mouse-pointer"></i></a>-->
+        <a href="#" id="dodaj" class="tooltip" data-tool="Novi objekat"><i class="far fa-plus-square"></i></a>
+        <a href="#" id="izmijeni" class="tooltip" data-tool="Izmjena geometrije"><i class="fas fa-edit"></i></a>
+        <a href="#" id="atributi" class="tooltip" data-tool="Atributi"><i class="fas fa-info-circle"></i></a>
+        <a href="#" id="slika" class="tooltip" data-tool="Fotografija"><i class="fas fa-camera-retro"></i></a>
+        <a href="#" id="marker" class="tooltip" data-tool="Crtanje tačke"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <a href="#" id="linija" class="tooltip" data-tool="Crtanje linije"><i class="fas fa-route"></i></a>
+        <a href="#" id="poligon" class="tooltip" data-tool="Crtanje poligona"><i class="fas fa-draw-polygon"></i></a>
+        <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <i class="fab fa-buffer"></i>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#" id="podloga_osm">OSM</a>
+            <a href="#" id="podloga_topo">Katastar</a>
+            <a href="#" id="podloga_satelit">Satelit</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <i class="fas fa-download"></i>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#" id="shp">SHP</a>
+            <a href="#" id="kml">KML</a>
+            <a href="#" id="excel">Excel</a>
+          </div>
+        </div>
+        <a href="#" id="restart" class="tooltip" data-tool="Restart"><i class="fas fa-power-off"></i></a>
+        <a href="javascript:void(0);" class="icon" onclick="zatvoriHamburger()">&#9776;</a>
+      </div>
+    </div>
+    <div id="map" class="map"></div>
+
+    <div id="atributiDiv" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#atributiDiv')">&times;</a>
+      <h1>Atributi objekta</h1>
+      <div class="row">
+        <div class="column">
+          <label for="idObjekta">Id objekta:</label>
+          <input type="text" id="idObjekta" readonly />
+        </div>
+        <div class="column">
+          <label for="tip">Tip objekta:</label>
+          <select id="tip" class="select-css">
+            <option value=""></option>
+            <option value="Četinar">Četinar</option>
+            <option value="Listopadni lišćar">Listopadni lišćar</option>
+            <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="latinskiNaziv">Latinski naziv:</label>
+          <input type="text" id="latinskiNaziv" />
+        </div>
+        <div class="column">
+          <label for="narodniNaziv">Narodni naziv:</label>
+          <input type="text" id="narodniNaziv" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="zdravstvenoStanje">Zdravstveno stanje:</label>
+          <select class="select-css" id="zdravstvenoStanje">
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
+        </div>
+        <div class="column">
+          <label for="napomena">Napomena:</label>
+          <input type="text" class="form-control" id="napomena" />
+        </div>
+      </div>
+      <div class="row">
+        <input type="file" class="sama" capture="environment" id="dodavanjeSlike" />
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <button type="button" class="btn" id="btnSacuvaj"><i class="fas fa-check-circle"></i> Sačuvaj</button>
+        <button type="button" class="btn" id="btnPonisti"><i class="fas fa-undo-alt"></i> Poništi</button>
+        <button type="button" class="btn" id="btnIzbrisi"><i class="fas fa-trash"></i> Izbriši</button>
+      </div>
+    </div>
+
+    <div id="pretragaDiv" class="sidenav">
+      <h1>Pretraga</h1>
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#pretragaDiv')">&times;</a>
+      <div class="row">
+        <div class="column">
+          <label class="container">
+            Od tačke
+            <input type="checkbox" id="pretragaTacke" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="column">
+          <label for="pretragaTackeUdaljenost">Udaljenost:</label>
+          <input type="number" id="pretragaTackeUdaljenost" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label class="container">
+            Linija presijeca
+            <input type="checkbox" id="pretragaLinije" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label class="container">
+            Poligon obuhvata
+            <input type="checkbox" id="pretragaPoligonObuhvata" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="column">
+          <label class="container">
+            Poligon presijeca
+            <input type="checkbox" id="pretragaPoligonPresijeca" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="pretragaIdObjekta">Id objekta:</label>
+          <input type="text" id="pretragaIdObjekta" />
+        </div>
+        <div class="column">
+          <label for="pretragaTip">Tip objekta:</label>
+          <select id="pretragaTip" class="select-css">
+            <option value=""></option>
+            <option value="Četinar">Četinar</option>
+            <option value="Listopadni lišćar">Listopadni lišćar</option>
+            <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="pretragaLatinskiNaziv">Latinski naziv:</label>
+          <input type="text" id="pretragaLatinskiNaziv" />
+        </div>
+        <div class="column">
+          <label for="pretragaNarodniNaziv">Narodni naziv:</label>
+          <input type="text" id="pretragaNarodniNaziv" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <label for="pretragaZdravstvenoStanje">Zdravstveno stanje:</label>
+          <select class="select-css" id="pretragaZdravstvenoStanje">
+            <option value=""></option>
+            <option value="1 Loše">1 Loše</option>
+            <option value="2 Dovoljno">2 Dovoljno</option>
+            <option value="3 Dobro">3 Dobro</option>
+            <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+            <option value="5 Odlično">5 Odlično</option>
+          </select>
+        </div>
+        <div class="column">
+          <label for="pretragaNapomena">Napomena:</label>
+          <input type="text" class="form-control" id="pretragaNapomena" />
+        </div>
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <button type="button" class="btn" id="btnFilter"><i class="fas fa-search"></i> Filtriranje</button>
+      </div>
+    </div>
+
+    <!-- Modalna fotografija -->
+    <div id="modalFotografija" class="modal">
+      <span id="zatvoriModalFotografija" class="close">&times;</span>
+      <img class="modal-content" id="imgModal" alt="Nema fotografije" />
+      <div id="naslovFotografija"></div>
+    </div>
+    <!-- Toast -->
+    <div id="toast"></div>
+    <!-- Modal confirm-->
+    <div id="modalConfirm" class="modal">
+      <span onclick="confirmOdustani" class="close" title="Close Modal">&times;</span>
+      <div class="confirm-modal-content confirm-container">
+        <h2 id="modalConfirmHeader"></h2>
+        <h4 id="modalConfirmText"></h4>
+
+        <div class="confirm-clearfix">
+          <button type="button" class="confirmbtn confirm-cancelbtn" id="confirmOdustani">Odustani</button>
+          <button type="button" class="confirmbtn confirm-deletebtn" id="confirmPotvrdi">Potvrdi</button>
+        </div>
+      </div>
+    </div>
+    <div class="razmjera" id="razmjera"></div>
+    <div class="koordinate" id="koordinate"></div>
+
+    <script src="js/util.js"></script>
+    <script src="js/shp.js"></script>
+  </body>
+</html>

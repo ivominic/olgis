@@ -49,19 +49,33 @@ function shpUvezi() {
 
 /** Prosljeđuje geojson kontroleru za unos ili testiranje */
 function shpUpload(uvoz) {
-  if (document.querySelector("#dodavanjeSlike").files.length > 0) {
+  if (document.querySelector("#shpFile").files.length > 0) {
     var reader = new FileReader();
     reader.onload = function () {
       var dataURL = reader.result;
       shp(dataURL).then(function (geojson) {
-        //shp(new File(document.querySelector("#dodavanjeSlike").files[0], 'fileName.zip')).then(function (geojson) {
+        let niz = [];
+        let results = geojson.features;
+        let json = new ol.format.GeoJSON();
+        let aaa = json.readFeatures(geojson);
+        console.log(aaa);
+        for (var i = 0; i < aaa.length; i++) {
+          let format = new ol.format.WKT();
+          let wktRepresenation = format.writeGeometry(aaa[i].getGeometry(), {});
+          //console.log(aaa[i].getProperties()['active']);
+          let properties = aaa[i].getProperties();
+          console.log(properties);
+          properties.wkt_za_import = wktRepresenation;
+          niz.push(properties);
+        }
+        console.log(niz);
         let podaciForme = new FormData();
         podaciForme.append("uvoz", uvoz);
         podaciForme.append("lejer", "antenskiStubovi");
         podaciForme.append("geojson", geojson);
 
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', shpUvozUrl, true);
+        xhr.open("POST", shpUvozUrl, true);
         xhr.timeout = 100000;
         xhr.ontimeout = function () {
           poruka("Greska", "Akcija je prekinuta jer je trajala predugo.");
@@ -93,11 +107,10 @@ function shpUpload(uvoz) {
         }
         //see bellow for whats here this internally call shp.parseZip()
       });
-
     };
-    reader.readAsArrayBuffer(document.querySelector("#dodavanjeSlike").files[0]);
+    reader.readAsArrayBuffer(document.querySelector("#shpFile").files[0]);
   } else {
-    poruka("Upozorenje", "Nije odabran zip fajl.")
+    poruka("Upozorenje", "Nije odabran zip fajl.");
   }
 }
 
@@ -416,10 +429,10 @@ function wfsDownload(format) {
 }
 
 /**Povezivanje kontrola koje zavise od lejera sa akcijama */
-document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
+//document.querySelector("#btnSacuvaj").addEventListener("click", sacuvaj);
 document.querySelector("#btnPonisti").addEventListener("click", ponisti);
 document.querySelector("#btnIzbrisi").addEventListener("click", izbrisi);
 document.querySelector("#btnFilter").addEventListener("click", filtriranje);
 
 document.querySelector("#btnShpTestiraj").addEventListener("click", shpTestiraj);
-document.querySelector("#btnUvezi").addEventListener("click", shpUvezi);
+document.querySelector("#btnShpUvezi").addEventListener("click", shpUvezi);

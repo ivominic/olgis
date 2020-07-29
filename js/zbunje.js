@@ -186,12 +186,12 @@ function podesiInterakciju() {
       nacrtan = true;
       //TODO: ovo možda dodati u promjeni akcije i poništi
       featureTekuciOverlay.getSource().clear(); //Samo jedan može da se crta
-      console.log("feature nova geometrija", wktGeometrije(e.feature));
+      //console.log("feature nova geometrija", wktGeometrije(e.feature));
     });
     modify.on("modifyend", function (e) {
       //Iz nekog razloga na brisanje čvora ne očitava odmah izmjenu
-      console.log("broj geometrija", e.features.getArray().length);
-      console.log("feature nova mijenjana geometrija", wktGeometrije(e.features.getArray()[0]));
+      //console.log("broj geometrija", e.features.getArray().length);
+      //console.log("feature nova mijenjana geometrija", wktGeometrije(e.features.getArray()[0]));
     });
     map.addInteraction(draw);
     map.addInteraction(modify);
@@ -209,8 +209,6 @@ function onMouseMove(evt) {
   map.getTargetElement().style.cursor = "";
   var pixel = map.getEventPixel(evt.originalEvent);
   var hit = map.forEachLayerAtPixel(pixel, function (layer, feature) {
-    console.log("Lejer", layer);
-    console.log("Lejer prop", rasterLayer);
     if (layer === rasterLayer) {
       map.getTargetElement().style.cursor = "pointer";
       return false;

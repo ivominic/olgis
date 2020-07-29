@@ -27,7 +27,7 @@ let osmBaseMap = new ol.layer.Tile({
 let satelitBaseMap = new ol.layer.Tile({
   title: "Satelitski snimak",
   source: new ol.source.XYZ({
-    url: 'http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
+    url: 'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}',
     maxZoom: 23,
   }),
 });
@@ -374,7 +374,7 @@ document.querySelector("#marker").addEventListener("click", crtajTacku);
 document.querySelector("#linija").addEventListener("click", crtajLiniju);
 document.querySelector("#poligon").addEventListener("click", crtajPoligon);
 document.querySelector("#pretraga").addEventListener("click", pretraga);
-document.querySelector("#uvozshp").addEventListener("click", uvozshp);
+//document.querySelector("#uvozshp").addEventListener("click", uvozshp);
 document.querySelector("#restart").addEventListener("click", restart);
 document.querySelector("#podloga_osm").addEventListener("click", osmPodloga);
 document.querySelector("#podloga_topo").addEventListener("click", topoPodloga);

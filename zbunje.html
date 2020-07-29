@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/util.css" />
     <link rel="stylesheet" href="css/stil.css" />
     <link rel="stylesheet" href="css/slika.css" />
+    <link rel="stylesheet" href="css/mjerenje.css" />
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -33,6 +34,18 @@
         <a href="#" id="linija" class="tooltip" data-tool="Crtanje linije"><i class="fas fa-route"></i></a>
         <a href="#" id="poligon" class="tooltip" data-tool="Crtanje poligona"><i class="fas fa-draw-polygon"></i></a>
         <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i></a>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <i class="fas fa-ruler"></i>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#" id="mjeraLinija">Mjerenje dužine</a>
+            <a href="#" id="mjeraPoligon">Mjerenje površine</a>
+            <a href="#" id="mjeraKraj">Završetak mjerenja</a>
+            <a href="#" id="mjeraUklanjanje">Uklanjenje mjerenja</a>
+          </div>
+        </div>
         <div class="dropdown">
           <button class="dropbtn">
             <i class="fab fa-buffer"></i>
@@ -231,5 +244,6 @@
 
     <script src="js/util.js"></script>
     <script src="js/zbunje.js"></script>
+    <script src="js/mjerenje.js"></script>
   </body>
 </html>

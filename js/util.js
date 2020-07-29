@@ -27,7 +27,7 @@ let osmBaseMap = new ol.layer.Tile({
 let satelitBaseMap = new ol.layer.Tile({
   title: "Satelitski snimak",
   source: new ol.source.XYZ({
-    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    url: 'http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
     maxZoom: 23,
   }),
 });

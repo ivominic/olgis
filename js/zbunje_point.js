@@ -1,5 +1,5 @@
 /**Inicijalna deklaracija promjenljivih koje su vezane za konretan lejer */
-const layername = "zbunje_point_v",
+const layername = "atlas_demografskih",
   layertitle = "Žbunje";
 const tipGeometrije = point;
 let opisSlike = "";
@@ -10,7 +10,7 @@ var rasterLayer = new ol.layer.Image({
   source: new ol.source.ImageWMS({
     url: wmsUrl,
     params: {
-      LAYERS: "winsoft:" + layername,
+      LAYERS: "ekip:" + layername,
     },
     ratio: 1,
     serverType: "geoserver",

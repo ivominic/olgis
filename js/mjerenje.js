@@ -203,4 +203,6 @@ function brisanjeMjerenja() {
   for (let i = 0; i < x.length; i++) {
     x[i].parentNode.removeChild(x[i])
   }
+  map.removeOverlay(measureTooltip);
+  map.removeOverlay(helpTooltip);
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="js/jspdf.js"></script>
+    <script src="js/FileSaver.js"></script>
+    <script src="js/jspdf.plugin.table.js"></script>
+  </head>
+  <script>
+    var podaci = [
+      { id: 120, geom: "", wkt: "POINT Z (18.9132500000001 42.9732777780001 0)", naziv_lok: "Stojkovac", foto_istok: "" },
+      { id: 121, geom: "", wkt: "POINT Z (18.8311305560001 43.166408333 0)", naziv_lok: "Budanj", foto_istok: "" },
+    ];
+    podaci.forEach((elm) => delete elm.geom);
+    podaci.forEach((elm) => delete elm.id);
+    var data = podaci,
+      fontSize = 12,
+      height = 0,
+      doc;
+
+    //Definisati format dokumenta dinamički, na osnovu broja kolona
+    doc = new jsPDF("l", "pt", "a4", true);
+    doc.text(50, 20, "Naslov");
+    doc.setFont("courier", "normal");
+    doc.setFontSize(fontSize);
+    doc.text(50, 100, "hi table");
+
+    function generate() {
+      /*for (var insert = 0; insert <= 20; insert++) {
+        data.push({
+          name: "jspdf plugin",
+          version: insert,
+          author: "Prashanth Nelli",
+          Designation: "AngularJs Developer",
+        });
+      }*/
+
+      height = doc.drawTable(data, { xstart: 10, ystart: 10, tablestart: 70, marginleft: 50 });
+      doc.text(50, height + 20, "hi world");
+      doc.save("export.pdf");
+    }
+  </script>
+  <body>
+    <button id="btnPdf" onclick="generate()">Export u pdf</button>
+  </body>
+</html>
